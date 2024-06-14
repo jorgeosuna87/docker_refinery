@@ -47,17 +47,10 @@
         "env": []
     },
     {
-        "id": "0abce1a265bb0231",
+        "id": "1c542773be693934",
         "type": "tab",
-        "label": "Tablero_influxdb",
+        "label": "PLC_DELTA",
         "disabled": true,
-        "info": ""
-    },
-    {
-        "id": "28eb5dd89ea0da98",
-        "type": "tab",
-        "label": "Flow 1",
-        "disabled": false,
         "info": "",
         "env": []
     },
@@ -374,7 +367,7 @@
     {
         "id": "3b8eefdff633489b",
         "type": "mqtt-broker",
-        "name": "mqtt_tb_ST-2.1",
+        "name": "mqtt_tb_ST-2.2",
         "broker": "mqtt.thingsboard.cloud",
         "port": "1883",
         "clientid": "",
@@ -4567,47 +4560,9 @@
         "y": 700,
         "wires": [
             [
-                "509b308158b1e8fa"
+                "ee5c7bf5c8137ae2"
             ]
         ]
-    },
-    {
-        "id": "4877dd97a4790381",
-        "type": "mqtt out",
-        "z": "5abe0cc40f5ad9c5",
-        "d": true,
-        "name": "mqtt_tb_ST-3.4",
-        "topic": "v1/devices/me/telemetry",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "7d040f0f19d79e89",
-        "x": 1740,
-        "y": 580,
-        "wires": []
-    },
-    {
-        "id": "509b308158b1e8fa",
-        "type": "mqtt out",
-        "z": "5abe0cc40f5ad9c5",
-        "d": true,
-        "name": "mqtt_tb_ST-3.3",
-        "topic": "v1/devices/me/telemetry",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "b2eea5177ada0477",
-        "x": 1740,
-        "y": 700,
-        "wires": []
     },
     {
         "id": "eb931d150b681d2e",
@@ -4625,7 +4580,7 @@
         "y": 580,
         "wires": [
             [
-                "4877dd97a4790381"
+                "5f3d2e0b2c1e46f2"
             ]
         ]
     },
@@ -4645,7 +4600,7 @@
         "y": 460,
         "wires": [
             [
-                "32d36338cd23f2a3"
+                "5118b9e8b421ccf0"
             ]
         ]
     },
@@ -4665,47 +4620,9 @@
         "y": 380,
         "wires": [
             [
-                "99d036f3b6ab43be"
+                "64b2e6b11cd0b8af"
             ]
         ]
-    },
-    {
-        "id": "99d036f3b6ab43be",
-        "type": "mqtt out",
-        "z": "5abe0cc40f5ad9c5",
-        "d": true,
-        "name": "mqtt_tb_ST-3.2",
-        "topic": "v1/devices/me/telemetry",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "a32defc5189db4ea",
-        "x": 1720,
-        "y": 380,
-        "wires": []
-    },
-    {
-        "id": "32d36338cd23f2a3",
-        "type": "mqtt out",
-        "z": "5abe0cc40f5ad9c5",
-        "d": true,
-        "name": "mqtt_tb_ST-3.1",
-        "topic": "v1/devices/me/telemetry",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "9c9e2630ed80f90e",
-        "x": 1720,
-        "y": 460,
-        "wires": []
     },
     {
         "id": "specialTemperatureFunction",
@@ -5006,6 +4923,82 @@
                 "bbc63a704ffb8b16"
             ]
         ]
+    },
+    {
+        "id": "5118b9e8b421ccf0",
+        "type": "mqtt out",
+        "z": "5abe0cc40f5ad9c5",
+        "d": true,
+        "name": "mqtt_tb_ST-3.1",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "9c9e2630ed80f90e",
+        "x": 1960,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "64b2e6b11cd0b8af",
+        "type": "mqtt out",
+        "z": "5abe0cc40f5ad9c5",
+        "d": true,
+        "name": "mqtt_tb_ST-3.2",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "a32defc5189db4ea",
+        "x": 1960,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "5f3d2e0b2c1e46f2",
+        "type": "mqtt out",
+        "z": "5abe0cc40f5ad9c5",
+        "d": true,
+        "name": "mqtt_tb_ST-3.4",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "7d040f0f19d79e89",
+        "x": 1980,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "ee5c7bf5c8137ae2",
+        "type": "mqtt out",
+        "z": "5abe0cc40f5ad9c5",
+        "d": true,
+        "name": "mqtt_tb_ST-3.3",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "b2eea5177ada0477",
+        "x": 1980,
+        "y": 660,
+        "wires": []
     },
     {
         "id": "e00fc1d0d3c743a7",
@@ -5506,25 +5499,6 @@
         ]
     },
     {
-        "id": "c99a1643742a9413",
-        "type": "mqtt out",
-        "z": "af530bfa0859125d",
-        "d": true,
-        "name": "mqtt_tb_MN-4",
-        "topic": "v1/devices/me/telemetry",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "586ef25fd8e81fa5",
-        "x": 1640,
-        "y": 240,
-        "wires": []
-    },
-    {
         "id": "b7d660696b25b6a1",
         "type": "function",
         "z": "af530bfa0859125d",
@@ -5540,7 +5514,7 @@
         "y": 240,
         "wires": [
             [
-                "c99a1643742a9413"
+                "d709b91bb9b31854"
             ]
         ]
     },
@@ -5606,25 +5580,6 @@
         ]
     },
     {
-        "id": "0cb4f7ef995c42e4",
-        "type": "mqtt out",
-        "z": "af530bfa0859125d",
-        "d": true,
-        "name": "mqtt_tb_MN-6A",
-        "topic": "v1/devices/me/telemetry",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "b4cdb9cd5246ed2e",
-        "x": 1620,
-        "y": 420,
-        "wires": []
-    },
-    {
         "id": "997623779ae3ed09",
         "type": "function",
         "z": "af530bfa0859125d",
@@ -5640,7 +5595,7 @@
         "y": 420,
         "wires": [
             [
-                "0cb4f7ef995c42e4"
+                "49c37cc664a44929"
             ]
         ]
     },
@@ -5706,25 +5661,6 @@
         ]
     },
     {
-        "id": "0ebe715e42edc25a",
-        "type": "mqtt out",
-        "z": "af530bfa0859125d",
-        "d": true,
-        "name": "mqtt_tb_MN-6B",
-        "topic": "v1/devices/me/telemetry",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "4aabcdd5a91592fb",
-        "x": 1620,
-        "y": 580,
-        "wires": []
-    },
-    {
         "id": "b59a10c3b3f0eff7",
         "type": "function",
         "z": "af530bfa0859125d",
@@ -5740,7 +5676,7 @@
         "y": 580,
         "wires": [
             [
-                "0ebe715e42edc25a"
+                "2931b04fa8bce7d3"
             ]
         ]
     },
@@ -6011,6 +5947,60 @@
                 "881bb3d5dd494de2"
             ]
         ]
+    },
+    {
+        "id": "d709b91bb9b31854",
+        "type": "mqtt out",
+        "z": "af530bfa0859125d",
+        "name": "mqtt_tb_MN-4",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "586ef25fd8e81fa5",
+        "x": 1640,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "49c37cc664a44929",
+        "type": "mqtt out",
+        "z": "af530bfa0859125d",
+        "name": "mqtt_tb_MN-6A",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "b4cdb9cd5246ed2e",
+        "x": 1660,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "2931b04fa8bce7d3",
+        "type": "mqtt out",
+        "z": "af530bfa0859125d",
+        "name": "mqtt_tb_MN-6B",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "4aabcdd5a91592fb",
+        "x": 1660,
+        "y": 580,
+        "wires": []
     },
     {
         "id": "b6ad7e85b72dac92",
@@ -6384,28 +6374,9 @@
         "y": 480,
         "wires": [
             [
-                "70331b9cdbcca788"
+                "963e67092d981e36"
             ]
         ]
-    },
-    {
-        "id": "3f991083ea370139",
-        "type": "mqtt out",
-        "z": "9fa46c697055fd5a",
-        "d": true,
-        "name": "mqtt_tb_MN-2.1",
-        "topic": "v1/devices/me/telemetry",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "75c0821a42a5cdfb",
-        "x": 2120,
-        "y": 560,
-        "wires": []
     },
     {
         "id": "18eab2c3c21c232b",
@@ -6423,28 +6394,9 @@
         "y": 560,
         "wires": [
             [
-                "3f991083ea370139"
+                "a947519dd216c454"
             ]
         ]
-    },
-    {
-        "id": "70331b9cdbcca788",
-        "type": "mqtt out",
-        "z": "9fa46c697055fd5a",
-        "d": true,
-        "name": "mqtt_tb_MF-1.1",
-        "topic": "v1/devices/me/telemetry",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "689c5e6207baccbb",
-        "x": 2360,
-        "y": 480,
-        "wires": []
     },
     {
         "id": "cf76eeb0d17bcb0c",
@@ -6462,28 +6414,9 @@
         "y": 700,
         "wires": [
             [
-                "da7568d07a7a4076"
+                "85b4e8d97f116749"
             ]
         ]
-    },
-    {
-        "id": "da7568d07a7a4076",
-        "type": "mqtt out",
-        "z": "9fa46c697055fd5a",
-        "d": true,
-        "name": "mqtt_tb_MP-1.1",
-        "topic": "v1/devices/me/telemetry",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "feca9c5ced6ec599",
-        "x": 2060,
-        "y": 700,
-        "wires": []
     },
     {
         "id": "3fdacd0a92232648",
@@ -6673,47 +6606,9 @@
         "y": 900,
         "wires": [
             [
-                "20c1c8a56c449f9f"
+                "e729a7dadb878a4c"
             ]
         ]
-    },
-    {
-        "id": "20c1c8a56c449f9f",
-        "type": "mqtt out",
-        "z": "9fa46c697055fd5a",
-        "d": true,
-        "name": "mqtt_tb_ST-2.1",
-        "topic": "v1/devices/me/telemetry",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "233cd5171dde3839",
-        "x": 2240,
-        "y": 900,
-        "wires": []
-    },
-    {
-        "id": "2e967e99aa307731",
-        "type": "mqtt out",
-        "z": "9fa46c697055fd5a",
-        "d": true,
-        "name": "mqtt_tb_ST-2.1",
-        "topic": "v1/devices/me/telemetry",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "3b8eefdff633489b",
-        "x": 2160,
-        "y": 820,
-        "wires": []
     },
     {
         "id": "53bc7861172a15e8",
@@ -6751,7 +6646,7 @@
         "y": 820,
         "wires": [
             [
-                "2e967e99aa307731"
+                "dec46ef532293f9a"
             ]
         ]
     },
@@ -6992,8 +6887,8 @@
         "styleRounded": true,
         "styleGlow": false,
         "className": "",
-        "x": 2260,
-        "y": 700,
+        "x": 2380,
+        "y": 680,
         "wires": []
     },
     {
@@ -7179,14 +7074,710 @@
         ]
     },
     {
-        "id": "d80ef249f2123560",
-        "type": "inject",
-        "z": "0abce1a265bb0231",
+        "id": "963e67092d981e36",
+        "type": "mqtt out",
+        "z": "9fa46c697055fd5a",
         "d": true,
-        "name": "Simulate ADC Input",
+        "name": "mqtt_tb_MF-1.1",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "689c5e6207baccbb",
+        "x": 2620,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "a947519dd216c454",
+        "type": "mqtt out",
+        "z": "9fa46c697055fd5a",
+        "d": true,
+        "name": "mqtt_tb_MN-2.1",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "75c0821a42a5cdfb",
+        "x": 2380,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "85b4e8d97f116749",
+        "type": "mqtt out",
+        "z": "9fa46c697055fd5a",
+        "d": true,
+        "name": "mqtt_tb_MP-1.1",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "feca9c5ced6ec599",
+        "x": 2320,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "dec46ef532293f9a",
+        "type": "mqtt out",
+        "z": "9fa46c697055fd5a",
+        "d": true,
+        "name": "mqtt_tb_ST-2.2",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "3b8eefdff633489b",
+        "x": 2500,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "e729a7dadb878a4c",
+        "type": "mqtt out",
+        "z": "9fa46c697055fd5a",
+        "d": true,
+        "name": "mqtt_tb_ST-2.1",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "233cd5171dde3839",
+        "x": 2500,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "e468469d275fa87c",
+        "type": "inject",
+        "z": "1c542773be693934",
+        "name": "EDP1_AI1",
         "props": [
             {
                 "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "read_EDP1_AI1",
+        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":0,\"quantity\":1}",
+        "payloadType": "json",
+        "x": 190,
+        "y": 460,
+        "wires": [
+            [
+                "9303d4b089a21f41"
+            ]
+        ]
+    },
+    {
+        "id": "a416bf9ca8b1c1b2",
+        "type": "inject",
+        "z": "1c542773be693934",
+        "name": "update",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "update",
+        "payload": "",
+        "payloadType": "date",
+        "x": 240,
+        "y": 380,
+        "wires": [
+            [
+                "9303d4b089a21f41"
+            ]
+        ]
+    },
+    {
+        "id": "b8e1d796b05674a8",
+        "type": "inject",
+        "z": "1c542773be693934",
+        "name": "next",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "next",
+        "payload": "",
+        "payloadType": "date",
+        "x": 250,
+        "y": 340,
+        "wires": [
+            [
+                "9303d4b089a21f41"
+            ]
+        ]
+    },
+    {
+        "id": "ebd7a51a32780957",
+        "type": "change",
+        "z": "1c542773be693934",
+        "name": "Advance queue",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "next",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 440,
+        "wires": [
+            [
+                "9303d4b089a21f41"
+            ]
+        ]
+    },
+    {
+        "id": "9303d4b089a21f41",
+        "type": "function",
+        "z": "1c542773be693934",
+        "name": "Modbus Queue",
+        "func": "let resendifnoresposne = true; // resend the last message is no response is received\nlet resendinterval = 10; // resend last e message every x seconds\nlet online_threshold = 10; // Seconds between updates under which the device is considered online\nlet offline_threshold = 300; // Seconds between updates above which the device is considered offline\n\nlet notifmsg = null;\n\n// Check and make sure the incoming message has a topic\nif ((msg.topic===\"\")||(msg.topic===null)||(msg.topic===undefined)) {\n    node.status({fill:\"red\",shape:\"dot\",text:\"Topic missing\"});\n    return;\n}\n\nlet lastupdate = context.get(\"lastupdate\");\nlet state = context.get(\"state\") | 0;\nlet queue = context.get(\"queue\");\nlet queuecount = 0;\nif (queue === undefined) {\n    queue = [];\n} else {\n    if (Array.isArray(queue)) {\n        queuecount = queue.length;\n    } else {\n        queue = [];\n    }\n}\nlet current = new Date().getTime();\nlet send = false;\n\nswitch (msg.topic.toLowerCase()) {\n    case \"update\":\n        // Update the timer and statistics\n\n        if (lastupdate !== undefined) {\n            notifmsg = { \"topic\": \"Information\", \"payload\": {} };\n            current = current - lastupdate;\n            current = Math.floor(current / 1000);\n            notifmsg.payload.secondsincelastupdate = current;\n            var minute = Math.floor(current / 60);\n            var hour = Math.floor(minute / 60);\n            var day = Math.floor(hour / 24);\n            if (current > 24 * 60 * 60) {\n                notifmsg.payload.updatetext = \"Last update \" + day + \" days, \" + hour % 24 + \" hours, \" + minute % 60 + \" minutes, \" + current % 60 + \" seconds ago\";\n            } else if (current > 60 * 60) {\n                notifmsg.payload.updatetext = \"Last update \" + hour % 24 + \" hours, \" + minute % 60 + \" minutes, \" + current % 60 + \" seconds ago\";\n            } else if (current > 60) {\n                notifmsg.payload.updatetext = \"Last update \" + minute % 60 + \" minutes, \" + current % 60 + \" seconds ago\";\n            } else {\n                notifmsg.payload.updatetext = \"Last update \" + current % 60 + \" seconds ago\";\n            }\n\n            // Resend last message if there is no response from the server\n            if (resendifnoresposne) {\n                if ((current>0) && (current % resendinterval===0)) {\n                    let lastmsg = context.get(\"lastmsg\");\n                    if ((lastmsg!==undefined) && (context.get(\"sent\"))) {\n                        notifmsg.payload.resend = true;\n                        if ((lastmsg.payload.fc === 1) || (lastmsg.payload.fc === 2) || (lastmsg.payload.fc === 3) || (lastmsg.payload.fc === 4)) {\n                            // this is a modbus read request\n                            node.status({ fill: \"green\", shape: \"dot\", text: \"Read re-sent!\" });\n                            return [lastmsg, null, notifmsg];\n                        } else {\n                            // this is a modbus write request\n                            node.status({ fill: \"green\", shape: \"dot\", text: \"Write re-sent!\" });\n                            return [null, lastmsg, notifmsg];\n                        }\n                    }\n                }\n            }\n\n            // Check for online state\n            if (state !== 1) {\n                if (current < online_threshold) {\n                    notifmsg.topic = \"Warning\";\n                    notifmsg.payload.text = \"Device is now online\";\n                    notifmsg.payload.statuschange = true;\n                    state = 1;\n                    context.set(\"state\", state);\n                }\n            } else {\n                if (current > offline_threshold) {\n                    notifmsg.topic = \"Error\";\n                    notifmsg.payload.text = \"Device is not transmitting\";\n                    notifmsg.payload.statuschange = true;\n                    state = 99;\n                    context.set(\"state\", state);\n                }\n            }\n            notifmsg.payload.state = state;\n            if (state===1) {\n                node.status({ fill: \"blue\", shape: \"ring\", text: queuecount+ \" | \"+notifmsg.payload.updatetext });\n            } else {\n                node.status({ fill: \"red\", shape: \"ring\", text: queuecount + \" | \" + notifmsg.payload.updatetext });\n            }\n            return [null, null, notifmsg];\n\n        } else {\n            node.status({ fill: \"grey\", shape: \"ring\", text: \"No data\" });\n        }\n        break;\n    case \"next\":\n        // Update the lastupdate counter\n        context.set(\"lastupdate\", current);\n        context.set(\"sent\", false);\n        send = true;\n        break;\n    case \"reset\":\n        context.set(\"queue\",[]);\n        context.set(\"sent\", false);\n        context.set(\"lastmsg\", undefined);\n        break;\n    default:\n        // The incoming message is a modbus request\n\n        // delete the last msg to prevent from being resent\n        // context.set(\"lastmsg\", undefined);\n\n        // Check if there is already a message in the queue with the same topic. \n        // If there is it needs to be deleted, because we only keep the last message.\n        for (let i=queue.length-1; i>=0; i--) {\n            if (queue[i].topic === msg.topic) {\n                queue.splice(i,1);\n            }\n        }\n\n        // Add the message to the end of the queue\n        queue.push(msg);\n        context.set(\"queue\",queue);\n\n        if (!context.get(\"sent\")) {\n            send = true;\n        }\n        node.status({ fill: \"green\", shape: \"dot\", text: queue.length });\n\n}\n\n// We need to send out a new message\nif (send) {\n\n    if (queue.length>0) {\n        // Get the older message from the array\n        let newmsg = queue[0];\n        // remove this message\n        queue.splice(0,1);\n        context.set(\"queue\",queue);\n        context.set(\"sent\", true);\n        context.set(\"lastmsg\", newmsg);\n\n        if ((newmsg.payload.fc === 1) || (newmsg.payload.fc === 2) || (newmsg.payload.fc === 3) || (newmsg.payload.fc === 4)) {\n            // this is a modbus read request\n            node.status({ fill: \"green\", shape: \"dot\", text: \"Read sent!\" });\n            return[newmsg,null,null];\n        } else {\n            // this is a modbus write request\n            node.status({ fill: \"green\", shape: \"dot\", text: \"Write sent!\" });\n            return [null, newmsg, null];\n        }\n        \n    }\n}\n",
+        "outputs": 3,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 560,
+        "wires": [
+            [
+                "3f6664678974d7c5"
+            ],
+            [],
+            [
+                "13568d1d69f5c55e"
+            ]
+        ],
+        "info": "# Modbus Queue\r\n\r\nThis node queueing read and write messages for modbus. Use this node if you are reading and writing the same device with many different requests. E.g. reading different coil/register intervals continously and also writing to the device at the same time.\r\n\r\nIt does a few things:\r\n- queues all messages arrive on the input port\r\n- based on the msg.topic, older messages of the same topci is ignored\r\n- sends out the oldest message and waits for the \r\n- monitors the time since last message and send out report on the output\r\n- handles online/offline status\r\n- resend the last message is response is not received in time\r\n\r\n## Input Data\r\n\r\n### payload\r\n\r\nThe payload should contain the data that gets sent to the flex-getter or flex-write node.\r\nTypical modbus read payload:\r\n`{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":1000,\"quantity\":20}`\r\nTypical modbus write payload:\r\n`{\"value\":false,\"fc\":5,\"unitid\":1,\"address\":0,\"quantity\":1}`\r\n\r\n### topic\r\n\r\nEach message must contain a topic (any text), and this topic is used to identify the different read/write requests and delete any earlier request with the same topic if it still in the queueing\r\n\r\nThere are a few reserved topic for special function (for these payload is ignored):\r\n- reset: resets the queue and deleted any data collected so far\r\n- next: this is the message fed back from the flex getter/write node to indicate to this node that a new message can be sent out\r\n- update: this should be coming from a 1 second time to display the current queue count, time since the last update and online/offline status\r\n\r\n## Output ports\r\n\r\n### Port 1: flex getter\r\n\r\nThis output should be connected to a modbos-flex-getter and all the read requests will be sent out through this port\r\n\r\n### Port 2: flex write\r\n\r\nThis output should be connected to a modbos-flex-write and all the write requests will be sent out through this port\r\n\r\n### Port 3: status messages\r\n\r\nThis port outputs a status message for every update message (msg.topic=\"update\").\r\n\r\n- topic: \"Information\" for regular updates, \"Warning\": offline device is now back online, \"Error\": device is offline\r\n- payload.text: message like when the device gone offline, or back online\r\n- payload.updatetext: time passed since the last update (human readable format)\r\n- payload.secondsincelastupdate: number of seconds since the last update from the device\r\n- payload.statuschange: true if status is changed (gone offline, back online)\r\n- payload.state: 0: initial state, no data yet, 1: device online, 99: device offline\r\n\r\n## Node Settings\r\n\r\nChange the settings in the first 4 lines of the code to influence the behaviour. Explanation is in the code as comment."
+    },
+    {
+        "id": "b36d904278fc991d",
+        "type": "inject",
+        "z": "1c542773be693934",
+        "name": "reset",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "update",
+        "payload": "",
+        "payloadType": "date",
+        "x": 250,
+        "y": 300,
+        "wires": [
+            [
+                "9303d4b089a21f41"
+            ]
+        ]
+    },
+    {
+        "id": "3d68401642957f3e",
+        "type": "link in",
+        "z": "1c542773be693934",
+        "name": "link in 5",
+        "links": [],
+        "x": 285,
+        "y": 260,
+        "wires": [
+            [
+                "9303d4b089a21f41"
+            ]
+        ]
+    },
+    {
+        "id": "187da7c60f73551c",
+        "type": "inject",
+        "z": "1c542773be693934",
+        "name": "check",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 320,
+        "y": 900,
+        "wires": [
+            [
+                "b44b8c69a1faf51b"
+            ]
+        ]
+    },
+    {
+        "id": "13568d1d69f5c55e",
+        "type": "function",
+        "z": "1c542773be693934",
+        "name": "update log",
+        "func": "if (msg.topic === \"Information\") {\n    // Registrar mensajes de información\n    node.log(\"Información: \" + msg.payload.updatetext);\n} else if (msg.topic === \"Warning\") {\n    // Registrar mensajes de advertencia\n    node.warn(\"Advertencia: \" + msg.payload.text);\n} else if (msg.topic === \"Error\") {\n    // Registrar mensajes de error\n    node.error(\"Error: \" + msg.payload.text);\n}\n\n// Puedes agregar lógica adicional para procesar otros campos del mensaje de estado\n// Por ejemplo, puedes verificar el valor de msg.payload.state para realizar acciones específicas\n// según el estado del dispositivo (en línea, fuera de línea, etc.)\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3a50df8a8cf4c965",
+        "type": "inject",
+        "z": "1c542773be693934",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 210,
+        "y": 800,
+        "wires": [
+            [
+                "9303d4b089a21f41"
+            ]
+        ]
+    },
+    {
+        "id": "4f34ae3b1233ec04",
+        "type": "function",
+        "z": "1c542773be693934",
+        "name": "calc_vol",
+        "func": "const valorCrudo = msg.payload[0];\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (40000 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1200,
+        "y": 320,
+        "wires": [
+            [
+                "2fe651fd21e69569",
+                "eaaac0825643be54"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "6a6312d55f8dcf96",
+        "type": "function",
+        "z": "1c542773be693934",
+        "name": "Data Accumulation Node",
+        "func": "let cola = flow.get(\"colaLecturas\") || [];\nconst tiempoMaximo = 300000; // 5 minutos en milisegundos\n\n// Añadir nuevo registro con timestamp actual si no viene incluido en el mensaje\nconst tiempoRegistro = msg.payload.timestamp || Date.now();  // Usar timestamp del mensaje o el tiempo actual si no está disponible\ncola.push({\n    tiempo: tiempoRegistro,\n    volumen: msg.payload[0] // Asumiendo que el volumen viene en msg.payload como primer elemento del array\n});\n\n// Eliminar registros más antiguos que el tiempo máximo permitido\nlet tiempoActual = Date.now();\ncola = cola.filter(registro => (tiempoActual - registro.tiempo) <= tiempoMaximo);\n\n// Guardar la cola actualizada en el contexto del flujo\nflow.set(\"colaLecturas\", cola);\n\n// Pasar la cola completa al siguiente nodo para su procesamiento\nreturn { payload: cola };\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1410,
+        "y": 280,
+        "wires": [
+            [
+                "fcf40b894ba229f7"
+            ]
+        ]
+    },
+    {
+        "id": "fcf40b894ba229f7",
+        "type": "function",
+        "z": "1c542773be693934",
+        "name": "Flow Calculation Node",
+        "func": "const cola = msg.payload;\nlet flujo = 0;\n\nif (cola.length > 1) {\n    const primerRegistro = cola[0];\n    const ultimoRegistro = cola[cola.length - 1];\n    const tiempoDiferencia = (ultimoRegistro.tiempo - primerRegistro.tiempo) / 1000; // en segundos\n\n    // Convertir los valores de volumen según la escala proporcionada\n    const volumenInicial = ((primerRegistro.volumen - 4000) / (20000 - 4000)) * (40000 - 0);\n    const volumenFinal = ((ultimoRegistro.volumen - 4000) / (20000 - 4000)) * (40000 - 0);\n\n    if (tiempoDiferencia > 0) {\n        flujo = Math.round(-((volumenFinal - volumenInicial) / tiempoDiferencia) * 3600); // calcular flujo\n    }\n} else {\n    // Manejar el caso cuando no hay suficientes registros para calcular un flujo\n    flujo = \"Insuficientes datos para cálculo de flujo\";\n}\n\n// Devolver el valor del flujo\nreturn { payload: flujo };\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1410,
+        "y": 220,
+        "wires": [
+            [
+                "a7d396375a027932",
+                "a415ac84e6482a53"
+            ]
+        ]
+    },
+    {
+        "id": "5d5fc976f4699b13",
+        "type": "function",
+        "z": "1c542773be693934",
+        "name": "calc_presion",
+        "func": "const valorADCMin = 4000;\nconst valorADCMax = 20000;\nconst valorMin = 0;\nconst valorMax = 10.1972;\n\nconst valorADC = msg.payload[0];\nconst valorPresion = ((valorADC - valorADCMin) / (valorADCMax - valorADCMin)) * (valorMax - valorMin) + valorMin;\n\nmsg.payload = valorPresion.toFixed(4);\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1210,
+        "y": 480,
+        "wires": [
+            [
+                "9d65a53a93f889f3",
+                "65250917b9e4327e"
+            ]
+        ]
+    },
+    {
+        "id": "152e4b6e6c143d33",
+        "type": "function",
+        "z": "1c542773be693934",
+        "name": "calc_flujo",
+        "func": "const valorADCMin = 4000;\nconst valorADCMax = 20000;\nconst valorMin = 0;\nconst valorMax = 10000;\n\nconst valorADC = msg.payload[0];\nconst valorLitrosHora = ((valorADC - valorADCMin) / (valorADCMax - valorADCMin)) * (valorMax - valorMin) + valorMin;\n\nmsg.payload = Math.round(valorLitrosHora);\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1200,
+        "y": 420,
+        "wires": [
+            [
+                "180118feaf9d2736"
+            ]
+        ]
+    },
+    {
+        "id": "3f6664678974d7c5",
+        "type": "modbus-flex-getter",
+        "z": "1c542773be693934",
+        "name": "EDP1",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "logIOActivities": false,
+        "server": "52f2d0e38d313f88",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 640,
+        "y": 520,
+        "wires": [
+            [
+                "ebd7a51a32780957",
+                "03d41b2c3247feae"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "03d41b2c3247feae",
+        "type": "switch",
+        "z": "1c542773be693934",
+        "name": "EDP1_Registros",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "read_EDP1_AI1",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "read_EDP1_AI2",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "read_EDP1_AI3",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "read_EDP1_AI4",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "read_EDP1_AI5",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "read_EDP1_AI6",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 6,
+        "x": 950,
+        "y": 440,
+        "wires": [
+            [
+                "152e4b6e6c143d33"
+            ],
+            [],
+            [],
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "a7d396375a027932",
+        "type": "function",
+        "z": "1c542773be693934",
+        "name": "telemetria",
+        "func": "msg.payload = {\n  flujo: msg.payload\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1690,
+        "y": 260,
+        "wires": [
+            [
+                "a1f9233ee0a2b965"
+            ]
+        ]
+    },
+    {
+        "id": "fa6ab33868c809f7",
+        "type": "mqtt out",
+        "z": "1c542773be693934",
+        "d": true,
+        "name": "mqtt_tb_MN-2.1",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "75c0821a42a5cdfb",
+        "x": 1590,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "2fe651fd21e69569",
+        "type": "function",
+        "z": "1c542773be693934",
+        "name": "telemetria",
+        "func": "msg.payload = {\n  volumen: msg.payload\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1430,
+        "y": 340,
+        "wires": [
+            [
+                "fa6ab33868c809f7"
+            ]
+        ]
+    },
+    {
+        "id": "a1f9233ee0a2b965",
+        "type": "mqtt out",
+        "z": "1c542773be693934",
+        "d": true,
+        "name": "mqtt_tb_MF-1.1",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "689c5e6207baccbb",
+        "x": 1840,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "f409eaedb46ac5a8",
+        "type": "function",
+        "z": "1c542773be693934",
+        "name": "telemetria",
+        "func": "msg.payload = {\n  flujo: msg.payload\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1420,
+        "y": 400,
+        "wires": [
+            [
+                "6e221eeff686fcca"
+            ]
+        ]
+    },
+    {
+        "id": "6e221eeff686fcca",
+        "type": "mqtt out",
+        "z": "1c542773be693934",
+        "d": true,
+        "name": "mqtt_tb_MF-3.1",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "74ceda570d3e66dc",
+        "x": 1590,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "9d65a53a93f889f3",
+        "type": "function",
+        "z": "1c542773be693934",
+        "name": "telemetria",
+        "func": "msg.payload = {\n  presion: msg.payload\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1510,
+        "y": 460,
+        "wires": [
+            [
+                "a4ec32fa344011d2"
+            ]
+        ]
+    },
+    {
+        "id": "a4ec32fa344011d2",
+        "type": "mqtt out",
+        "z": "1c542773be693934",
+        "d": true,
+        "name": "mqtt_tb_MP-1.1",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "feca9c5ced6ec599",
+        "x": 1780,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "0c9b22b8a6397d87",
+        "type": "inject",
+        "z": "1c542773be693934",
+        "name": "Simulate ADC Input",
+        "props": [
+            {
+                "p": "payload[0]",
+                "v": "9650",
+                "vt": "num"
             },
             {
                 "p": "payload.timestamp",
@@ -7199,775 +7790,763 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "4005",
-        "payloadType": "num",
-        "x": 250,
-        "y": 280,
-        "wires": [
-            [
-                "318fad8f06f77ff1"
-            ]
-        ]
-    },
-    {
-        "id": "318fad8f06f77ff1",
-        "type": "function",
-        "z": "0abce1a265bb0231",
-        "d": true,
-        "name": "calc_vol",
-        "func": "const valorCrudo = msg.payload;\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (40000 - 0);\nmsg.payload = Math.round(valorLitros);  // Valor en litros\nreturn msg;",
-        "outputs": 2,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 460,
-        "y": 280,
-        "wires": [
-            [
-                "a836554305fba8a0",
-                "a30d3c20815a95f5"
-            ],
-            []
-        ]
-    },
-    {
-        "id": "a836554305fba8a0",
-        "type": "debug",
-        "z": "0abce1a265bb0231",
-        "d": true,
-        "name": "debug 13",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 660,
-        "y": 240,
-        "wires": []
-    },
-    {
-        "id": "0bcbb81796a6a3c1",
-        "type": "inject",
-        "z": "0abce1a265bb0231",
-        "d": true,
-        "name": "Simulate ADC Input",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "250",
-        "payloadType": "num",
-        "x": 210,
-        "y": 440,
-        "wires": [
-            [
-                "5c18c9231ae10aa7"
-            ]
-        ]
-    },
-    {
-        "id": "32cd0e870067f260",
-        "type": "debug",
-        "z": "0abce1a265bb0231",
-        "d": true,
-        "name": "debug 14",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 720,
-        "y": 440,
-        "wires": []
-    },
-    {
-        "id": "3e98176b86982460",
-        "type": "inject",
-        "z": "0abce1a265bb0231",
-        "d": true,
-        "name": "Simulate ADC Input",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "350",
-        "payloadType": "num",
-        "x": 310,
-        "y": 180,
+        "x": 980,
+        "y": 560,
         "wires": [
             []
         ]
     },
     {
-        "id": "e44d61c6ebd84889",
-        "type": "debug",
-        "z": "0abce1a265bb0231",
-        "d": true,
-        "name": "debug 14",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 780,
-        "y": 60,
-        "wires": []
-    },
-    {
-        "id": "234bd86221f089c9",
-        "type": "change",
-        "z": "0abce1a265bb0231",
-        "d": true,
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "fields.volumen",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "{ \"volumen\": payload }",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 560,
-        "y": 100,
-        "wires": [
-            [
-                "ac70ab4c14d788f8",
-                "e44d61c6ebd84889"
-            ]
-        ]
-    },
-    {
-        "id": "5c18c9231ae10aa7",
-        "type": "change",
-        "z": "0abce1a265bb0231",
-        "d": true,
-        "name": "Prepare InfluxDB Payload",
-        "rules": [
-            {
-                "t": "set",
-                "p": "fields.volumen",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "tags.location",
-                "pt": "msg",
-                "to": "Refinery_A",
-                "tot": "str"
-            },
-            {
-                "t": "set",
-                "p": "tags.sensor_id",
-                "pt": "msg",
-                "to": "sensor_01",
-                "tot": "str"
-            },
-            {
-                "t": "set",
-                "p": "tags.unit",
-                "pt": "msg",
-                "to": "liters",
-                "tot": "str"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "{ \"volumen\": fields.volumen, \"location\": tags.location, \"sensor_id\": tags.sensor_id, \"unit\": tags.unit, \"timestamp\": $millis() }",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 470,
-        "y": 440,
-        "wires": [
-            [
-                "d49fc8b2da531ddf",
-                "32cd0e870067f260"
-            ]
-        ]
-    },
-    {
-        "id": "dae7f289a0138a1f",
-        "type": "mqtt in",
-        "z": "0abce1a265bb0231",
-        "d": true,
-        "name": "Sensor de Flujo",
-        "topic": "sensor/simulated",
-        "qos": "0",
-        "datatype": "json",
-        "broker": "mqtt_broker_1",
-        "nl": false,
-        "rap": false,
-        "inputs": 0,
-        "x": 320,
-        "y": 100,
-        "wires": [
-            [
-                "234bd86221f089c9"
-            ]
-        ]
-    },
-    {
-        "id": "550d10a7bf2e9bc5",
-        "type": "debug",
-        "z": "0abce1a265bb0231",
-        "d": true,
-        "name": "debug 14",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 680,
-        "y": 540,
-        "wires": []
-    },
-    {
-        "id": "df9a8b81e5fec457",
-        "type": "change",
-        "z": "0abce1a265bb0231",
-        "d": true,
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "{\"volumen\": payload}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "fields.volumen",
-                "pt": "msg",
-                "to": "payload.volumen",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 460,
-        "y": 580,
-        "wires": [
-            [
-                "0940cf3f17203537",
-                "550d10a7bf2e9bc5",
-                "331bcfb3b61fc139"
-            ]
-        ]
-    },
-    {
-        "id": "e88cdd322d516e86",
-        "type": "mqtt in",
-        "z": "0abce1a265bb0231",
-        "d": true,
-        "name": "Sensor de Flujo",
-        "topic": "sensor/simulated",
-        "qos": "0",
-        "datatype": "json",
-        "broker": "mqtt_broker_1",
-        "nl": false,
-        "rap": false,
-        "inputs": 0,
-        "x": 220,
-        "y": 580,
-        "wires": [
-            [
-                "df9a8b81e5fec457",
-                "9baed69b77b8d59a"
-            ]
-        ]
-    },
-    {
-        "id": "9baed69b77b8d59a",
-        "type": "debug",
-        "z": "0abce1a265bb0231",
-        "d": true,
-        "name": "debug 32",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 480,
-        "y": 540,
-        "wires": []
-    },
-    {
-        "id": "0301371619f2b614",
-        "type": "debug",
-        "z": "0abce1a265bb0231",
-        "name": "debug 14",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 680,
-        "y": 680,
-        "wires": []
-    },
-    {
-        "id": "a451f56d9b293807",
-        "type": "change",
-        "z": "0abce1a265bb0231",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "{\"volumen\": payload}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "fields.volumen",
-                "pt": "msg",
-                "to": "payload.volumen",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 440,
-        "y": 740,
-        "wires": [
-            [
-                "b3e1ad35d8ae921c",
-                "0301371619f2b614",
-                "e4475e804c34ec05"
-            ]
-        ]
-    },
-    {
-        "id": "143cc9fa3c9cf5c7",
-        "type": "mqtt in",
-        "z": "0abce1a265bb0231",
-        "name": "Sensor de Flujo",
-        "topic": "sensor/simulated",
-        "qos": "0",
-        "datatype": "json",
-        "broker": "mqtt_broker_1",
-        "nl": false,
-        "rap": false,
-        "inputs": 0,
-        "x": 200,
-        "y": 740,
-        "wires": [
-            [
-                "a451f56d9b293807",
-                "ca806af6801a78db"
-            ]
-        ]
-    },
-    {
-        "id": "ca806af6801a78db",
-        "type": "debug",
-        "z": "0abce1a265bb0231",
-        "name": "debug 32",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 420,
-        "y": 800,
-        "wires": []
-    },
-    {
-        "id": "331bcfb3b61fc139",
+        "id": "a415ac84e6482a53",
         "type": "ui-gauge",
-        "z": "0abce1a265bb0231",
-        "d": true,
-        "name": "",
-        "order": 0,
-        "width": 3,
-        "height": 3,
-        "gtype": "gauge-half",
-        "gstyle": "needle",
-        "title": "gauge",
-        "units": "units",
-        "icon": "",
-        "prefix": "",
-        "suffix": "",
-        "segments": [
-            {
-                "color": "#5CD65C",
-                "from": 0
-            },
-            {
-                "color": "#FFC800",
-                "from": 4
-            },
-            {
-                "color": "#EA5353",
-                "from": 7
-            }
-        ],
-        "min": 0,
-        "max": 10,
-        "sizeThickness": 16,
-        "sizeGap": 4,
-        "sizeKeyThickness": 8,
-        "styleRounded": true,
-        "styleGlow": false,
-        "className": "",
-        "x": 630,
-        "y": 640,
-        "wires": []
-    },
-    {
-        "id": "e4475e804c34ec05",
-        "type": "ui-gauge",
-        "z": "0abce1a265bb0231",
-        "name": "flujo_retorno_HCD",
+        "z": "1c542773be693934",
+        "name": "Flujo COPE",
         "group": "3f690bb5a526a246",
-        "order": 0,
-        "width": 3,
-        "height": 3,
+        "order": 2,
+        "width": "5",
+        "height": "4",
         "gtype": "gauge-half",
         "gstyle": "rounded",
-        "title": "Retorno HCD",
-        "units": "L/hr",
+        "title": "Flujo COPE",
+        "units": "L/h",
         "icon": "",
         "prefix": "",
         "suffix": "",
         "segments": [
             {
                 "from": "0",
+                "color": "#ea5353"
+            },
+            {
+                "from": "4000",
                 "color": "#5cd65c"
             },
             {
-                "from": "300",
-                "color": "#ffc800"
-            },
-            {
-                "from": "400",
+                "from": "7500",
                 "color": "#ea5353"
             }
         ],
         "min": 0,
-        "max": "600",
-        "sizeThickness": 16,
-        "sizeGap": 4,
-        "sizeKeyThickness": 8,
+        "max": "10000",
+        "sizeThickness": "26",
+        "sizeGap": "3",
+        "sizeKeyThickness": "20",
         "styleRounded": true,
         "styleGlow": false,
         "className": "",
-        "x": 650,
-        "y": 840,
+        "x": 1680,
+        "y": 220,
         "wires": []
     },
     {
-        "id": "d49fc8b2da531ddf",
-        "type": "influxdb out",
-        "z": "0abce1a265bb0231",
-        "d": true,
-        "influxdb": "0565dd10cb5199d6",
-        "name": "InfluxDB Output",
-        "measurement": "volumen",
-        "precision": "",
-        "retentionPolicy": "",
-        "database": "",
-        "precisionV18FluxV20": "us",
-        "retentionPolicyV18Flux": "",
-        "org": "aspro",
-        "bucket": "prueba_1",
-        "x": 700,
-        "y": 400,
-        "wires": []
+        "id": "d7dfc5c9bfbfba96",
+        "type": "ui-chart",
+        "z": "1c542773be693934",
+        "group": "3f690bb5a526a246",
+        "name": "Volumen FA-02",
+        "label": "Volumen FA-02",
+        "order": 1,
+        "chartType": "bar",
+        "category": "label",
+        "categoryType": "property",
+        "xAxisProperty": "",
+        "xAxisPropertyType": "msg",
+        "xAxisType": "category",
+        "yAxisProperty": "value",
+        "ymin": "0",
+        "ymax": "40000",
+        "action": "replace",
+        "pointShape": "circle",
+        "pointRadius": 4,
+        "showLegend": false,
+        "removeOlder": 1,
+        "removeOlderUnit": "3600",
+        "removeOlderPoints": "",
+        "colors": [
+            "#227dbf",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "width": "1",
+        "height": "5",
+        "className": "",
+        "x": 1770,
+        "y": 300,
+        "wires": [
+            []
+        ]
     },
     {
-        "id": "a30d3c20815a95f5",
-        "type": "influxdb out",
-        "z": "0abce1a265bb0231",
-        "d": true,
-        "influxdb": "0565dd10cb5199d6",
-        "name": "InfluxDB Output",
-        "measurement": "tank_volume",
-        "precision": "",
-        "retentionPolicy": "",
-        "database": "",
-        "precisionV18FluxV20": "s",
-        "retentionPolicyV18Flux": "",
-        "org": "aspro",
-        "bucket": "prueba_1",
-        "x": 680,
-        "y": 280,
-        "wires": []
-    },
-    {
-        "id": "ac70ab4c14d788f8",
-        "type": "influxdb out",
-        "z": "0abce1a265bb0231",
-        "d": true,
-        "influxdb": "0565dd10cb5199d6",
-        "name": "InfluxDB Output",
-        "measurement": "volumen",
-        "precision": "",
-        "retentionPolicy": "",
-        "database": "",
-        "precisionV18FluxV20": "us",
-        "retentionPolicyV18Flux": "",
-        "org": "aspro",
-        "bucket": "prueba_1",
-        "x": 780,
-        "y": 100,
-        "wires": []
-    },
-    {
-        "id": "0940cf3f17203537",
-        "type": "influxdb out",
-        "z": "0abce1a265bb0231",
-        "d": true,
-        "influxdb": "0565dd10cb5199d6",
-        "name": "InfluxDB Output",
-        "measurement": "volumen",
-        "precision": "",
-        "retentionPolicy": "",
-        "database": "",
-        "precisionV18FluxV20": "us",
-        "retentionPolicyV18Flux": "",
-        "org": "aspro",
-        "bucket": "prueba_1",
-        "x": 680,
-        "y": 580,
-        "wires": []
-    },
-    {
-        "id": "b3e1ad35d8ae921c",
-        "type": "influxdb out",
-        "z": "0abce1a265bb0231",
-        "influxdb": "cf4bce8f993858ac",
-        "name": "InfluxDB Output",
-        "measurement": "volumen",
-        "precision": "",
-        "retentionPolicy": "",
-        "database": "",
-        "precisionV18FluxV20": "us",
-        "retentionPolicyV18Flux": "",
-        "org": "aspro",
-        "bucket": "prueba_1",
-        "x": 660,
-        "y": 740,
-        "wires": []
-    },
-    {
-        "id": "nodo_csv",
-        "type": "csv",
-        "z": "28eb5dd89ea0da98",
-        "d": true,
-        "name": "Convertir CSV a JSON",
-        "sep": ",",
-        "hdrin": true,
-        "hdrout": "none",
-        "multi": "one",
-        "ret": "\\n",
-        "temp": "",
-        "skip": "0",
-        "strings": true,
-        "include_empty_strings": "",
-        "include_null_values": "",
-        "x": 340,
-        "y": 160,
+        "id": "eaaac0825643be54",
+        "type": "function",
+        "z": "1c542773be693934",
+        "name": "formato_ui",
+        "func": "msg.payload = {\n    value: msg.payload,\n    label: msg.payload + \" Litros\"\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1600,
+        "y": 300,
         "wires": [
             [
-                "nodo_funcion"
+                "d7dfc5c9bfbfba96"
             ]
         ]
     },
     {
-        "id": "nodo_funcion",
+        "id": "65250917b9e4327e",
+        "type": "ui-gauge",
+        "z": "1c542773be693934",
+        "name": "Presion alimentacion",
+        "group": "3f690bb5a526a246",
+        "order": 3,
+        "width": "5",
+        "height": "4",
+        "gtype": "gauge-half",
+        "gstyle": "rounded",
+        "title": "Presión Alimentación",
+        "units": "Kg/cm2",
+        "icon": "",
+        "prefix": "",
+        "suffix": "",
+        "segments": [
+            {
+                "from": "0",
+                "color": "#ea5353"
+            },
+            {
+                "from": "4",
+                "color": "#5cd65c"
+            },
+            {
+                "from": "6",
+                "color": "#ea5353"
+            }
+        ],
+        "min": 0,
+        "max": "10",
+        "sizeThickness": "26",
+        "sizeGap": "3",
+        "sizeKeyThickness": "20",
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 1750,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "fa094c6d4ff8cf0d",
+        "type": "ui-gauge",
+        "z": "1c542773be693934",
+        "name": "Flujo V. DA-01",
+        "group": "d1e5da8ea7145cd4",
+        "order": 9,
+        "width": 3,
+        "height": 3,
+        "gtype": "gauge-half",
+        "gstyle": "rounded",
+        "title": "Flujo Vapor DA-01",
+        "units": "L/h",
+        "icon": "",
+        "prefix": "",
+        "suffix": "",
+        "segments": [
+            {
+                "from": "0",
+                "color": "#ea5353"
+            },
+            {
+                "from": "700",
+                "color": "#5cd65c"
+            },
+            {
+                "from": "1200",
+                "color": "#ea5353"
+            }
+        ],
+        "min": 0,
+        "max": "1500",
+        "sizeThickness": "20",
+        "sizeGap": "3",
+        "sizeKeyThickness": "16",
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 1770,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "fbc2944679601f74",
+        "type": "inject",
+        "z": "1c542773be693934",
+        "name": "Simulate ADC Input",
+        "props": [
+            {
+                "p": "payload.value",
+                "v": "9650",
+                "vt": "num"
+            },
+            {
+                "p": "payload.timestamp",
+                "v": "",
+                "vt": "date"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 930,
+        "y": 300,
+        "wires": [
+            [
+                "4f34ae3b1233ec04"
+            ]
+        ]
+    },
+    {
+        "id": "e5ec3c5ce2235b02",
+        "type": "inject",
+        "z": "1c542773be693934",
+        "name": "Simulate ADC Input",
+        "props": [
+            {
+                "p": "payload.value",
+                "v": "18500",
+                "vt": "num"
+            },
+            {
+                "p": "payload.timestamp",
+                "v": "",
+                "vt": "date"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 930,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9880b3f091a9563f",
+        "type": "inject",
+        "z": "1c542773be693934",
+        "name": "inject1",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 320,
+        "y": 140,
+        "wires": [
+            [
+                "168988dc446704c8"
+            ]
+        ]
+    },
+    {
+        "id": "59178b6fc859e9d1",
+        "type": "inject",
+        "z": "1c542773be693934",
+        "name": "inject1",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 320,
+        "y": 180,
+        "wires": [
+            [
+                "c780e35b4522eb2e"
+            ]
+        ]
+    },
+    {
+        "id": "168988dc446704c8",
+        "type": "change",
+        "z": "1c542773be693934",
+        "name": "set flow.flags",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 500,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c780e35b4522eb2e",
+        "type": "change",
+        "z": "1c542773be693934",
+        "name": "set flow.registers",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 520,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b44b8c69a1faf51b",
         "type": "function",
-        "z": "28eb5dd89ea0da98",
-        "d": true,
-        "name": "Procesar Datos",
-        "func": "let equipos = msg.payload;\nglobal.set('equipos', equipos);\nreturn msg;",
+        "z": "1c542773be693934",
+        "name": "health check",
+        "func": "let status = 'Unknown';\n\nif (msg.payload === 'online') {\n    status = 'Online';\n} else if (msg.payload === 'offline') {\n    status = 'Offline';\n}\n\nmsg.payload = {\n    status: status,\n    timestamp: new Date().toISOString()\n};\n\nreturn msg;",
         "outputs": 1,
         "timeout": "",
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 540,
-        "y": 160,
+        "x": 300,
+        "y": 960,
         "wires": [
             [
-                "nodo_debug"
+                "3277d08d1e03ce5f"
             ]
         ]
     },
     {
-        "id": "nodo_debug",
-        "type": "debug",
-        "z": "28eb5dd89ea0da98",
-        "d": true,
-        "name": "Mostrar Datos",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 740,
-        "y": 160,
-        "wires": []
+        "id": "3277d08d1e03ce5f",
+        "type": "switch",
+        "z": "1c542773be693934",
+        "name": "update diag",
+        "property": "payload.status",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "Online",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "Offline",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 300,
+        "y": 1020,
+        "wires": [
+            [],
+            []
+        ]
     },
     {
-        "id": "97d1818d899b0d52",
-        "type": "file in",
-        "z": "28eb5dd89ea0da98",
-        "d": true,
-        "name": "Leer CSV",
-        "filename": "./sensores.csv",
-        "filenameType": "str",
-        "format": "utf8",
-        "chunk": false,
-        "sendError": false,
-        "encoding": "none",
-        "allProps": false,
-        "x": 160,
-        "y": 160,
+        "id": "773e7c5b3c0defa7",
+        "type": "catch",
+        "z": "1c542773be693934",
+        "name": "",
+        "scope": [
+            "3f6664678974d7c5",
+            "6ad4fc497729c7be"
+        ],
+        "uncaught": false,
+        "x": 640,
+        "y": 780,
         "wires": [
             [
-                "nodo_csv"
+                "79615c24144643b5"
             ]
         ]
     },
     {
-        "id": "ff26a2c21849c8b9",
-        "type": "file in",
-        "z": "28eb5dd89ea0da98",
-        "name": "Leer CSV",
-        "filename": "./sensores.csv",
-        "filenameType": "str",
-        "format": "utf8",
-        "chunk": false,
-        "sendError": false,
-        "encoding": "none",
-        "allProps": false,
-        "x": 180,
-        "y": 300,
-        "wires": [
-            [
-                "e5a8bcaf8b4c7518"
-            ]
-        ]
-    },
-    {
-        "id": "e5a8bcaf8b4c7518",
-        "type": "csv",
-        "z": "28eb5dd89ea0da98",
-        "name": "Convertir CSV a JSON",
-        "sep": "\\t",
-        "hdrin": true,
-        "hdrout": "none",
-        "multi": "one",
-        "ret": "\\n",
-        "temp": "",
-        "skip": "0",
-        "strings": true,
-        "include_empty_strings": "",
-        "include_null_values": "",
-        "x": 380,
-        "y": 300,
-        "wires": [
-            [
-                "2daf069a6adda8b4"
-            ]
-        ]
-    },
-    {
-        "id": "2daf069a6adda8b4",
+        "id": "79615c24144643b5",
         "type": "function",
-        "z": "28eb5dd89ea0da98",
-        "name": "Procesar Datos",
-        "func": "let equipos = msg.payload;\nglobal.set('equipos', equipos);\nreturn msg;",
-        "outputs": 1,
+        "z": "1c542773be693934",
+        "name": "Error Handling",
+        "func": "const maxRetries = 3;\nconst retryDelay = 5000;\n\nlet retryCount = flow.get('retryCount') || 0;\n\nif (retryCount < maxRetries) {\n    // Incrementar el contador de reintentos\n    retryCount++;\n    flow.set('retryCount', retryCount);\n    \n    // Programar el reintento después del intervalo de tiempo especificado\n    setTimeout(function() {\n        node.warn(`Retrying communication (attempt ${retryCount})`);\n        node.send(msg);\n    }, retryDelay);\n} else {\n    // Se alcanzó el número máximo de reintentos, enviar notificación de error crítico\n    node.error('Max retries reached. Critical error occurred.');\n    \n    // Enviar notificación por correo electrónico o otro medio\n    const alertMsg = {\n        payload: {\n            to: 'tableroas14@gmail.com',\n            subject: 'Critical Error - Max Retries Reached',\n            body: 'The system encountered a critical error. Max retries reached.'\n        }\n    };\n    node.send([null, alertMsg]);\n    \n    // Restablecer el contador de reintentos\n    flow.set('retryCount', 0);\n}\n\nreturn;",
+        "outputs": 2,
+        "timeout": "",
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 580,
-        "y": 300,
+        "x": 820,
+        "y": 780,
         "wires": [
             [
-                "3dc3f3232bc2794e"
+                "9303d4b089a21f41"
+            ],
+            [
+                "7ea464f83085cf52"
             ]
         ]
     },
     {
-        "id": "3dc3f3232bc2794e",
+        "id": "7ea464f83085cf52",
+        "type": "e-mail",
+        "z": "1c542773be693934",
+        "server": "smtp.gmail.com",
+        "port": "587",
+        "authtype": "BASIC",
+        "saslformat": false,
+        "token": "oauth2Response.access_token",
+        "secure": true,
+        "tls": false,
+        "name": "tableroas14@gmail.com",
+        "dname": "MTO",
+        "x": 1080,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "2d09587bc5f9e328",
+        "type": "function",
+        "z": "1c542773be693934",
+        "name": "Error Handling",
+        "func": "const maxRetries = 3;\nconst retryDelay = 5000;\nconst maxFlowRestarts = 2;\nconst maxServerRestarts = 1;\n\nlet retryCount = flow.get('retryCount') || 0;\nlet flowRestartCount = flow.get('flowRestartCount') || 0;\nlet serverRestartCount = flow.get('serverRestartCount') || 0;\n\nif (retryCount < maxRetries) {\n    // Incrementar el contador de reintentos\n    retryCount++;\n    flow.set('retryCount', retryCount);\n    \n    // Programar el reintento después del intervalo de tiempo especificado\n    setTimeout(function() {\n        node.warn(`Retrying communication (attempt ${retryCount})`);\n        node.send(msg);\n    }, retryDelay);\n} else {\n    // Se alcanzó el número máximo de reintentos\n    node.error('Max retries reached. Triggering flow restart.');\n    \n    // Reiniciar el flujo\n    if (flowRestartCount < maxFlowRestarts) {\n        flowRestartCount++;\n        flow.set('flowRestartCount', flowRestartCount);\n        \n        // Enviar mensaje al nodo de reinicio del flujo\n        const flowRestartMsg = {\n            payload: {\n                action: 'restartFlow'\n            }\n        };\n        node.send([null, null, flowRestartMsg]);\n    } else {\n        // Se alcanzó el número máximo de reinicios del flujo\n        node.error('Max flow restarts reached. Triggering server restart.');\n        \n        // Reiniciar el servidor Node-RED\n        if (serverRestartCount < maxServerRestarts) {\n            serverRestartCount++;\n            flow.set('serverRestartCount', serverRestartCount);\n            \n            // Enviar mensaje al nodo de reinicio del servidor\n            const serverRestartMsg = {\n                payload: {\n                    action: 'restartServer'\n                }\n            };\n            node.send([null, null, null, serverRestartMsg]);\n        } else {\n            // Se alcanzó el número máximo de reinicios del servidor\n            node.error('Max server restarts reached. Triggering system reboot.');\n            \n            // Enviar mensaje al nodo de reinicio del sistema\n            const systemRebootMsg = {\n                payload: {\n                    action: 'rebootSystem'\n                }\n            };\n            node.send([null, null, null, null, systemRebootMsg]);\n        }\n    }\n    \n    // Restablecer el contador de reintentos\n    flow.set('retryCount', 0);\n}\n\nreturn;",
+        "outputs": 5,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 980,
+        "wires": [
+            [],
+            [],
+            [
+                "26e9f12201ae97c6"
+            ],
+            [
+                "e7a01423207e3dc9"
+            ],
+            [
+                "5c54763d2b95cc1a"
+            ]
+        ]
+    },
+    {
+        "id": "26e9f12201ae97c6",
+        "type": "function",
+        "z": "1c542773be693934",
+        "name": "Restart Flow",
+        "func": "const http = require('http');\n\n// URL de la API de Node-RED para reiniciar el flujo\nconst nodeRedUrl = 'http://localhost:1880/flows';\n\n// Opciones de la solicitud HTTP\nconst options = {\n    method: 'POST',\n    headers: {\n        'Content-Type': 'application/json',\n        'Node-RED-Deployment-Type': 'reload'\n    }\n};\n\n// Función para reiniciar el flujo\nfunction restartFlow(msg) {\n    const req = http.request(options, (res) => {\n        let data = '';\n\n        res.on('data', (chunk) => {\n            data += chunk;\n        });\n\n        res.on('end', () => {\n            if (res.statusCode === 200) {\n                node.log('Flow restarted successfully');\n                node.status({ fill: 'green', shape: 'dot', text: 'Flow restarted' });\n            } else {\n                node.error('Failed to restart flow. Status code: ' + res.statusCode);\n                node.status({ fill: 'red', shape: 'dot', text: 'Restart failed' });\n            }\n        });\n    });\n\n    req.on('error', (error) => {\n        node.error('Failed to restart flow. Error: ' + error.message);\n        node.status({ fill: 'red', shape: 'dot', text: 'Restart failed' });\n    });\n\n    req.end();\n\n    return msg;\n}\n\n// Reiniciar el flujo cuando se recibe un mensaje\nrestartFlow(msg);",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1080,
+        "y": 940,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e7a01423207e3dc9",
+        "type": "function",
+        "z": "1c542773be693934",
+        "name": "Restart Server",
+        "func": "const exec = require('child_process').exec;\n\n// Comando para reiniciar el servidor Node-RED\nconst restartCommand = 'sudo systemctl restart nodered';\n\n// Función para reiniciar el servidor Node-RED\nfunction restartServer(msg) {\n    exec(restartCommand, (error, stdout, stderr) => {\n        if (error) {\n            node.error('Failed to restart server. Error: ' + error.message);\n            node.status({ fill: 'red', shape: 'dot', text: 'Restart failed' });\n        } else {\n            node.log('Server restarted successfully');\n            node.status({ fill: 'green', shape: 'dot', text: 'Server restarted' });\n        }\n    });\n\n    return msg;\n}\n\n// Reiniciar el servidor cuando se recibe un mensaje\nrestartServer(msg);",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1070,
+        "y": 980,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5c54763d2b95cc1a",
+        "type": "function",
+        "z": "1c542773be693934",
+        "name": "Reboot System",
+        "func": "const exec = require('child_process').exec;\n\n// Comando para reiniciar el sistema operativo\nconst rebootCommand = 'sudo reboot';\n\n// Función para reiniciar el sistema operativo\nfunction rebootSystem(msg) {\n    exec(rebootCommand, (error, stdout, stderr) => {\n        if (error) {\n            node.error('Failed to reboot system. Error: ' + error.message);\n            node.status({ fill: 'red', shape: 'dot', text: 'Reboot failed' });\n        } else {\n            node.log('System reboot initiated');\n            node.status({ fill: 'green', shape: 'dot', text: 'System rebooting' });\n        }\n    });\n\n    return msg;\n}\n\n// Reiniciar el sistema cuando se recibe un mensaje\nrebootSystem(msg);",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1070,
+        "y": 1020,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8302498ce177a636",
+        "type": "inject",
+        "z": "1c542773be693934",
+        "name": "Simulate Error",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "simulate error",
+        "payloadType": "str",
+        "x": 540,
+        "y": 720,
+        "wires": [
+            [
+                "6ad4fc497729c7be"
+            ]
+        ]
+    },
+    {
+        "id": "6ad4fc497729c7be",
+        "type": "function",
+        "z": "1c542773be693934",
+        "name": "function 2",
+        "func": "// Comprobar si el mensaje es un 'simulated error'\nif (msg.payload === \"simulate error\") {\n    throw new Error(\"Simulated Error\");\n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 720,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d56592d75acb7240",
+        "type": "inject",
+        "z": "1c542773be693934",
+        "name": "EDP1_AI2",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "read_EDP1_AI2",
+        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":0,\"quantity\":1}",
+        "payloadType": "json",
+        "x": 190,
+        "y": 500,
+        "wires": [
+            [
+                "9303d4b089a21f41"
+            ]
+        ]
+    },
+    {
+        "id": "757328dacaa35476",
+        "type": "inject",
+        "z": "1c542773be693934",
+        "name": "EDP1_AI3",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "read_EDP1_AI3",
+        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":0,\"quantity\":1}",
+        "payloadType": "json",
+        "x": 190,
+        "y": 540,
+        "wires": [
+            [
+                "9303d4b089a21f41"
+            ]
+        ]
+    },
+    {
+        "id": "fd1244510485f0fe",
+        "type": "inject",
+        "z": "1c542773be693934",
+        "name": "EDP1_AI4",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "read_EDP1_AI4",
+        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":0,\"quantity\":1}",
+        "payloadType": "json",
+        "x": 190,
+        "y": 580,
+        "wires": [
+            [
+                "9303d4b089a21f41"
+            ]
+        ]
+    },
+    {
+        "id": "d056ba04264f93be",
+        "type": "inject",
+        "z": "1c542773be693934",
+        "name": "EDP1_AI5",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "read_EDP1_AI5",
+        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":0,\"quantity\":1}",
+        "payloadType": "json",
+        "x": 190,
+        "y": 620,
+        "wires": [
+            [
+                "9303d4b089a21f41"
+            ]
+        ]
+    },
+    {
+        "id": "72a75d86c6fb7ea1",
+        "type": "inject",
+        "z": "1c542773be693934",
+        "name": "EDP1_AI6",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "read_EDP1_AI6",
+        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":0,\"quantity\":1}",
+        "payloadType": "json",
+        "x": 190,
+        "y": 660,
+        "wires": [
+            [
+                "9303d4b089a21f41"
+            ]
+        ]
+    },
+    {
+        "id": "180118feaf9d2736",
         "type": "debug",
-        "z": "28eb5dd89ea0da98",
-        "name": "Mostrar Datos",
+        "z": "1c542773be693934",
+        "name": "flujo delta",
         "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "x": 780,
-        "y": 300,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1390,
+        "y": 560,
         "wires": []
     }
 ]
