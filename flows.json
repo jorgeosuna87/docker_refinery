@@ -34,7 +34,7 @@
         "id": "af530bfa0859125d",
         "type": "tab",
         "label": "ADC_8CH",
-        "disabled": true,
+        "disabled": false,
         "info": "",
         "env": []
     },
@@ -5888,6 +5888,7 @@
         "id": "d709b91bb9b31854",
         "type": "mqtt out",
         "z": "af530bfa0859125d",
+        "d": true,
         "name": "mqtt_tb_MN-4",
         "topic": "v1/devices/me/telemetry",
         "qos": "",
@@ -5906,6 +5907,7 @@
         "id": "49c37cc664a44929",
         "type": "mqtt out",
         "z": "af530bfa0859125d",
+        "d": true,
         "name": "mqtt_tb_MN-6A",
         "topic": "v1/devices/me/telemetry",
         "qos": "",
@@ -5924,6 +5926,7 @@
         "id": "2931b04fa8bce7d3",
         "type": "mqtt out",
         "z": "af530bfa0859125d",
+        "d": true,
         "name": "mqtt_tb_MN-6B",
         "topic": "v1/devices/me/telemetry",
         "qos": "",
@@ -5937,6 +5940,33 @@
         "x": 1660,
         "y": 580,
         "wires": []
+    },
+    {
+        "id": "c5921641e6165210",
+        "type": "inject",
+        "z": "af530bfa0859125d",
+        "name": "sim",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "7500",
+        "payloadType": "num",
+        "x": 1030,
+        "y": 220,
+        "wires": [
+            [
+                "ef0e847332fbea6c",
+                "0dc0895b9aa00f3f",
+                "75aad67f2f25ad34"
+            ]
+        ]
     },
     {
         "id": "b6ad7e85b72dac92",
@@ -6874,14 +6904,15 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "8500",
+        "payload": "17500",
         "payloadType": "num",
         "x": 1490,
         "y": 480,
         "wires": [
             [
                 "9a01a5f2a23f06fd",
-                "e2fd54688464cad7"
+                "e2fd54688464cad7",
+                "6c6ac34e890f43b1"
             ]
         ]
     },
