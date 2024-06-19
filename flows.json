@@ -55,6 +55,14 @@
         "env": []
     },
     {
+        "id": "0630a8264fc13136",
+        "type": "tab",
+        "label": "Lab",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "feca9c5ced6ec599",
         "type": "mqtt-broker",
         "name": "mqtt_tb_MP-1.1",
@@ -710,8 +718,8 @@
         "stateLogEnabled": false,
         "queueLogEnabled": false,
         "failureLogEnabled": true,
-        "tcpHost": "192.168.1.203",
-        "tcpPort": "4196",
+        "tcpHost": "192.168.1.254",
+        "tcpPort": "502",
         "tcpType": "TCP-RTU-BUFFERED",
         "serialPort": "/dev/ttyUSB",
         "serialType": "RTU",
@@ -740,9 +748,9 @@
         "stateLogEnabled": false,
         "queueLogEnabled": false,
         "failureLogEnabled": true,
-        "tcpHost": "192.168.1.202",
+        "tcpHost": "192.168.1.100",
         "tcpPort": "502",
-        "tcpType": "TCP-RTU-BUFFERED",
+        "tcpType": "DEFAULT",
         "serialPort": "/dev/ttyUSB0",
         "serialType": "RTU",
         "serialBaudrate": "9600",
@@ -781,11 +789,11 @@
         "serialParity": "none",
         "serialConnectionDelay": "100",
         "serialAsciiResponseStartDelimiter": "0x3A",
-        "unit_id": 1,
-        "commandDelay": 1,
-        "clientTimeout": 1000,
+        "unit_id": "1",
+        "commandDelay": "1",
+        "clientTimeout": "1000",
         "reconnectOnTimeout": true,
-        "reconnectTimeout": 2000,
+        "reconnectTimeout": "2000",
         "parallelUnitIdsAllowed": true,
         "showErrors": false,
         "showWarnings": true,
@@ -5824,11 +5832,12 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1490,
+        "x": 1470,
         "y": 280,
         "wires": [
             [
-                "881bb3d5dd494de2"
+                "881bb3d5dd494de2",
+                "bf111d3532fc126d"
             ]
         ]
     },
@@ -5838,8 +5847,8 @@
         "z": "af530bfa0859125d",
         "server": "a1b3d7fc83d5c6f6",
         "name": "DB",
-        "x": 1930,
-        "y": 320,
+        "x": 1950,
+        "y": 460,
         "wires": [
             []
         ]
@@ -5967,6 +5976,22 @@
                 "75aad67f2f25ad34"
             ]
         ]
+    },
+    {
+        "id": "bf111d3532fc126d",
+        "type": "debug",
+        "z": "af530bfa0859125d",
+        "name": "debug 39",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1830,
+        "y": 280,
+        "wires": []
     },
     {
         "id": "b6ad7e85b72dac92",
@@ -6725,7 +6750,7 @@
         "fontSize": 16,
         "color": "#717171",
         "className": "",
-        "x": 2150,
+        "x": 2250,
         "y": 780,
         "wires": []
     },
@@ -6853,8 +6878,8 @@
         "styleRounded": true,
         "styleGlow": false,
         "className": "",
-        "x": 2380,
-        "y": 680,
+        "x": 2200,
+        "y": 700,
         "wires": []
     },
     {
@@ -6883,7 +6908,7 @@
         "z": "9fa46c697055fd5a",
         "server": "a1b3d7fc83d5c6f6",
         "name": "DB",
-        "x": 2370,
+        "x": 2450,
         "y": 600,
         "wires": [
             []
@@ -6904,7 +6929,7 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "17500",
+        "payload": "9630",
         "payloadType": "num",
         "x": 1490,
         "y": 480,
@@ -6948,7 +6973,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 2020,
+        "x": 1980,
         "y": 740,
         "wires": [
             [
@@ -6971,7 +6996,7 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "8500",
+        "payload": "19520",
         "payloadType": "num",
         "x": 1530,
         "y": 860,
@@ -7016,7 +7041,7 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 2170,
+        "x": 2120,
         "y": 660,
         "wires": []
     },
@@ -7055,7 +7080,7 @@
         "correl": "",
         "expiry": "",
         "broker": "689c5e6207baccbb",
-        "x": 2620,
+        "x": 2360,
         "y": 480,
         "wires": []
     },
@@ -7074,7 +7099,7 @@
         "correl": "",
         "expiry": "",
         "broker": "75c0821a42a5cdfb",
-        "x": 2380,
+        "x": 2100,
         "y": 560,
         "wires": []
     },
@@ -7093,8 +7118,8 @@
         "correl": "",
         "expiry": "",
         "broker": "feca9c5ced6ec599",
-        "x": 2320,
-        "y": 720,
+        "x": 2400,
+        "y": 700,
         "wires": []
     },
     {
@@ -7112,7 +7137,7 @@
         "correl": "",
         "expiry": "",
         "broker": "3b8eefdff633489b",
-        "x": 2500,
+        "x": 2240,
         "y": 820,
         "wires": []
     },
@@ -7131,7 +7156,7 @@
         "correl": "",
         "expiry": "",
         "broker": "233cd5171dde3839",
-        "x": 2500,
+        "x": 2240,
         "y": 900,
         "wires": []
     },
@@ -8515,5 +8540,115 @@
         "x": 1390,
         "y": 560,
         "wires": []
+    },
+    {
+        "id": "ab16974031236ac2",
+        "type": "ui-form",
+        "z": "0630a8264fc13136",
+        "name": "Laboratorio",
+        "group": "7c21feeaf5ff947a",
+        "label": "",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Hora de toma de muestra",
+                "key": "Hora",
+                "type": "time",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Fecha",
+                "key": "Fecha",
+                "type": "date",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "DSR_Columna",
+                "key": "DSR Columna",
+                "type": "number",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "DSR_FA-09",
+                "key": "DSR FA-09",
+                "type": "number",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "Hora": "",
+            "Fecha": "",
+            "DSR Columna": "",
+            "DSR FA-09": ""
+        },
+        "payload": "",
+        "submit": "submit",
+        "cancel": "clear",
+        "resetOnSubmit": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": "",
+        "className": "",
+        "x": 190,
+        "y": 480,
+        "wires": [
+            [
+                "4f6cfc2bd1d7add1"
+            ]
+        ]
+    },
+    {
+        "id": "ee0ef4993af1bea2",
+        "type": "debug",
+        "z": "0630a8264fc13136",
+        "name": "Debug",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 530,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "4f6cfc2bd1d7add1",
+        "type": "function",
+        "z": "0630a8264fc13136",
+        "name": "Process Form Data",
+        "func": "let formData = msg.payload;\nlet hora = formData.Hora;\nlet fecha = formData.Fecha;\nlet dsr_columna = parseFloat(formData['DSR Columna']);\nlet dsr_fa09 = parseFloat(formData['DSR FA-09']);\n\nlet timestamp = new Date(fecha + 'T' + hora);\n\n// Obtener el desplazamiento de la zona horaria en minutos\nlet timezoneOffset = timestamp.getTimezoneOffset();\n\n// Ajustar el timestamp sumando el desplazamiento de la zona horaria\ntimestamp.setMinutes(timestamp.getMinutes() - timezoneOffset);\n\n// Obtener el timestamp en milisegundos\ntimestamp = timestamp.getTime();\n\nmsg.payload = {\n    bucket: 'laboratorio',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ResultadosLaboratorio',\n            tags: {\n                equipo_id: 'Reometro',\n                ubicacion: 'Refinería'\n            },\n            fields: {\n                DSR_Columna: dsr_columna,\n                DSR_FA09: dsr_fa09\n            },\n            timestamp: timestamp\n        }\n    ]\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 480,
+        "wires": [
+            [
+                "ee0ef4993af1bea2",
+                "95a83baeb9a08291"
+            ]
+        ]
+    },
+    {
+        "id": "95a83baeb9a08291",
+        "type": "Stackhero-InfluxDB-v2-write",
+        "z": "0630a8264fc13136",
+        "server": "a1b3d7fc83d5c6f6",
+        "name": "DB",
+        "x": 670,
+        "y": 480,
+        "wires": [
+            []
+        ]
     }
 ]
