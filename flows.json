@@ -6295,7 +6295,7 @@
         "id": "ec132924d2383db1",
         "type": "switch",
         "z": "9fa46c697055fd5a",
-        "name": "ADC_1 Registers",
+        "name": "ADC1 Registers",
         "property": "topic",
         "propertyType": "msg",
         "rules": [
@@ -6323,7 +6323,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 4,
-        "x": 1370,
+        "x": 1360,
         "y": 740,
         "wires": [
             [
