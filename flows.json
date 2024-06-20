@@ -751,11 +751,11 @@
         "serialParity": "none",
         "serialConnectionDelay": "200",
         "serialAsciiResponseStartDelimiter": "0x3A",
-        "unit_id": "1",
-        "commandDelay": "1",
-        "clientTimeout": "5000",
+        "unit_id": 1,
+        "commandDelay": 1,
+        "clientTimeout": 5000,
         "reconnectOnTimeout": true,
-        "reconnectTimeout": "2000",
+        "reconnectTimeout": 2000,
         "parallelUnitIdsAllowed": true,
         "showErrors": false,
         "showWarnings": true,
@@ -3383,10 +3383,11 @@
         "y": 700,
         "wires": [
             [
-                "577bce23d5b23116"
+                "58303efc8fb8844e",
+                "358a6d7f67ffce8f"
             ],
             [
-                "358a6d7f67ffce8f"
+                "577bce23d5b23116"
             ],
             [
                 "73e1e81e7546e4fb"
@@ -3511,7 +3512,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "calc_vol_FA-01",
-        "func": "const valorCrudo = msg.payload;\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (115500 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "func": "const valorCrudo = msg.payload.data[0]; // Aquí tomamos el primer elemento del array\nif (isNaN(valorCrudo)) {\n    node.error(\"Valor crudo no es un número\", msg);\n    return null;\n}\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (115500 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -3525,7 +3526,8 @@
                 "168aaf88f24c3fe4",
                 "b4188b3a422f8bef",
                 "e405700295bd27f7",
-                "fcbfd2b58ba9ac83"
+                "fcbfd2b58ba9ac83",
+                "a77fa9701c726221"
             ],
             []
         ]
@@ -3554,7 +3556,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "telemetria",
-        "func": "msg.payload = {\n  volumen: msg.payload\n};\nreturn msg;",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de volumen no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n  volumen: msg.payload\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -3611,7 +3613,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "calc_vol_FA-09",
-        "func": "const valorCrudo = msg.payload;\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (19000 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "func": "const valorCrudo = msg.payload.data ? msg.payload.data[0] : msg.payload; // Usamos el primer elemento del array o el payload directamente\nif (isNaN(valorCrudo)) {\n    node.error(\"Valor crudo no es un número\", msg);\n    return null;\n}\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (19000 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -3654,7 +3656,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "telemetria",
-        "func": "msg.payload = {\n  volumen: msg.payload\n};\nreturn msg;",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de volumen no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n  volumen: msg.payload\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -3711,7 +3713,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "calc_vol_FA-07",
-        "func": "const valorCrudo = msg.payload;\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (200000 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "func": "const valorCrudo = msg.payload; // Usamos directamente el payload\nif (isNaN(valorCrudo)) {\n    node.error(\"Valor crudo no es un número\", msg);\n    return null;\n}\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (200000 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -3754,7 +3756,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "telemetria",
-        "func": "msg.payload = {\n  volumen: msg.payload\n};\nreturn msg;",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de volumen no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n  volumen: msg.payload\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -3827,7 +3829,8 @@
         "y": 680,
         "wires": [
             [
-                "0c9c4c6ccd5f1680"
+                "0c9c4c6ccd5f1680",
+                "41ad15c9390a54d4"
             ],
             [
                 "69b686e91740cea5"
@@ -3838,7 +3841,6 @@
         "id": "55044db629aca6f4",
         "type": "ui-chart",
         "z": "190ed3e96d0709a5",
-        "d": true,
         "group": "3f690bb5a526a246",
         "name": "Volumen FA-01",
         "label": "Volumen FA-01",
@@ -3883,7 +3885,6 @@
         "id": "409147dccbfefd7e",
         "type": "ui-chart",
         "z": "190ed3e96d0709a5",
-        "d": true,
         "group": "3f690bb5a526a246",
         "name": "Volumen FA-09",
         "label": "Volumen FA-09",
@@ -3928,7 +3929,6 @@
         "id": "ad4fc4580773a583",
         "type": "ui-chart",
         "z": "190ed3e96d0709a5",
-        "d": true,
         "group": "3f690bb5a526a246",
         "name": "Volumen FA-07",
         "label": "Volumen FA-07",
@@ -3974,7 +3974,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "F_influx_vol",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-1',\n                equipo_id: 'FA-01',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de nivel litros no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-1',\n                equipo_id: 'FA-01',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -4006,7 +4006,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "F_influx_vol",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-9',\n                equipo_id: 'FA-09',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de nivel litros no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-9',\n                equipo_id: 'FA-09',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -4026,7 +4026,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "F_influx_vol",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-7',\n                equipo_id: 'FA-07',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de nivel litros no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-7',\n                equipo_id: 'FA-07',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -4040,6 +4040,54 @@
                 "c2f402fd7de228b2"
             ]
         ]
+    },
+    {
+        "id": "a77fa9701c726221",
+        "type": "debug",
+        "z": "190ed3e96d0709a5",
+        "name": "debug 42",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1600,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "58303efc8fb8844e",
+        "type": "debug",
+        "z": "190ed3e96d0709a5",
+        "name": "debug 43",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1300,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "41ad15c9390a54d4",
+        "type": "debug",
+        "z": "190ed3e96d0709a5",
+        "name": "debug 44",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1100,
+        "y": 620,
+        "wires": []
     },
     {
         "id": "abbcccf771764af6",
@@ -4955,7 +5003,7 @@
         "once": true,
         "onceDelay": "1",
         "topic": "read_ADC3_AI0",
-        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":96,\"quantity\":1}",
+        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":40,\"quantity\":1}",
         "payloadType": "json",
         "x": 220,
         "y": 420,
@@ -5184,7 +5232,7 @@
         "once": true,
         "onceDelay": "1",
         "topic": "read_ADC3_AI1",
-        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":97,\"quantity\":1}",
+        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":41,\"quantity\":1}",
         "payloadType": "json",
         "x": 220,
         "y": 460,
@@ -5213,7 +5261,7 @@
         "once": true,
         "onceDelay": "1",
         "topic": "read_ADC3_AI2",
-        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":98,\"quantity\":1}",
+        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":42,\"quantity\":1}",
         "payloadType": "json",
         "x": 220,
         "y": 500,
@@ -5279,13 +5327,13 @@
         "y": 440,
         "wires": [
             [
+                "ef0e847332fbea6c"
+            ],
+            [
                 "75aad67f2f25ad34"
             ],
             [
                 "0dc0895b9aa00f3f"
-            ],
-            [
-                "ef0e847332fbea6c"
             ],
             [],
             [],
@@ -5313,7 +5361,7 @@
         "once": true,
         "onceDelay": "1",
         "topic": "read_ADC3_AI3",
-        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":99,\"quantity\":1}",
+        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":43,\"quantity\":1}",
         "payloadType": "json",
         "x": 220,
         "y": 540,
@@ -5342,7 +5390,7 @@
         "once": true,
         "onceDelay": "1",
         "topic": "read_ADC3_AI4",
-        "payload": "{\"value\":0,\"fc\":4,\"unitid\":100,\"address\":0,\"quantity\":2}",
+        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":44,\"quantity\":1}",
         "payloadType": "json",
         "x": 220,
         "y": 580,
@@ -5371,7 +5419,7 @@
         "once": true,
         "onceDelay": "1",
         "topic": "read_ADC3_AI5",
-        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":5,\"quantity\":1}",
+        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":45,\"quantity\":1}",
         "payloadType": "json",
         "x": 220,
         "y": 620,
@@ -5400,7 +5448,7 @@
         "once": true,
         "onceDelay": "1",
         "topic": "read_ADC3_AI6",
-        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":6,\"quantity\":1}",
+        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":46,\"quantity\":1}",
         "payloadType": "json",
         "x": 220,
         "y": 660,
@@ -5415,21 +5463,22 @@
         "type": "function",
         "z": "af530bfa0859125d",
         "name": "calc_vol_FA-04",
-        "func": "const valorCrudo = msg.payload;\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (65000 - 3200);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "func": "const valorCrudo = msg.payload.data ? msg.payload.data[0] : msg.payload; // Aseguramos que estamos tomando el primer elemento del array o el payload directamente\nif (isNaN(valorCrudo)) {\n    node.error(\"Valor crudo no es un número\", msg);\n    return null;\n}\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (65000 - 3200);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1260,
-        "y": 300,
+        "x": 1280,
+        "y": 320,
         "wires": [
             [
                 "b7d660696b25b6a1",
                 "b37b8c9f95b42e83",
                 "58df9191d2b0ec79",
-                "3c7bd2b6b58e63b2"
+                "3c7bd2b6b58e63b2",
+                "543df8e49def648d"
             ],
             []
         ]
@@ -5496,7 +5545,7 @@
         "type": "function",
         "z": "af530bfa0859125d",
         "name": "calc_vol_FA-06A",
-        "func": "const valorCrudo = msg.payload;\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (51600 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "func": "const valorCrudo = msg.payload.data ? msg.payload.data[0] : msg.payload; // Aseguramos que estamos tomando el primer elemento del array o el payload directamente\nif (isNaN(valorCrudo)) {\n    node.error(\"Valor crudo no es un número\", msg);\n    return null;\n}\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (51600 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -5577,7 +5626,7 @@
         "type": "function",
         "z": "af530bfa0859125d",
         "name": "calc_vol_FA-06B",
-        "func": "const valorCrudo = msg.payload;\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (94100 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "func": "const valorCrudo = msg.payload.data ? msg.payload.data[0] : msg.payload; // Aseguramos que estamos tomando el primer elemento del array o el payload directamente\nif (isNaN(valorCrudo)) {\n    node.error(\"Valor crudo no es un número\", msg);\n    return null;\n}\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (94100 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -5817,7 +5866,7 @@
         "type": "function",
         "z": "af530bfa0859125d",
         "name": "F_influx_vol",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-4',\n                equipo_id: 'FA-04',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de nivel litros no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-4',\n                equipo_id: 'FA-04',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -5850,7 +5899,7 @@
         "type": "function",
         "z": "af530bfa0859125d",
         "name": "F_influx_vol",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-6A',\n                equipo_id: 'FA-06A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de nivel litros no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-6A',\n                equipo_id: 'FA-06A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -5870,7 +5919,7 @@
         "type": "function",
         "z": "af530bfa0859125d",
         "name": "F_influx_vol",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-6B',\n                equipo_id: 'FA-06B',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de nivel litros no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-6B',\n                equipo_id: 'FA-06B',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -5943,33 +5992,6 @@
         "wires": []
     },
     {
-        "id": "c5921641e6165210",
-        "type": "inject",
-        "z": "af530bfa0859125d",
-        "name": "sim",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "7500",
-        "payloadType": "num",
-        "x": 1030,
-        "y": 220,
-        "wires": [
-            [
-                "ef0e847332fbea6c",
-                "0dc0895b9aa00f3f",
-                "75aad67f2f25ad34"
-            ]
-        ]
-    },
-    {
         "id": "bf111d3532fc126d",
         "type": "debug",
         "z": "af530bfa0859125d",
@@ -5983,6 +6005,22 @@
         "statusType": "auto",
         "x": 1830,
         "y": 280,
+        "wires": []
+    },
+    {
+        "id": "543df8e49def648d",
+        "type": "debug",
+        "z": "af530bfa0859125d",
+        "name": "debug 45",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1330,
+        "y": 200,
         "wires": []
     },
     {
@@ -6190,7 +6228,7 @@
         "type": "function",
         "z": "9fa46c697055fd5a",
         "name": "calc_vol",
-        "func": "const valorCrudo = msg.payload; // Usar directamente msg.payload\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (40000 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "func": "const valorCrudo = msg.payload.data[0]; // Usar msg.payload.data[0]\nif (isNaN(valorCrudo)) {\n    node.error(\"Valor crudo no es un número\", msg);\n    return null;\n}\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (40000 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -6274,7 +6312,7 @@
         "type": "function",
         "z": "9fa46c697055fd5a",
         "name": "calc_presion",
-        "func": "const valorADCMin = 4000;\nconst valorADCMax = 20000;\nconst valorMin = 0;\nconst valorMax = 10.1972;\n\nconst valorADC = msg.payload;\nconst valorPresion = ((valorADC - valorADCMin) / (valorADCMax - valorMin)) * (valorMax - valorMin) + valorMin;\n\nmsg.payload = Number(valorPresion.toFixed(4));\n\nreturn msg;\n",
+        "func": "const valorADCMin = 4000;\nconst valorADCMax = 20000;\nconst valorMin = 0;\nconst valorMax = 10.1972;\n\nconst valorADC = msg.payload.data[0]; // Usar msg.payload.data[0]\nif (isNaN(valorADC)) {\n    node.error(\"Valor ADC no es un número\", msg);\n    return null;\n}\nconst valorPresion = ((valorADC - valorADCMin) / (valorADCMax - valorMin)) * (valorMax - valorMin) + valorMin;\n\nmsg.payload = Number(valorPresion.toFixed(4));\n\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -6879,7 +6917,7 @@
         "type": "function",
         "z": "9fa46c697055fd5a",
         "name": "F_influx_vol",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-2.1',\n                equipo_id: 'FA-02A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de nivel litros no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-2.1',\n                equipo_id: 'FA-02A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -6907,38 +6945,11 @@
         ]
     },
     {
-        "id": "8a8aa07e83314529",
-        "type": "inject",
-        "z": "9fa46c697055fd5a",
-        "name": "sim",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "9630",
-        "payloadType": "num",
-        "x": 1490,
-        "y": 480,
-        "wires": [
-            [
-                "9a01a5f2a23f06fd",
-                "e2fd54688464cad7",
-                "6c6ac34e890f43b1"
-            ]
-        ]
-    },
-    {
         "id": "b9b3caeb790b80fe",
         "type": "function",
         "z": "9fa46c697055fd5a",
         "name": "F_influx_temp",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'ST-2.1',\n                equipo_id: 'ent-BA-01',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                temperatura_c: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de temperatura no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'ST-2.1',\n                equipo_id: 'ent-BA-01',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                temperatura_c: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -6958,7 +6969,7 @@
         "type": "function",
         "z": "9fa46c697055fd5a",
         "name": "F_influx_temp",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'ST-2.2',\n                equipo_id: 'sal-BA-01',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                temperatura_c: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de temperatura no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'ST-2.2',\n                equipo_id: 'sal-BA-01',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                temperatura_c: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -6974,38 +6985,11 @@
         ]
     },
     {
-        "id": "4057baaaf4ce627d",
-        "type": "inject",
-        "z": "9fa46c697055fd5a",
-        "name": "sim",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "19520",
-        "payloadType": "num",
-        "x": 1530,
-        "y": 860,
-        "wires": [
-            [
-                "ed83ac5be50fc27a",
-                "afb5d4de17525b0c",
-                "e2fd54688464cad7"
-            ]
-        ]
-    },
-    {
         "id": "bdc7c6e18b820b06",
         "type": "function",
         "z": "9fa46c697055fd5a",
         "name": "F_influx_presion",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MP-1.1',\n                equipo_id: 'FA-02A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                presion_kg: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de presión no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MP-1.1',\n                equipo_id: 'FA-02A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                presion_kg: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -7042,7 +7026,7 @@
         "type": "function",
         "z": "9fa46c697055fd5a",
         "name": "F_influx_flujo",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MF-1.1',\n                equipo_id: 'FA-02A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                flujo_lh: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de flujo no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MF-1.1',\n                equipo_id: 'FA-02A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                flujo_lh: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
