@@ -47,14 +47,6 @@
         "env": []
     },
     {
-        "id": "1c542773be693934",
-        "type": "tab",
-        "label": "PLC_DELTA",
-        "disabled": true,
-        "info": "",
-        "env": []
-    },
-    {
         "id": "0630a8264fc13136",
         "type": "tab",
         "label": "Lab",
@@ -718,8 +710,8 @@
         "stateLogEnabled": false,
         "queueLogEnabled": false,
         "failureLogEnabled": true,
-        "tcpHost": "192.168.1.203",
-        "tcpPort": "4196",
+        "tcpHost": "192.168.1.254",
+        "tcpPort": "502",
         "tcpType": "TCP-RTU-BUFFERED",
         "serialPort": "/dev/ttyUSB",
         "serialType": "RTU",
@@ -729,11 +721,11 @@
         "serialParity": "none",
         "serialConnectionDelay": "100",
         "serialAsciiResponseStartDelimiter": "0x3A",
-        "unit_id": "1",
-        "commandDelay": "1",
-        "clientTimeout": "1000",
+        "unit_id": 1,
+        "commandDelay": 1,
+        "clientTimeout": 1000,
         "reconnectOnTimeout": true,
-        "reconnectTimeout": "2000",
+        "reconnectTimeout": 2000,
         "parallelUnitIdsAllowed": true,
         "showErrors": false,
         "showWarnings": true,
@@ -748,9 +740,9 @@
         "stateLogEnabled": false,
         "queueLogEnabled": false,
         "failureLogEnabled": true,
-        "tcpHost": "192.168.1.202",
+        "tcpHost": "192.168.1.100",
         "tcpPort": "502",
-        "tcpType": "TCP-RTU-BUFFERED",
+        "tcpType": "DEFAULT",
         "serialPort": "/dev/ttyUSB0",
         "serialType": "RTU",
         "serialBaudrate": "9600",
@@ -759,11 +751,11 @@
         "serialParity": "none",
         "serialConnectionDelay": "200",
         "serialAsciiResponseStartDelimiter": "0x3A",
-        "unit_id": "1",
-        "commandDelay": "1",
-        "clientTimeout": "5000",
+        "unit_id": 1,
+        "commandDelay": 1,
+        "clientTimeout": 5000,
         "reconnectOnTimeout": true,
-        "reconnectTimeout": "2000",
+        "reconnectTimeout": 2000,
         "parallelUnitIdsAllowed": true,
         "showErrors": false,
         "showWarnings": true,
@@ -789,11 +781,11 @@
         "serialParity": "none",
         "serialConnectionDelay": "100",
         "serialAsciiResponseStartDelimiter": "0x3A",
-        "unit_id": 1,
-        "commandDelay": 1,
-        "clientTimeout": 1000,
+        "unit_id": "1",
+        "commandDelay": "1",
+        "clientTimeout": "1000",
         "reconnectOnTimeout": true,
-        "reconnectTimeout": 2000,
+        "reconnectTimeout": "2000",
         "parallelUnitIdsAllowed": true,
         "showErrors": false,
         "showWarnings": true,
@@ -3391,10 +3383,11 @@
         "y": 700,
         "wires": [
             [
-                "577bce23d5b23116"
+                "58303efc8fb8844e",
+                "358a6d7f67ffce8f"
             ],
             [
-                "358a6d7f67ffce8f"
+                "577bce23d5b23116"
             ],
             [
                 "73e1e81e7546e4fb"
@@ -3519,7 +3512,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "calc_vol_FA-01",
-        "func": "const valorCrudo = msg.payload;\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (115500 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "func": "const valorCrudo = msg.payload.data[0]; // Aquí tomamos el primer elemento del array\nif (isNaN(valorCrudo)) {\n    node.error(\"Valor crudo no es un número\", msg);\n    return null;\n}\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (115500 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -3533,7 +3526,8 @@
                 "168aaf88f24c3fe4",
                 "b4188b3a422f8bef",
                 "e405700295bd27f7",
-                "fcbfd2b58ba9ac83"
+                "fcbfd2b58ba9ac83",
+                "a77fa9701c726221"
             ],
             []
         ]
@@ -3562,7 +3556,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "telemetria",
-        "func": "msg.payload = {\n  volumen: msg.payload\n};\nreturn msg;",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de volumen no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n  volumen: msg.payload\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -3619,7 +3613,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "calc_vol_FA-09",
-        "func": "const valorCrudo = msg.payload;\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (19000 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "func": "const valorCrudo = msg.payload.data ? msg.payload.data[0] : msg.payload; // Usamos el primer elemento del array o el payload directamente\nif (isNaN(valorCrudo)) {\n    node.error(\"Valor crudo no es un número\", msg);\n    return null;\n}\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (19000 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -3662,7 +3656,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "telemetria",
-        "func": "msg.payload = {\n  volumen: msg.payload\n};\nreturn msg;",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de volumen no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n  volumen: msg.payload\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -3719,7 +3713,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "calc_vol_FA-07",
-        "func": "const valorCrudo = msg.payload;\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (200000 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "func": "const valorCrudo = msg.payload; // Usamos directamente el payload\nif (isNaN(valorCrudo)) {\n    node.error(\"Valor crudo no es un número\", msg);\n    return null;\n}\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (200000 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -3762,7 +3756,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "telemetria",
-        "func": "msg.payload = {\n  volumen: msg.payload\n};\nreturn msg;",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de volumen no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n  volumen: msg.payload\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -3818,7 +3812,7 @@
         "id": "935f6caa0c13c143",
         "type": "modbus-flex-getter",
         "z": "190ed3e96d0709a5",
-        "name": "ADC_2",
+        "name": "ADC2",
         "showStatusActivities": false,
         "showErrors": false,
         "showWarnings": false,
@@ -3831,11 +3825,12 @@
         "keepMsgProperties": false,
         "delayOnStart": false,
         "startDelayTime": "",
-        "x": 940,
+        "x": 930,
         "y": 680,
         "wires": [
             [
-                "0c9c4c6ccd5f1680"
+                "0c9c4c6ccd5f1680",
+                "41ad15c9390a54d4"
             ],
             [
                 "69b686e91740cea5"
@@ -3846,7 +3841,6 @@
         "id": "55044db629aca6f4",
         "type": "ui-chart",
         "z": "190ed3e96d0709a5",
-        "d": true,
         "group": "3f690bb5a526a246",
         "name": "Volumen FA-01",
         "label": "Volumen FA-01",
@@ -3891,7 +3885,6 @@
         "id": "409147dccbfefd7e",
         "type": "ui-chart",
         "z": "190ed3e96d0709a5",
-        "d": true,
         "group": "3f690bb5a526a246",
         "name": "Volumen FA-09",
         "label": "Volumen FA-09",
@@ -3936,7 +3929,6 @@
         "id": "ad4fc4580773a583",
         "type": "ui-chart",
         "z": "190ed3e96d0709a5",
-        "d": true,
         "group": "3f690bb5a526a246",
         "name": "Volumen FA-07",
         "label": "Volumen FA-07",
@@ -3982,7 +3974,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "F_influx_vol",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-1',\n                equipo_id: 'FA-01',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de nivel litros no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-1',\n                equipo_id: 'FA-01',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -4014,7 +4006,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "F_influx_vol",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-9',\n                equipo_id: 'FA-09',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de nivel litros no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-9',\n                equipo_id: 'FA-09',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -4034,7 +4026,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "F_influx_vol",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-7',\n                equipo_id: 'FA-07',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de nivel litros no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-7',\n                equipo_id: 'FA-07',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -4963,7 +4955,7 @@
         "once": true,
         "onceDelay": "1",
         "topic": "read_ADC3_AI0",
-        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":96,\"quantity\":1}",
+        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":40,\"quantity\":1}",
         "payloadType": "json",
         "x": 220,
         "y": 420,
@@ -5192,7 +5184,7 @@
         "once": true,
         "onceDelay": "1",
         "topic": "read_ADC3_AI1",
-        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":97,\"quantity\":1}",
+        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":41,\"quantity\":1}",
         "payloadType": "json",
         "x": 220,
         "y": 460,
@@ -5221,7 +5213,7 @@
         "once": true,
         "onceDelay": "1",
         "topic": "read_ADC3_AI2",
-        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":98,\"quantity\":1}",
+        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":42,\"quantity\":1}",
         "payloadType": "json",
         "x": 220,
         "y": 500,
@@ -5287,13 +5279,13 @@
         "y": 440,
         "wires": [
             [
+                "ef0e847332fbea6c"
+            ],
+            [
                 "75aad67f2f25ad34"
             ],
             [
                 "0dc0895b9aa00f3f"
-            ],
-            [
-                "ef0e847332fbea6c"
             ],
             [],
             [],
@@ -5321,7 +5313,7 @@
         "once": true,
         "onceDelay": "1",
         "topic": "read_ADC3_AI3",
-        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":99,\"quantity\":1}",
+        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":43,\"quantity\":1}",
         "payloadType": "json",
         "x": 220,
         "y": 540,
@@ -5350,7 +5342,7 @@
         "once": true,
         "onceDelay": "1",
         "topic": "read_ADC3_AI4",
-        "payload": "{\"value\":0,\"fc\":4,\"unitid\":100,\"address\":0,\"quantity\":2}",
+        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":44,\"quantity\":1}",
         "payloadType": "json",
         "x": 220,
         "y": 580,
@@ -5379,7 +5371,7 @@
         "once": true,
         "onceDelay": "1",
         "topic": "read_ADC3_AI5",
-        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":5,\"quantity\":1}",
+        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":45,\"quantity\":1}",
         "payloadType": "json",
         "x": 220,
         "y": 620,
@@ -5408,7 +5400,7 @@
         "once": true,
         "onceDelay": "1",
         "topic": "read_ADC3_AI6",
-        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":6,\"quantity\":1}",
+        "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":46,\"quantity\":1}",
         "payloadType": "json",
         "x": 220,
         "y": 660,
@@ -5423,21 +5415,22 @@
         "type": "function",
         "z": "af530bfa0859125d",
         "name": "calc_vol_FA-04",
-        "func": "const valorCrudo = msg.payload;\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (65000 - 3200);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "func": "const valorCrudo = msg.payload.data ? msg.payload.data[0] : msg.payload; // Aseguramos que estamos tomando el primer elemento del array o el payload directamente\nif (isNaN(valorCrudo)) {\n    node.error(\"Valor crudo no es un número\", msg);\n    return null;\n}\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (65000 - 3200);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1260,
-        "y": 300,
+        "x": 1280,
+        "y": 320,
         "wires": [
             [
                 "b7d660696b25b6a1",
                 "b37b8c9f95b42e83",
                 "58df9191d2b0ec79",
-                "3c7bd2b6b58e63b2"
+                "3c7bd2b6b58e63b2",
+                "543df8e49def648d"
             ],
             []
         ]
@@ -5504,7 +5497,7 @@
         "type": "function",
         "z": "af530bfa0859125d",
         "name": "calc_vol_FA-06A",
-        "func": "const valorCrudo = msg.payload;\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (51600 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "func": "const valorCrudo = msg.payload.data ? msg.payload.data[0] : msg.payload; // Aseguramos que estamos tomando el primer elemento del array o el payload directamente\nif (isNaN(valorCrudo)) {\n    node.error(\"Valor crudo no es un número\", msg);\n    return null;\n}\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (51600 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -5585,7 +5578,7 @@
         "type": "function",
         "z": "af530bfa0859125d",
         "name": "calc_vol_FA-06B",
-        "func": "const valorCrudo = msg.payload;\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (94100 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "func": "const valorCrudo = msg.payload.data ? msg.payload.data[0] : msg.payload; // Aseguramos que estamos tomando el primer elemento del array o el payload directamente\nif (isNaN(valorCrudo)) {\n    node.error(\"Valor crudo no es un número\", msg);\n    return null;\n}\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (94100 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -5825,7 +5818,7 @@
         "type": "function",
         "z": "af530bfa0859125d",
         "name": "F_influx_vol",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-4',\n                equipo_id: 'FA-04',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de nivel litros no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-4',\n                equipo_id: 'FA-04',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -5858,7 +5851,7 @@
         "type": "function",
         "z": "af530bfa0859125d",
         "name": "F_influx_vol",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-6A',\n                equipo_id: 'FA-06A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de nivel litros no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-6A',\n                equipo_id: 'FA-06A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -5878,7 +5871,7 @@
         "type": "function",
         "z": "af530bfa0859125d",
         "name": "F_influx_vol",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-6B',\n                equipo_id: 'FA-06B',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de nivel litros no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-6B',\n                equipo_id: 'FA-06B',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -5949,33 +5942,6 @@
         "x": 1660,
         "y": 580,
         "wires": []
-    },
-    {
-        "id": "c5921641e6165210",
-        "type": "inject",
-        "z": "af530bfa0859125d",
-        "name": "sim",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "7500",
-        "payloadType": "num",
-        "x": 1030,
-        "y": 220,
-        "wires": [
-            [
-                "ef0e847332fbea6c",
-                "0dc0895b9aa00f3f",
-                "75aad67f2f25ad34"
-            ]
-        ]
     },
     {
         "id": "bf111d3532fc126d",
@@ -6198,7 +6164,7 @@
         "type": "function",
         "z": "9fa46c697055fd5a",
         "name": "calc_vol",
-        "func": "const valorCrudo = msg.payload; // Usar directamente msg.payload\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (40000 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "func": "const valorCrudo = msg.payload.data[0]; // Usar msg.payload.data[0]\nif (isNaN(valorCrudo)) {\n    node.error(\"Valor crudo no es un número\", msg);\n    return null;\n}\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (40000 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -6282,7 +6248,7 @@
         "type": "function",
         "z": "9fa46c697055fd5a",
         "name": "calc_presion",
-        "func": "const valorADCMin = 4000;\nconst valorADCMax = 20000;\nconst valorMin = 0;\nconst valorMax = 10.1972;\n\nconst valorADC = msg.payload;\nconst valorPresion = ((valorADC - valorADCMin) / (valorADCMax - valorMin)) * (valorMax - valorMin) + valorMin;\n\nmsg.payload = Number(valorPresion.toFixed(4));\n\nreturn msg;\n",
+        "func": "const valorADCMin = 4000;\nconst valorADCMax = 20000;\nconst valorMin = 0;\nconst valorMax = 10.1972;\n\nconst valorADC = msg.payload.data[0]; // Usar msg.payload.data[0]\nif (isNaN(valorADC)) {\n    node.error(\"Valor ADC no es un número\", msg);\n    return null;\n}\nconst valorPresion = ((valorADC - valorADCMin) / (valorADCMax - valorMin)) * (valorMax - valorMin) + valorMin;\n\nmsg.payload = Number(valorPresion.toFixed(4));\n\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -6303,7 +6269,7 @@
         "id": "ec132924d2383db1",
         "type": "switch",
         "z": "9fa46c697055fd5a",
-        "name": "ADC_1 Registers",
+        "name": "ADC1 Registers",
         "property": "topic",
         "propertyType": "msg",
         "rules": [
@@ -6331,7 +6297,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 4,
-        "x": 1370,
+        "x": 1360,
         "y": 740,
         "wires": [
             [
@@ -6689,7 +6655,7 @@
         "id": "e6e60d5a9427cf31",
         "type": "modbus-flex-getter",
         "z": "9fa46c697055fd5a",
-        "name": "ADC_1",
+        "name": "ADC1",
         "showStatusActivities": false,
         "showErrors": false,
         "showWarnings": true,
@@ -6702,7 +6668,7 @@
         "keepMsgProperties": false,
         "delayOnStart": false,
         "startDelayTime": "",
-        "x": 1160,
+        "x": 1150,
         "y": 740,
         "wires": [
             [
@@ -6887,7 +6853,7 @@
         "type": "function",
         "z": "9fa46c697055fd5a",
         "name": "F_influx_vol",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-2.1',\n                equipo_id: 'FA-02A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de nivel litros no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-2.1',\n                equipo_id: 'FA-02A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -6915,38 +6881,11 @@
         ]
     },
     {
-        "id": "8a8aa07e83314529",
-        "type": "inject",
-        "z": "9fa46c697055fd5a",
-        "name": "sim",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "9630",
-        "payloadType": "num",
-        "x": 1490,
-        "y": 480,
-        "wires": [
-            [
-                "9a01a5f2a23f06fd",
-                "e2fd54688464cad7",
-                "6c6ac34e890f43b1"
-            ]
-        ]
-    },
-    {
         "id": "b9b3caeb790b80fe",
         "type": "function",
         "z": "9fa46c697055fd5a",
         "name": "F_influx_temp",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'ST-2.1',\n                equipo_id: 'ent-BA-01',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                temperatura_c: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de temperatura no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'ST-2.1',\n                equipo_id: 'ent-BA-01',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                temperatura_c: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -6966,7 +6905,7 @@
         "type": "function",
         "z": "9fa46c697055fd5a",
         "name": "F_influx_temp",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'ST-2.2',\n                equipo_id: 'sal-BA-01',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                temperatura_c: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de temperatura no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'ST-2.2',\n                equipo_id: 'sal-BA-01',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                temperatura_c: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -6982,38 +6921,11 @@
         ]
     },
     {
-        "id": "4057baaaf4ce627d",
-        "type": "inject",
-        "z": "9fa46c697055fd5a",
-        "name": "sim",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "19520",
-        "payloadType": "num",
-        "x": 1530,
-        "y": 860,
-        "wires": [
-            [
-                "ed83ac5be50fc27a",
-                "afb5d4de17525b0c",
-                "e2fd54688464cad7"
-            ]
-        ]
-    },
-    {
         "id": "bdc7c6e18b820b06",
         "type": "function",
         "z": "9fa46c697055fd5a",
         "name": "F_influx_presion",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MP-1.1',\n                equipo_id: 'FA-02A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                presion_kg: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de presión no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MP-1.1',\n                equipo_id: 'FA-02A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                presion_kg: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -7050,7 +6962,7 @@
         "type": "function",
         "z": "9fa46c697055fd5a",
         "name": "F_influx_flujo",
-        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MF-1.1',\n                equipo_id: 'FA-02A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                flujo_lh: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de flujo no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MF-1.1',\n                equipo_id: 'FA-02A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                flujo_lh: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -7158,1387 +7070,6 @@
         "broker": "233cd5171dde3839",
         "x": 2240,
         "y": 900,
-        "wires": []
-    },
-    {
-        "id": "e468469d275fa87c",
-        "type": "inject",
-        "z": "1c542773be693934",
-        "name": "EDP1_AI1",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "2",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "1",
-        "topic": "read_EDP1_AI1",
-        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":0,\"quantity\":1}",
-        "payloadType": "json",
-        "x": 190,
-        "y": 460,
-        "wires": [
-            [
-                "9303d4b089a21f41"
-            ]
-        ]
-    },
-    {
-        "id": "a416bf9ca8b1c1b2",
-        "type": "inject",
-        "z": "1c542773be693934",
-        "name": "update",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "1",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "update",
-        "payload": "",
-        "payloadType": "date",
-        "x": 240,
-        "y": 380,
-        "wires": [
-            [
-                "9303d4b089a21f41"
-            ]
-        ]
-    },
-    {
-        "id": "b8e1d796b05674a8",
-        "type": "inject",
-        "z": "1c542773be693934",
-        "name": "next",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "next",
-        "payload": "",
-        "payloadType": "date",
-        "x": 250,
-        "y": 340,
-        "wires": [
-            [
-                "9303d4b089a21f41"
-            ]
-        ]
-    },
-    {
-        "id": "ebd7a51a32780957",
-        "type": "change",
-        "z": "1c542773be693934",
-        "name": "Advance queue",
-        "rules": [
-            {
-                "t": "set",
-                "p": "topic",
-                "pt": "msg",
-                "to": "next",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 480,
-        "y": 440,
-        "wires": [
-            [
-                "9303d4b089a21f41"
-            ]
-        ]
-    },
-    {
-        "id": "9303d4b089a21f41",
-        "type": "function",
-        "z": "1c542773be693934",
-        "name": "Modbus Queue",
-        "func": "let resendifnoresposne = true; // resend the last message is no response is received\nlet resendinterval = 10; // resend last e message every x seconds\nlet online_threshold = 10; // Seconds between updates under which the device is considered online\nlet offline_threshold = 300; // Seconds between updates above which the device is considered offline\n\nlet notifmsg = null;\n\n// Check and make sure the incoming message has a topic\nif ((msg.topic===\"\")||(msg.topic===null)||(msg.topic===undefined)) {\n    node.status({fill:\"red\",shape:\"dot\",text:\"Topic missing\"});\n    return;\n}\n\nlet lastupdate = context.get(\"lastupdate\");\nlet state = context.get(\"state\") | 0;\nlet queue = context.get(\"queue\");\nlet queuecount = 0;\nif (queue === undefined) {\n    queue = [];\n} else {\n    if (Array.isArray(queue)) {\n        queuecount = queue.length;\n    } else {\n        queue = [];\n    }\n}\nlet current = new Date().getTime();\nlet send = false;\n\nswitch (msg.topic.toLowerCase()) {\n    case \"update\":\n        // Update the timer and statistics\n\n        if (lastupdate !== undefined) {\n            notifmsg = { \"topic\": \"Information\", \"payload\": {} };\n            current = current - lastupdate;\n            current = Math.floor(current / 1000);\n            notifmsg.payload.secondsincelastupdate = current;\n            var minute = Math.floor(current / 60);\n            var hour = Math.floor(minute / 60);\n            var day = Math.floor(hour / 24);\n            if (current > 24 * 60 * 60) {\n                notifmsg.payload.updatetext = \"Last update \" + day + \" days, \" + hour % 24 + \" hours, \" + minute % 60 + \" minutes, \" + current % 60 + \" seconds ago\";\n            } else if (current > 60 * 60) {\n                notifmsg.payload.updatetext = \"Last update \" + hour % 24 + \" hours, \" + minute % 60 + \" minutes, \" + current % 60 + \" seconds ago\";\n            } else if (current > 60) {\n                notifmsg.payload.updatetext = \"Last update \" + minute % 60 + \" minutes, \" + current % 60 + \" seconds ago\";\n            } else {\n                notifmsg.payload.updatetext = \"Last update \" + current % 60 + \" seconds ago\";\n            }\n\n            // Resend last message if there is no response from the server\n            if (resendifnoresposne) {\n                if ((current>0) && (current % resendinterval===0)) {\n                    let lastmsg = context.get(\"lastmsg\");\n                    if ((lastmsg!==undefined) && (context.get(\"sent\"))) {\n                        notifmsg.payload.resend = true;\n                        if ((lastmsg.payload.fc === 1) || (lastmsg.payload.fc === 2) || (lastmsg.payload.fc === 3) || (lastmsg.payload.fc === 4)) {\n                            // this is a modbus read request\n                            node.status({ fill: \"green\", shape: \"dot\", text: \"Read re-sent!\" });\n                            return [lastmsg, null, notifmsg];\n                        } else {\n                            // this is a modbus write request\n                            node.status({ fill: \"green\", shape: \"dot\", text: \"Write re-sent!\" });\n                            return [null, lastmsg, notifmsg];\n                        }\n                    }\n                }\n            }\n\n            // Check for online state\n            if (state !== 1) {\n                if (current < online_threshold) {\n                    notifmsg.topic = \"Warning\";\n                    notifmsg.payload.text = \"Device is now online\";\n                    notifmsg.payload.statuschange = true;\n                    state = 1;\n                    context.set(\"state\", state);\n                }\n            } else {\n                if (current > offline_threshold) {\n                    notifmsg.topic = \"Error\";\n                    notifmsg.payload.text = \"Device is not transmitting\";\n                    notifmsg.payload.statuschange = true;\n                    state = 99;\n                    context.set(\"state\", state);\n                }\n            }\n            notifmsg.payload.state = state;\n            if (state===1) {\n                node.status({ fill: \"blue\", shape: \"ring\", text: queuecount+ \" | \"+notifmsg.payload.updatetext });\n            } else {\n                node.status({ fill: \"red\", shape: \"ring\", text: queuecount + \" | \" + notifmsg.payload.updatetext });\n            }\n            return [null, null, notifmsg];\n\n        } else {\n            node.status({ fill: \"grey\", shape: \"ring\", text: \"No data\" });\n        }\n        break;\n    case \"next\":\n        // Update the lastupdate counter\n        context.set(\"lastupdate\", current);\n        context.set(\"sent\", false);\n        send = true;\n        break;\n    case \"reset\":\n        context.set(\"queue\",[]);\n        context.set(\"sent\", false);\n        context.set(\"lastmsg\", undefined);\n        break;\n    default:\n        // The incoming message is a modbus request\n\n        // delete the last msg to prevent from being resent\n        // context.set(\"lastmsg\", undefined);\n\n        // Check if there is already a message in the queue with the same topic. \n        // If there is it needs to be deleted, because we only keep the last message.\n        for (let i=queue.length-1; i>=0; i--) {\n            if (queue[i].topic === msg.topic) {\n                queue.splice(i,1);\n            }\n        }\n\n        // Add the message to the end of the queue\n        queue.push(msg);\n        context.set(\"queue\",queue);\n\n        if (!context.get(\"sent\")) {\n            send = true;\n        }\n        node.status({ fill: \"green\", shape: \"dot\", text: queue.length });\n\n}\n\n// We need to send out a new message\nif (send) {\n\n    if (queue.length>0) {\n        // Get the older message from the array\n        let newmsg = queue[0];\n        // remove this message\n        queue.splice(0,1);\n        context.set(\"queue\",queue);\n        context.set(\"sent\", true);\n        context.set(\"lastmsg\", newmsg);\n\n        if ((newmsg.payload.fc === 1) || (newmsg.payload.fc === 2) || (newmsg.payload.fc === 3) || (newmsg.payload.fc === 4)) {\n            // this is a modbus read request\n            node.status({ fill: \"green\", shape: \"dot\", text: \"Read sent!\" });\n            return[newmsg,null,null];\n        } else {\n            // this is a modbus write request\n            node.status({ fill: \"green\", shape: \"dot\", text: \"Write sent!\" });\n            return [null, newmsg, null];\n        }\n        \n    }\n}\n",
-        "outputs": 3,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 460,
-        "y": 560,
-        "wires": [
-            [
-                "3f6664678974d7c5"
-            ],
-            [],
-            [
-                "13568d1d69f5c55e"
-            ]
-        ],
-        "info": "# Modbus Queue\r\n\r\nThis node queueing read and write messages for modbus. Use this node if you are reading and writing the same device with many different requests. E.g. reading different coil/register intervals continously and also writing to the device at the same time.\r\n\r\nIt does a few things:\r\n- queues all messages arrive on the input port\r\n- based on the msg.topic, older messages of the same topci is ignored\r\n- sends out the oldest message and waits for the \r\n- monitors the time since last message and send out report on the output\r\n- handles online/offline status\r\n- resend the last message is response is not received in time\r\n\r\n## Input Data\r\n\r\n### payload\r\n\r\nThe payload should contain the data that gets sent to the flex-getter or flex-write node.\r\nTypical modbus read payload:\r\n`{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":1000,\"quantity\":20}`\r\nTypical modbus write payload:\r\n`{\"value\":false,\"fc\":5,\"unitid\":1,\"address\":0,\"quantity\":1}`\r\n\r\n### topic\r\n\r\nEach message must contain a topic (any text), and this topic is used to identify the different read/write requests and delete any earlier request with the same topic if it still in the queueing\r\n\r\nThere are a few reserved topic for special function (for these payload is ignored):\r\n- reset: resets the queue and deleted any data collected so far\r\n- next: this is the message fed back from the flex getter/write node to indicate to this node that a new message can be sent out\r\n- update: this should be coming from a 1 second time to display the current queue count, time since the last update and online/offline status\r\n\r\n## Output ports\r\n\r\n### Port 1: flex getter\r\n\r\nThis output should be connected to a modbos-flex-getter and all the read requests will be sent out through this port\r\n\r\n### Port 2: flex write\r\n\r\nThis output should be connected to a modbos-flex-write and all the write requests will be sent out through this port\r\n\r\n### Port 3: status messages\r\n\r\nThis port outputs a status message for every update message (msg.topic=\"update\").\r\n\r\n- topic: \"Information\" for regular updates, \"Warning\": offline device is now back online, \"Error\": device is offline\r\n- payload.text: message like when the device gone offline, or back online\r\n- payload.updatetext: time passed since the last update (human readable format)\r\n- payload.secondsincelastupdate: number of seconds since the last update from the device\r\n- payload.statuschange: true if status is changed (gone offline, back online)\r\n- payload.state: 0: initial state, no data yet, 1: device online, 99: device offline\r\n\r\n## Node Settings\r\n\r\nChange the settings in the first 4 lines of the code to influence the behaviour. Explanation is in the code as comment."
-    },
-    {
-        "id": "b36d904278fc991d",
-        "type": "inject",
-        "z": "1c542773be693934",
-        "name": "reset",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "1",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "update",
-        "payload": "",
-        "payloadType": "date",
-        "x": 250,
-        "y": 300,
-        "wires": [
-            [
-                "9303d4b089a21f41"
-            ]
-        ]
-    },
-    {
-        "id": "3d68401642957f3e",
-        "type": "link in",
-        "z": "1c542773be693934",
-        "name": "link in 5",
-        "links": [],
-        "x": 285,
-        "y": 260,
-        "wires": [
-            [
-                "9303d4b089a21f41"
-            ]
-        ]
-    },
-    {
-        "id": "187da7c60f73551c",
-        "type": "inject",
-        "z": "1c542773be693934",
-        "name": "check",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 320,
-        "y": 900,
-        "wires": [
-            [
-                "b44b8c69a1faf51b"
-            ]
-        ]
-    },
-    {
-        "id": "13568d1d69f5c55e",
-        "type": "function",
-        "z": "1c542773be693934",
-        "name": "update log",
-        "func": "if (msg.topic === \"Information\") {\n    // Registrar mensajes de información\n    node.log(\"Información: \" + msg.payload.updatetext);\n} else if (msg.topic === \"Warning\") {\n    // Registrar mensajes de advertencia\n    node.warn(\"Advertencia: \" + msg.payload.text);\n} else if (msg.topic === \"Error\") {\n    // Registrar mensajes de error\n    node.error(\"Error: \" + msg.payload.text);\n}\n\n// Puedes agregar lógica adicional para procesar otros campos del mensaje de estado\n// Por ejemplo, puedes verificar el valor de msg.payload.state para realizar acciones específicas\n// según el estado del dispositivo (en línea, fuera de línea, etc.)\n\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 660,
-        "y": 600,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "3a50df8a8cf4c965",
-        "type": "inject",
-        "z": "1c542773be693934",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 210,
-        "y": 800,
-        "wires": [
-            [
-                "9303d4b089a21f41"
-            ]
-        ]
-    },
-    {
-        "id": "4f34ae3b1233ec04",
-        "type": "function",
-        "z": "1c542773be693934",
-        "name": "calc_vol",
-        "func": "const valorCrudo = msg.payload[0];\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (40000 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
-        "outputs": 2,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1200,
-        "y": 320,
-        "wires": [
-            [
-                "2fe651fd21e69569",
-                "eaaac0825643be54"
-            ],
-            []
-        ]
-    },
-    {
-        "id": "6a6312d55f8dcf96",
-        "type": "function",
-        "z": "1c542773be693934",
-        "name": "Data Accumulation Node",
-        "func": "let cola = flow.get(\"colaLecturas\") || [];\nconst tiempoMaximo = 300000; // 5 minutos en milisegundos\n\n// Añadir nuevo registro con timestamp actual si no viene incluido en el mensaje\nconst tiempoRegistro = msg.payload.timestamp || Date.now();  // Usar timestamp del mensaje o el tiempo actual si no está disponible\ncola.push({\n    tiempo: tiempoRegistro,\n    volumen: msg.payload[0] // Asumiendo que el volumen viene en msg.payload como primer elemento del array\n});\n\n// Eliminar registros más antiguos que el tiempo máximo permitido\nlet tiempoActual = Date.now();\ncola = cola.filter(registro => (tiempoActual - registro.tiempo) <= tiempoMaximo);\n\n// Guardar la cola actualizada en el contexto del flujo\nflow.set(\"colaLecturas\", cola);\n\n// Pasar la cola completa al siguiente nodo para su procesamiento\nreturn { payload: cola };\n",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1410,
-        "y": 280,
-        "wires": [
-            [
-                "fcf40b894ba229f7"
-            ]
-        ]
-    },
-    {
-        "id": "fcf40b894ba229f7",
-        "type": "function",
-        "z": "1c542773be693934",
-        "name": "Flow Calculation Node",
-        "func": "const cola = msg.payload;\nlet flujo = 0;\n\nif (cola.length > 1) {\n    const primerRegistro = cola[0];\n    const ultimoRegistro = cola[cola.length - 1];\n    const tiempoDiferencia = (ultimoRegistro.tiempo - primerRegistro.tiempo) / 1000; // en segundos\n\n    // Convertir los valores de volumen según la escala proporcionada\n    const volumenInicial = ((primerRegistro.volumen - 4000) / (20000 - 4000)) * (40000 - 0);\n    const volumenFinal = ((ultimoRegistro.volumen - 4000) / (20000 - 4000)) * (40000 - 0);\n\n    if (tiempoDiferencia > 0) {\n        flujo = Math.round(-((volumenFinal - volumenInicial) / tiempoDiferencia) * 3600); // calcular flujo\n    }\n} else {\n    // Manejar el caso cuando no hay suficientes registros para calcular un flujo\n    flujo = \"Insuficientes datos para cálculo de flujo\";\n}\n\n// Devolver el valor del flujo\nreturn { payload: flujo };\n",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1410,
-        "y": 220,
-        "wires": [
-            [
-                "a7d396375a027932",
-                "a415ac84e6482a53"
-            ]
-        ]
-    },
-    {
-        "id": "5d5fc976f4699b13",
-        "type": "function",
-        "z": "1c542773be693934",
-        "name": "calc_presion",
-        "func": "const valorADCMin = 4000;\nconst valorADCMax = 20000;\nconst valorMin = 0;\nconst valorMax = 10.1972;\n\nconst valorADC = msg.payload[0];\nconst valorPresion = ((valorADC - valorADCMin) / (valorADCMax - valorADCMin)) * (valorMax - valorMin) + valorMin;\n\nmsg.payload = valorPresion.toFixed(4);\n\nreturn msg;\n",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1210,
-        "y": 480,
-        "wires": [
-            [
-                "9d65a53a93f889f3",
-                "65250917b9e4327e"
-            ]
-        ]
-    },
-    {
-        "id": "152e4b6e6c143d33",
-        "type": "function",
-        "z": "1c542773be693934",
-        "name": "calc_flujo",
-        "func": "const valorADCMin = 4000;\nconst valorADCMax = 20000;\nconst valorMin = 0;\nconst valorMax = 10000;\n\nconst valorADC = msg.payload[0];\nconst valorLitrosHora = ((valorADC - valorADCMin) / (valorADCMax - valorADCMin)) * (valorMax - valorMin) + valorMin;\n\nmsg.payload = Math.round(valorLitrosHora);\n\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1200,
-        "y": 420,
-        "wires": [
-            [
-                "180118feaf9d2736"
-            ]
-        ]
-    },
-    {
-        "id": "3f6664678974d7c5",
-        "type": "modbus-flex-getter",
-        "z": "1c542773be693934",
-        "name": "EDP1",
-        "showStatusActivities": false,
-        "showErrors": false,
-        "showWarnings": true,
-        "logIOActivities": false,
-        "server": "52f2d0e38d313f88",
-        "useIOFile": false,
-        "ioFile": "",
-        "useIOForPayload": false,
-        "emptyMsgOnFail": false,
-        "keepMsgProperties": false,
-        "delayOnStart": false,
-        "startDelayTime": "",
-        "x": 640,
-        "y": 520,
-        "wires": [
-            [
-                "ebd7a51a32780957",
-                "03d41b2c3247feae"
-            ],
-            []
-        ]
-    },
-    {
-        "id": "03d41b2c3247feae",
-        "type": "switch",
-        "z": "1c542773be693934",
-        "name": "EDP1_Registros",
-        "property": "topic",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "read_EDP1_AI1",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "read_EDP1_AI2",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "read_EDP1_AI3",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "read_EDP1_AI4",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "read_EDP1_AI5",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "read_EDP1_AI6",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 6,
-        "x": 950,
-        "y": 440,
-        "wires": [
-            [
-                "152e4b6e6c143d33"
-            ],
-            [],
-            [],
-            [],
-            [],
-            []
-        ]
-    },
-    {
-        "id": "a7d396375a027932",
-        "type": "function",
-        "z": "1c542773be693934",
-        "name": "telemetria",
-        "func": "msg.payload = {\n  flujo: msg.payload\n};\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1690,
-        "y": 260,
-        "wires": [
-            [
-                "a1f9233ee0a2b965"
-            ]
-        ]
-    },
-    {
-        "id": "fa6ab33868c809f7",
-        "type": "mqtt out",
-        "z": "1c542773be693934",
-        "d": true,
-        "name": "mqtt_tb_MN-2.1",
-        "topic": "v1/devices/me/telemetry",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "75c0821a42a5cdfb",
-        "x": 1590,
-        "y": 340,
-        "wires": []
-    },
-    {
-        "id": "2fe651fd21e69569",
-        "type": "function",
-        "z": "1c542773be693934",
-        "name": "telemetria",
-        "func": "msg.payload = {\n  volumen: msg.payload\n};\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1430,
-        "y": 340,
-        "wires": [
-            [
-                "fa6ab33868c809f7"
-            ]
-        ]
-    },
-    {
-        "id": "a1f9233ee0a2b965",
-        "type": "mqtt out",
-        "z": "1c542773be693934",
-        "d": true,
-        "name": "mqtt_tb_MF-1.1",
-        "topic": "v1/devices/me/telemetry",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "689c5e6207baccbb",
-        "x": 1840,
-        "y": 260,
-        "wires": []
-    },
-    {
-        "id": "f409eaedb46ac5a8",
-        "type": "function",
-        "z": "1c542773be693934",
-        "name": "telemetria",
-        "func": "msg.payload = {\n  flujo: msg.payload\n};\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1420,
-        "y": 400,
-        "wires": [
-            [
-                "6e221eeff686fcca"
-            ]
-        ]
-    },
-    {
-        "id": "6e221eeff686fcca",
-        "type": "mqtt out",
-        "z": "1c542773be693934",
-        "d": true,
-        "name": "mqtt_tb_MF-3.1",
-        "topic": "v1/devices/me/telemetry",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "74ceda570d3e66dc",
-        "x": 1590,
-        "y": 400,
-        "wires": []
-    },
-    {
-        "id": "9d65a53a93f889f3",
-        "type": "function",
-        "z": "1c542773be693934",
-        "name": "telemetria",
-        "func": "msg.payload = {\n  presion: msg.payload\n};\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1510,
-        "y": 460,
-        "wires": [
-            [
-                "a4ec32fa344011d2"
-            ]
-        ]
-    },
-    {
-        "id": "a4ec32fa344011d2",
-        "type": "mqtt out",
-        "z": "1c542773be693934",
-        "d": true,
-        "name": "mqtt_tb_MP-1.1",
-        "topic": "v1/devices/me/telemetry",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "feca9c5ced6ec599",
-        "x": 1780,
-        "y": 520,
-        "wires": []
-    },
-    {
-        "id": "0c9b22b8a6397d87",
-        "type": "inject",
-        "z": "1c542773be693934",
-        "name": "Simulate ADC Input",
-        "props": [
-            {
-                "p": "payload[0]",
-                "v": "9650",
-                "vt": "num"
-            },
-            {
-                "p": "payload.timestamp",
-                "v": "",
-                "vt": "date"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 980,
-        "y": 560,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "a415ac84e6482a53",
-        "type": "ui-gauge",
-        "z": "1c542773be693934",
-        "name": "Flujo COPE",
-        "group": "3f690bb5a526a246",
-        "order": 2,
-        "width": "5",
-        "height": "4",
-        "gtype": "gauge-half",
-        "gstyle": "rounded",
-        "title": "Flujo COPE",
-        "units": "L/h",
-        "icon": "",
-        "prefix": "",
-        "suffix": "",
-        "segments": [
-            {
-                "from": "0",
-                "color": "#ea5353"
-            },
-            {
-                "from": "4000",
-                "color": "#5cd65c"
-            },
-            {
-                "from": "7500",
-                "color": "#ea5353"
-            }
-        ],
-        "min": 0,
-        "max": "10000",
-        "sizeThickness": "26",
-        "sizeGap": "3",
-        "sizeKeyThickness": "20",
-        "styleRounded": true,
-        "styleGlow": false,
-        "className": "",
-        "x": 1680,
-        "y": 220,
-        "wires": []
-    },
-    {
-        "id": "d7dfc5c9bfbfba96",
-        "type": "ui-chart",
-        "z": "1c542773be693934",
-        "group": "3f690bb5a526a246",
-        "name": "Volumen FA-02",
-        "label": "Volumen FA-02",
-        "order": 1,
-        "chartType": "bar",
-        "category": "label",
-        "categoryType": "property",
-        "xAxisProperty": "",
-        "xAxisPropertyType": "msg",
-        "xAxisType": "category",
-        "yAxisProperty": "value",
-        "ymin": "0",
-        "ymax": "40000",
-        "action": "replace",
-        "pointShape": "circle",
-        "pointRadius": 4,
-        "showLegend": false,
-        "removeOlder": 1,
-        "removeOlderUnit": "3600",
-        "removeOlderPoints": "",
-        "colors": [
-            "#227dbf",
-            "#aec7e8",
-            "#ff7f0e",
-            "#2ca02c",
-            "#98df8a",
-            "#d62728",
-            "#ff9896",
-            "#9467bd",
-            "#c5b0d5"
-        ],
-        "width": "1",
-        "height": "5",
-        "className": "",
-        "x": 1770,
-        "y": 300,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "eaaac0825643be54",
-        "type": "function",
-        "z": "1c542773be693934",
-        "name": "formato_ui",
-        "func": "msg.payload = {\n    value: msg.payload,\n    label: msg.payload + \" Litros\"\n};\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1600,
-        "y": 300,
-        "wires": [
-            [
-                "d7dfc5c9bfbfba96"
-            ]
-        ]
-    },
-    {
-        "id": "65250917b9e4327e",
-        "type": "ui-gauge",
-        "z": "1c542773be693934",
-        "name": "Presion alimentacion",
-        "group": "3f690bb5a526a246",
-        "order": 3,
-        "width": "5",
-        "height": "4",
-        "gtype": "gauge-half",
-        "gstyle": "rounded",
-        "title": "Presión Alimentación",
-        "units": "Kg/cm2",
-        "icon": "",
-        "prefix": "",
-        "suffix": "",
-        "segments": [
-            {
-                "from": "0",
-                "color": "#ea5353"
-            },
-            {
-                "from": "4",
-                "color": "#5cd65c"
-            },
-            {
-                "from": "6",
-                "color": "#ea5353"
-            }
-        ],
-        "min": 0,
-        "max": "10",
-        "sizeThickness": "26",
-        "sizeGap": "3",
-        "sizeKeyThickness": "20",
-        "styleRounded": true,
-        "styleGlow": false,
-        "className": "",
-        "x": 1750,
-        "y": 480,
-        "wires": []
-    },
-    {
-        "id": "fa094c6d4ff8cf0d",
-        "type": "ui-gauge",
-        "z": "1c542773be693934",
-        "name": "Flujo V. DA-01",
-        "group": "d1e5da8ea7145cd4",
-        "order": 9,
-        "width": 3,
-        "height": 3,
-        "gtype": "gauge-half",
-        "gstyle": "rounded",
-        "title": "Flujo Vapor DA-01",
-        "units": "L/h",
-        "icon": "",
-        "prefix": "",
-        "suffix": "",
-        "segments": [
-            {
-                "from": "0",
-                "color": "#ea5353"
-            },
-            {
-                "from": "700",
-                "color": "#5cd65c"
-            },
-            {
-                "from": "1200",
-                "color": "#ea5353"
-            }
-        ],
-        "min": 0,
-        "max": "1500",
-        "sizeThickness": "20",
-        "sizeGap": "3",
-        "sizeKeyThickness": "16",
-        "styleRounded": true,
-        "styleGlow": false,
-        "className": "",
-        "x": 1770,
-        "y": 420,
-        "wires": []
-    },
-    {
-        "id": "fbc2944679601f74",
-        "type": "inject",
-        "z": "1c542773be693934",
-        "name": "Simulate ADC Input",
-        "props": [
-            {
-                "p": "payload.value",
-                "v": "9650",
-                "vt": "num"
-            },
-            {
-                "p": "payload.timestamp",
-                "v": "",
-                "vt": "date"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 930,
-        "y": 300,
-        "wires": [
-            [
-                "4f34ae3b1233ec04"
-            ]
-        ]
-    },
-    {
-        "id": "e5ec3c5ce2235b02",
-        "type": "inject",
-        "z": "1c542773be693934",
-        "name": "Simulate ADC Input",
-        "props": [
-            {
-                "p": "payload.value",
-                "v": "18500",
-                "vt": "num"
-            },
-            {
-                "p": "payload.timestamp",
-                "v": "",
-                "vt": "date"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 930,
-        "y": 260,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "9880b3f091a9563f",
-        "type": "inject",
-        "z": "1c542773be693934",
-        "name": "inject1",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 320,
-        "y": 140,
-        "wires": [
-            [
-                "168988dc446704c8"
-            ]
-        ]
-    },
-    {
-        "id": "59178b6fc859e9d1",
-        "type": "inject",
-        "z": "1c542773be693934",
-        "name": "inject1",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 320,
-        "y": 180,
-        "wires": [
-            [
-                "c780e35b4522eb2e"
-            ]
-        ]
-    },
-    {
-        "id": "168988dc446704c8",
-        "type": "change",
-        "z": "1c542773be693934",
-        "name": "set flow.flags",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 500,
-        "y": 140,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "c780e35b4522eb2e",
-        "type": "change",
-        "z": "1c542773be693934",
-        "name": "set flow.registers",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 520,
-        "y": 180,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "b44b8c69a1faf51b",
-        "type": "function",
-        "z": "1c542773be693934",
-        "name": "health check",
-        "func": "let status = 'Unknown';\n\nif (msg.payload === 'online') {\n    status = 'Online';\n} else if (msg.payload === 'offline') {\n    status = 'Offline';\n}\n\nmsg.payload = {\n    status: status,\n    timestamp: new Date().toISOString()\n};\n\nreturn msg;",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 300,
-        "y": 960,
-        "wires": [
-            [
-                "3277d08d1e03ce5f"
-            ]
-        ]
-    },
-    {
-        "id": "3277d08d1e03ce5f",
-        "type": "switch",
-        "z": "1c542773be693934",
-        "name": "update diag",
-        "property": "payload.status",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "Online",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "Offline",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 300,
-        "y": 1020,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "773e7c5b3c0defa7",
-        "type": "catch",
-        "z": "1c542773be693934",
-        "name": "",
-        "scope": [
-            "3f6664678974d7c5",
-            "6ad4fc497729c7be"
-        ],
-        "uncaught": false,
-        "x": 640,
-        "y": 780,
-        "wires": [
-            [
-                "79615c24144643b5"
-            ]
-        ]
-    },
-    {
-        "id": "79615c24144643b5",
-        "type": "function",
-        "z": "1c542773be693934",
-        "name": "Error Handling",
-        "func": "const maxRetries = 3;\nconst retryDelay = 5000;\n\nlet retryCount = flow.get('retryCount') || 0;\n\nif (retryCount < maxRetries) {\n    // Incrementar el contador de reintentos\n    retryCount++;\n    flow.set('retryCount', retryCount);\n    \n    // Programar el reintento después del intervalo de tiempo especificado\n    setTimeout(function() {\n        node.warn(`Retrying communication (attempt ${retryCount})`);\n        node.send(msg);\n    }, retryDelay);\n} else {\n    // Se alcanzó el número máximo de reintentos, enviar notificación de error crítico\n    node.error('Max retries reached. Critical error occurred.');\n    \n    // Enviar notificación por correo electrónico o otro medio\n    const alertMsg = {\n        payload: {\n            to: 'tableroas14@gmail.com',\n            subject: 'Critical Error - Max Retries Reached',\n            body: 'The system encountered a critical error. Max retries reached.'\n        }\n    };\n    node.send([null, alertMsg]);\n    \n    // Restablecer el contador de reintentos\n    flow.set('retryCount', 0);\n}\n\nreturn;",
-        "outputs": 2,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 820,
-        "y": 780,
-        "wires": [
-            [
-                "9303d4b089a21f41"
-            ],
-            [
-                "7ea464f83085cf52"
-            ]
-        ]
-    },
-    {
-        "id": "7ea464f83085cf52",
-        "type": "e-mail",
-        "z": "1c542773be693934",
-        "server": "smtp.gmail.com",
-        "port": "587",
-        "authtype": "BASIC",
-        "saslformat": false,
-        "token": "oauth2Response.access_token",
-        "secure": true,
-        "tls": false,
-        "name": "tableroas14@gmail.com",
-        "dname": "MTO",
-        "x": 1080,
-        "y": 800,
-        "wires": []
-    },
-    {
-        "id": "2d09587bc5f9e328",
-        "type": "function",
-        "z": "1c542773be693934",
-        "name": "Error Handling",
-        "func": "const maxRetries = 3;\nconst retryDelay = 5000;\nconst maxFlowRestarts = 2;\nconst maxServerRestarts = 1;\n\nlet retryCount = flow.get('retryCount') || 0;\nlet flowRestartCount = flow.get('flowRestartCount') || 0;\nlet serverRestartCount = flow.get('serverRestartCount') || 0;\n\nif (retryCount < maxRetries) {\n    // Incrementar el contador de reintentos\n    retryCount++;\n    flow.set('retryCount', retryCount);\n    \n    // Programar el reintento después del intervalo de tiempo especificado\n    setTimeout(function() {\n        node.warn(`Retrying communication (attempt ${retryCount})`);\n        node.send(msg);\n    }, retryDelay);\n} else {\n    // Se alcanzó el número máximo de reintentos\n    node.error('Max retries reached. Triggering flow restart.');\n    \n    // Reiniciar el flujo\n    if (flowRestartCount < maxFlowRestarts) {\n        flowRestartCount++;\n        flow.set('flowRestartCount', flowRestartCount);\n        \n        // Enviar mensaje al nodo de reinicio del flujo\n        const flowRestartMsg = {\n            payload: {\n                action: 'restartFlow'\n            }\n        };\n        node.send([null, null, flowRestartMsg]);\n    } else {\n        // Se alcanzó el número máximo de reinicios del flujo\n        node.error('Max flow restarts reached. Triggering server restart.');\n        \n        // Reiniciar el servidor Node-RED\n        if (serverRestartCount < maxServerRestarts) {\n            serverRestartCount++;\n            flow.set('serverRestartCount', serverRestartCount);\n            \n            // Enviar mensaje al nodo de reinicio del servidor\n            const serverRestartMsg = {\n                payload: {\n                    action: 'restartServer'\n                }\n            };\n            node.send([null, null, null, serverRestartMsg]);\n        } else {\n            // Se alcanzó el número máximo de reinicios del servidor\n            node.error('Max server restarts reached. Triggering system reboot.');\n            \n            // Enviar mensaje al nodo de reinicio del sistema\n            const systemRebootMsg = {\n                payload: {\n                    action: 'rebootSystem'\n                }\n            };\n            node.send([null, null, null, null, systemRebootMsg]);\n        }\n    }\n    \n    // Restablecer el contador de reintentos\n    flow.set('retryCount', 0);\n}\n\nreturn;",
-        "outputs": 5,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 770,
-        "y": 980,
-        "wires": [
-            [],
-            [],
-            [
-                "26e9f12201ae97c6"
-            ],
-            [
-                "e7a01423207e3dc9"
-            ],
-            [
-                "5c54763d2b95cc1a"
-            ]
-        ]
-    },
-    {
-        "id": "26e9f12201ae97c6",
-        "type": "function",
-        "z": "1c542773be693934",
-        "name": "Restart Flow",
-        "func": "const http = require('http');\n\n// URL de la API de Node-RED para reiniciar el flujo\nconst nodeRedUrl = 'http://localhost:1880/flows';\n\n// Opciones de la solicitud HTTP\nconst options = {\n    method: 'POST',\n    headers: {\n        'Content-Type': 'application/json',\n        'Node-RED-Deployment-Type': 'reload'\n    }\n};\n\n// Función para reiniciar el flujo\nfunction restartFlow(msg) {\n    const req = http.request(options, (res) => {\n        let data = '';\n\n        res.on('data', (chunk) => {\n            data += chunk;\n        });\n\n        res.on('end', () => {\n            if (res.statusCode === 200) {\n                node.log('Flow restarted successfully');\n                node.status({ fill: 'green', shape: 'dot', text: 'Flow restarted' });\n            } else {\n                node.error('Failed to restart flow. Status code: ' + res.statusCode);\n                node.status({ fill: 'red', shape: 'dot', text: 'Restart failed' });\n            }\n        });\n    });\n\n    req.on('error', (error) => {\n        node.error('Failed to restart flow. Error: ' + error.message);\n        node.status({ fill: 'red', shape: 'dot', text: 'Restart failed' });\n    });\n\n    req.end();\n\n    return msg;\n}\n\n// Reiniciar el flujo cuando se recibe un mensaje\nrestartFlow(msg);",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1080,
-        "y": 940,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "e7a01423207e3dc9",
-        "type": "function",
-        "z": "1c542773be693934",
-        "name": "Restart Server",
-        "func": "const exec = require('child_process').exec;\n\n// Comando para reiniciar el servidor Node-RED\nconst restartCommand = 'sudo systemctl restart nodered';\n\n// Función para reiniciar el servidor Node-RED\nfunction restartServer(msg) {\n    exec(restartCommand, (error, stdout, stderr) => {\n        if (error) {\n            node.error('Failed to restart server. Error: ' + error.message);\n            node.status({ fill: 'red', shape: 'dot', text: 'Restart failed' });\n        } else {\n            node.log('Server restarted successfully');\n            node.status({ fill: 'green', shape: 'dot', text: 'Server restarted' });\n        }\n    });\n\n    return msg;\n}\n\n// Reiniciar el servidor cuando se recibe un mensaje\nrestartServer(msg);",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1070,
-        "y": 980,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "5c54763d2b95cc1a",
-        "type": "function",
-        "z": "1c542773be693934",
-        "name": "Reboot System",
-        "func": "const exec = require('child_process').exec;\n\n// Comando para reiniciar el sistema operativo\nconst rebootCommand = 'sudo reboot';\n\n// Función para reiniciar el sistema operativo\nfunction rebootSystem(msg) {\n    exec(rebootCommand, (error, stdout, stderr) => {\n        if (error) {\n            node.error('Failed to reboot system. Error: ' + error.message);\n            node.status({ fill: 'red', shape: 'dot', text: 'Reboot failed' });\n        } else {\n            node.log('System reboot initiated');\n            node.status({ fill: 'green', shape: 'dot', text: 'System rebooting' });\n        }\n    });\n\n    return msg;\n}\n\n// Reiniciar el sistema cuando se recibe un mensaje\nrebootSystem(msg);",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1070,
-        "y": 1020,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "8302498ce177a636",
-        "type": "inject",
-        "z": "1c542773be693934",
-        "name": "Simulate Error",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "simulate error",
-        "payloadType": "str",
-        "x": 540,
-        "y": 720,
-        "wires": [
-            [
-                "6ad4fc497729c7be"
-            ]
-        ]
-    },
-    {
-        "id": "6ad4fc497729c7be",
-        "type": "function",
-        "z": "1c542773be693934",
-        "name": "function 2",
-        "func": "// Comprobar si el mensaje es un 'simulated error'\nif (msg.payload === \"simulate error\") {\n    throw new Error(\"Simulated Error\");\n}\n",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 710,
-        "y": 720,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "d56592d75acb7240",
-        "type": "inject",
-        "z": "1c542773be693934",
-        "name": "EDP1_AI2",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "2",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "1",
-        "topic": "read_EDP1_AI2",
-        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":0,\"quantity\":1}",
-        "payloadType": "json",
-        "x": 190,
-        "y": 500,
-        "wires": [
-            [
-                "9303d4b089a21f41"
-            ]
-        ]
-    },
-    {
-        "id": "757328dacaa35476",
-        "type": "inject",
-        "z": "1c542773be693934",
-        "name": "EDP1_AI3",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "2",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "1",
-        "topic": "read_EDP1_AI3",
-        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":0,\"quantity\":1}",
-        "payloadType": "json",
-        "x": 190,
-        "y": 540,
-        "wires": [
-            [
-                "9303d4b089a21f41"
-            ]
-        ]
-    },
-    {
-        "id": "fd1244510485f0fe",
-        "type": "inject",
-        "z": "1c542773be693934",
-        "name": "EDP1_AI4",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "2",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "1",
-        "topic": "read_EDP1_AI4",
-        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":0,\"quantity\":1}",
-        "payloadType": "json",
-        "x": 190,
-        "y": 580,
-        "wires": [
-            [
-                "9303d4b089a21f41"
-            ]
-        ]
-    },
-    {
-        "id": "d056ba04264f93be",
-        "type": "inject",
-        "z": "1c542773be693934",
-        "name": "EDP1_AI5",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "2",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "1",
-        "topic": "read_EDP1_AI5",
-        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":0,\"quantity\":1}",
-        "payloadType": "json",
-        "x": 190,
-        "y": 620,
-        "wires": [
-            [
-                "9303d4b089a21f41"
-            ]
-        ]
-    },
-    {
-        "id": "72a75d86c6fb7ea1",
-        "type": "inject",
-        "z": "1c542773be693934",
-        "name": "EDP1_AI6",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "2",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "1",
-        "topic": "read_EDP1_AI6",
-        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":0,\"quantity\":1}",
-        "payloadType": "json",
-        "x": 190,
-        "y": 660,
-        "wires": [
-            [
-                "9303d4b089a21f41"
-            ]
-        ]
-    },
-    {
-        "id": "180118feaf9d2736",
-        "type": "debug",
-        "z": "1c542773be693934",
-        "name": "flujo delta",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1390,
-        "y": 560,
         "wires": []
     },
     {
@@ -8650,5 +7181,69 @@
         "wires": [
             []
         ]
+    },
+    {
+        "id": "a77fa9701c726221",
+        "type": "debug",
+        "z": "190ed3e96d0709a5",
+        "name": "debug 42",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1600,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "58303efc8fb8844e",
+        "type": "debug",
+        "z": "190ed3e96d0709a5",
+        "name": "debug 43",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1300,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "41ad15c9390a54d4",
+        "type": "debug",
+        "z": "190ed3e96d0709a5",
+        "name": "debug 44",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1100,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "543df8e49def648d",
+        "type": "debug",
+        "z": "af530bfa0859125d",
+        "name": "debug 45",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1330,
+        "y": 200,
+        "wires": []
     }
 ]
