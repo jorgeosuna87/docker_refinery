@@ -7,6 +7,13 @@
         "info": ""
     },
     {
+        "id": "29c3b9dde44b67ab",
+        "type": "tab",
+        "label": "Hardware Monitoring",
+        "disabled": true,
+        "info": ""
+    },
+    {
         "id": "774e31ba3313707a",
         "type": "tab",
         "label": "T. Principal PUSRM100",
@@ -1408,14 +1415,15 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 520,
-        "y": 160,
+        "x": 350,
+        "y": 280,
         "wires": [
             [
                 "cpus-node",
                 "memory-node",
                 "loadavg-node",
-                "uptime-node"
+                "uptime-node",
+                "os-node"
             ]
         ]
     },
@@ -1815,8 +1823,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1480,
-        "y": 680,
+        "x": 1530,
+        "y": 640,
         "wires": []
     },
     {
@@ -1897,7 +1905,608 @@
         "y": 540,
         "wires": [
             [
-                "f450c94fadb718a5"
+                "f450c94fadb718a5",
+                "5caf79ab3eeb66ba"
+            ]
+        ]
+    },
+    {
+        "id": "5caf79ab3eeb66ba",
+        "type": "debug",
+        "z": "1",
+        "name": "debug 46",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1100,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "046299b16d090e45",
+        "type": "inject",
+        "z": "29c3b9dde44b67ab",
+        "name": "Check System Usage",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "300",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 520,
+        "y": 160,
+        "wires": [
+            [
+                "522f479df1709f0b",
+                "2bfc559472943048",
+                "e39610c4fb8f4e56",
+                "88bb8daa86228647"
+            ]
+        ]
+    },
+    {
+        "id": "719fd36bc2cba7bd",
+        "type": "function",
+        "z": "29c3b9dde44b67ab",
+        "name": "Format OS Info",
+        "func": "msg.payload = msg.payload || {};\nmsg.payload = `OS Info:\\nHostname: ${msg.payload.hostname || 'N/A'}\\nOS: ${msg.payload.type || 'N/A'}\\nPlatform: ${msg.payload.platform || 'N/A'}\\nArch: ${msg.payload.arch || 'N/A'}\\nRelease: ${msg.payload.release || 'N/A'}`;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1020,
+        "y": 160,
+        "wires": [
+            [
+                "d0a067af02886234"
+            ]
+        ]
+    },
+    {
+        "id": "4f2f6bf455f7ec54",
+        "type": "function",
+        "z": "29c3b9dde44b67ab",
+        "name": "Format CPU Info",
+        "func": "msg.payload = msg.payload.cpus || [];\nmsg.payload = `CPU Info:\\n${msg.payload.map((cpu, i) => `CPU ${i}: ${cpu.model || 'N/A'}, ${cpu.speed || 'N/A'}MHz`).join('\\n')}`;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1020,
+        "y": 220,
+        "wires": [
+            [
+                "d0a067af02886234"
+            ]
+        ]
+    },
+    {
+        "id": "e21c5ea004ef9048",
+        "type": "function",
+        "z": "29c3b9dde44b67ab",
+        "name": "Format Memory Info",
+        "func": "msg.payload = msg.payload || {};\nconst usedMem = msg.payload.totalmem - msg.payload.freemem;\nmsg.payload = `Memory Info:\\nTotal: ${msg.payload.totalmem || 'N/A'}\\nFree: ${msg.payload.freemem || 'N/A'}\\nUsed: ${usedMem}\\nUsage: ${msg.payload.memusage || 'N/A'}%`;\n\nif (msg.payload.memusage > 80) {\n    node.warn('High memory usage detected.');\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1020,
+        "y": 280,
+        "wires": [
+            [
+                "d0a067af02886234",
+                "93ed726cfb9c4d1f"
+            ]
+        ]
+    },
+    {
+        "id": "37c6eb12832fd6c8",
+        "type": "function",
+        "z": "29c3b9dde44b67ab",
+        "name": "Format Load Avg",
+        "func": "msg.payload = msg.payload.loadavg || [];\nmsg.payload = `Load Average:\\n1 min: ${msg.payload[0] || 'N/A'}\\n5 min: ${msg.payload[1] || 'N/A'}\\n15 min: ${msg.payload[2] || 'N/A'}`;\n\nif (msg.payload[0] > 2.0) {\n    node.warn('High CPU load detected.');\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1020,
+        "y": 340,
+        "wires": [
+            [
+                "d0a067af02886234",
+                "c2462e3f4f84eeaf"
+            ]
+        ]
+    },
+    {
+        "id": "f2dd3f189fd5678e",
+        "type": "function",
+        "z": "29c3b9dde44b67ab",
+        "name": "Format Uptime",
+        "func": "msg.payload = `Uptime: ${msg.payload.uptime || 'N/A'} seconds`;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1020,
+        "y": 400,
+        "wires": [
+            [
+                "d0a067af02886234"
+            ]
+        ]
+    },
+    {
+        "id": "93ed726cfb9c4d1f",
+        "type": "switch",
+        "z": "29c3b9dde44b67ab",
+        "name": "Check High Memory Usage",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gt",
+                "v": "80",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1220,
+        "y": 280,
+        "wires": [
+            [
+                "96b33a14ae69ed47",
+                "11c3c7b6671e588f"
+            ]
+        ]
+    },
+    {
+        "id": "c2462e3f4f84eeaf",
+        "type": "switch",
+        "z": "29c3b9dde44b67ab",
+        "name": "Check High Load Average",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gt",
+                "v": "2.0",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1220,
+        "y": 340,
+        "wires": [
+            [
+                "96b33a14ae69ed47",
+                "09bd11cd1c742137"
+            ]
+        ]
+    },
+    {
+        "id": "96b33a14ae69ed47",
+        "type": "exec",
+        "z": "29c3b9dde44b67ab",
+        "command": "sudo systemctl restart nodered",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Restart Node-RED",
+        "x": 1510,
+        "y": 300,
+        "wires": [
+            [
+                "2d7f821de2aa657c"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "2d7f821de2aa657c",
+        "type": "function",
+        "z": "29c3b9dde44b67ab",
+        "name": "Record Restart Timestamp",
+        "func": "var now = new Date().getTime();\nvar lastRestart = global.get('lastRestart') || now;\nglobal.set('lastRestart', now);\nmsg.lastRestart = lastRestart;\nmsg.timeSinceLastRestart = now - lastRestart;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1820,
+        "y": 300,
+        "wires": [
+            [
+                "f1ebb1f29769ee50"
+            ]
+        ]
+    },
+    {
+        "id": "f1ebb1f29769ee50",
+        "type": "debug",
+        "z": "29c3b9dde44b67ab",
+        "name": "Debug Restart Time",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "timeSinceLastRestart",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2050,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "d0a067af02886234",
+        "type": "debug",
+        "z": "29c3b9dde44b67ab",
+        "name": "Debug System Info",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1330,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "11c3c7b6671e588f",
+        "type": "debug",
+        "z": "29c3b9dde44b67ab",
+        "name": "Memory Alarm",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "High Memory Usage",
+        "targetType": "str",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1500,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "09bd11cd1c742137",
+        "type": "debug",
+        "z": "29c3b9dde44b67ab",
+        "name": "Load Avg Alarm",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "High Load Average",
+        "targetType": "str",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1500,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "cd2c21a2fd03a895",
+        "type": "inject",
+        "z": "29c3b9dde44b67ab",
+        "name": "Watchdog Check",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "60",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 710,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6d2166bb4d1da750",
+        "type": "function",
+        "z": "29c3b9dde44b67ab",
+        "name": "Check Ping Response",
+        "func": "if (msg.payload === false) {\n    return [msg, null];\n} else {\n    return [null, msg];\n}",
+        "outputs": 2,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1130,
+        "y": 540,
+        "wires": [
+            [
+                "96b33a14ae69ed47"
+            ],
+            [
+                "54c009de5a846851"
+            ]
+        ]
+    },
+    {
+        "id": "54c009de5a846851",
+        "type": "debug",
+        "z": "29c3b9dde44b67ab",
+        "name": "Watchdog Debug",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1430,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "ca827b238214741e",
+        "type": "inject",
+        "z": "29c3b9dde44b67ab",
+        "name": "Check Dashboard Page",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "60",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 690,
+        "y": 640,
+        "wires": [
+            [
+                "9d9ed9ceca86b809"
+            ]
+        ]
+    },
+    {
+        "id": "9d9ed9ceca86b809",
+        "type": "http request",
+        "z": "29c3b9dde44b67ab",
+        "name": "Request Dashboard Page",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://localhost:1880/dashboard/pageN",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 950,
+        "y": 640,
+        "wires": [
+            [
+                "68bca845d363c989"
+            ]
+        ]
+    },
+    {
+        "id": "68bca845d363c989",
+        "type": "function",
+        "z": "29c3b9dde44b67ab",
+        "name": "Check Dashboard Page Response",
+        "func": "if (msg.statusCode === 200) {\n    node.status({fill:\"green\",shape:\"dot\",text:\"Page OK\"});\n    return null;\n} else {\n    node.status({fill:\"red\",shape:\"ring\",text:\"Page FAIL\"});\n    return [msg, null];\n}",
+        "outputs": 2,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1260,
+        "y": 640,
+        "wires": [
+            [
+                "96b33a14ae69ed47"
+            ],
+            [
+                "b576a64a5e4159f1"
+            ]
+        ]
+    },
+    {
+        "id": "ee2b93efa1d01ac3",
+        "type": "function",
+        "z": "29c3b9dde44b67ab",
+        "name": "Check Node-RED Response",
+        "func": "if (msg.payload === false) {\n    // Node-RED no responde\n    global.set(\"failedRestarts\", (global.get(\"failedRestarts\") || 0) + 1);\n    msg.failedRestarts = global.get(\"failedRestarts\");\n    return msg;\n} else {\n    // Node-RED responde correctamente\n    global.set(\"failedRestarts\", 0);\n    return msg;\n}",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 800,
+        "wires": [
+            [
+                "417eaf02cf334ead"
+            ]
+        ]
+    },
+    {
+        "id": "417eaf02cf334ead",
+        "type": "function",
+        "z": "29c3b9dde44b67ab",
+        "name": "Determine Restart Action",
+        "func": "var failedRestarts = msg.failedRestarts || 0;\nif (failedRestarts >= 3) {\n    // Reiniciar el sistema completo\n    return { payload: \"sudo reboot\" };\n} else {\n    // Reiniciar solo Node-RED\n    return { payload: \"sudo systemctl restart nodered\" };\n}",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1090,
+        "y": 800,
+        "wires": [
+            [
+                "83768a2249b58972"
+            ]
+        ]
+    },
+    {
+        "id": "83768a2249b58972",
+        "type": "exec",
+        "z": "29c3b9dde44b67ab",
+        "command": "",
+        "addpay": "payload",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Execute Restart Command",
+        "x": 1360,
+        "y": 800,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "b576a64a5e4159f1",
+        "type": "debug",
+        "z": "29c3b9dde44b67ab",
+        "name": "debug dashboard",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1480,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "93dfc5eb37c81c65",
+        "type": "OS",
+        "z": "29c3b9dde44b67ab",
+        "name": "Get OS Info",
+        "x": 720,
+        "y": 160,
+        "wires": [
+            [
+                "719fd36bc2cba7bd"
+            ]
+        ]
+    },
+    {
+        "id": "88bb8daa86228647",
+        "type": "Uptime",
+        "z": "29c3b9dde44b67ab",
+        "name": "Get Uptime",
+        "x": 720,
+        "y": 400,
+        "wires": [
+            [
+                "f2dd3f189fd5678e"
+            ]
+        ]
+    },
+    {
+        "id": "522f479df1709f0b",
+        "type": "CPUs",
+        "z": "29c3b9dde44b67ab",
+        "name": "Get CPU Info",
+        "x": 720,
+        "y": 220,
+        "wires": [
+            [
+                "4f2f6bf455f7ec54"
+            ]
+        ]
+    },
+    {
+        "id": "e39610c4fb8f4e56",
+        "type": "Loadavg",
+        "z": "29c3b9dde44b67ab",
+        "name": "Get Load Average",
+        "x": 720,
+        "y": 340,
+        "wires": [
+            [
+                "37c6eb12832fd6c8"
+            ]
+        ]
+    },
+    {
+        "id": "2bfc559472943048",
+        "type": "Memory",
+        "z": "29c3b9dde44b67ab",
+        "name": "Get Memory Info",
+        "x": 720,
+        "y": 280,
+        "wires": [
+            [
+                "e21c5ea004ef9048"
+            ]
+        ]
+    },
+    {
+        "id": "a328188b914416a4",
+        "type": "ping",
+        "z": "29c3b9dde44b67ab",
+        "mode": null,
+        "name": "Ping Node-RED",
+        "host": "127.0.0.1",
+        "timer": "20",
+        "inputs": 0,
+        "x": 920,
+        "y": 540,
+        "wires": [
+            [
+                "6d2166bb4d1da750"
             ]
         ]
     },
@@ -3148,64 +3757,6 @@
         "wires": []
     },
     {
-        "id": "52808d04cdd74a21",
-        "type": "inject",
-        "z": "190ed3e96d0709a5",
-        "name": "update",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "1",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "update",
-        "payload": "",
-        "payloadType": "date",
-        "x": 360,
-        "y": 560,
-        "wires": [
-            [
-                "a1d380aff2236a21"
-            ]
-        ]
-    },
-    {
-        "id": "d1bdf4bd97f40d4c",
-        "type": "inject",
-        "z": "190ed3e96d0709a5",
-        "name": "next",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "next",
-        "payload": "",
-        "payloadType": "date",
-        "x": 370,
-        "y": 520,
-        "wires": [
-            [
-                "a1d380aff2236a21"
-            ]
-        ]
-    },
-    {
         "id": "0c9c4c6ccd5f1680",
         "type": "change",
         "z": "190ed3e96d0709a5",
@@ -3224,8 +3775,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 740,
-        "y": 600,
+        "x": 800,
+        "y": 520,
         "wires": [
             [
                 "a1d380aff2236a21"
@@ -3258,49 +3809,6 @@
         "info": "# Modbus Queue\r\n\r\nThis node queueing read and write messages for modbus. Use this node if you are reading and writing the same device with many different requests. E.g. reading different coil/register intervals continously and also writing to the device at the same time.\r\n\r\nIt does a few things:\r\n- queues all messages arrive on the input port\r\n- based on the msg.topic, older messages of the same topci is ignored\r\n- sends out the oldest message and waits for the \r\n- monitors the time since last message and send out report on the output\r\n- handles online/offline status\r\n- resend the last message is response is not received in time\r\n\r\n## Input Data\r\n\r\n### payload\r\n\r\nThe payload should contain the data that gets sent to the flex-getter or flex-write node.\r\nTypical modbus read payload:\r\n`{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":1000,\"quantity\":20}`\r\nTypical modbus write payload:\r\n`{\"value\":false,\"fc\":5,\"unitid\":1,\"address\":0,\"quantity\":1}`\r\n\r\n### topic\r\n\r\nEach message must contain a topic (any text), and this topic is used to identify the different read/write requests and delete any earlier request with the same topic if it still in the queueing\r\n\r\nThere are a few reserved topic for special function (for these payload is ignored):\r\n- reset: resets the queue and deleted any data collected so far\r\n- next: this is the message fed back from the flex getter/write node to indicate to this node that a new message can be sent out\r\n- update: this should be coming from a 1 second time to display the current queue count, time since the last update and online/offline status\r\n\r\n## Output ports\r\n\r\n### Port 1: flex getter\r\n\r\nThis output should be connected to a modbos-flex-getter and all the read requests will be sent out through this port\r\n\r\n### Port 2: flex write\r\n\r\nThis output should be connected to a modbos-flex-write and all the write requests will be sent out through this port\r\n\r\n### Port 3: status messages\r\n\r\nThis port outputs a status message for every update message (msg.topic=\"update\").\r\n\r\n- topic: \"Information\" for regular updates, \"Warning\": offline device is now back online, \"Error\": device is offline\r\n- payload.text: message like when the device gone offline, or back online\r\n- payload.updatetext: time passed since the last update (human readable format)\r\n- payload.secondsincelastupdate: number of seconds since the last update from the device\r\n- payload.statuschange: true if status is changed (gone offline, back online)\r\n- payload.state: 0: initial state, no data yet, 1: device online, 99: device offline\r\n\r\n## Node Settings\r\n\r\nChange the settings in the first 4 lines of the code to influence the behaviour. Explanation is in the code as comment."
     },
     {
-        "id": "b846c12e16e8c9a6",
-        "type": "inject",
-        "z": "190ed3e96d0709a5",
-        "name": "reset",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "1",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "update",
-        "payload": "",
-        "payloadType": "date",
-        "x": 370,
-        "y": 480,
-        "wires": [
-            [
-                "a1d380aff2236a21"
-            ]
-        ]
-    },
-    {
-        "id": "c9844975fe8595b3",
-        "type": "link in",
-        "z": "190ed3e96d0709a5",
-        "name": "link in 2",
-        "links": [],
-        "x": 405,
-        "y": 440,
-        "wires": [
-            [
-                "a1d380aff2236a21"
-            ]
-        ]
-    },
-    {
         "id": "55b26ddfc0cc83ba",
         "type": "function",
         "z": "190ed3e96d0709a5",
@@ -3312,7 +3820,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 930,
+        "x": 910,
         "y": 720,
         "wires": [
             []
@@ -3339,8 +3847,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 380,
-        "y": 940,
+        "x": 520,
+        "y": 780,
         "wires": [
             [
                 "a1d380aff2236a21"
@@ -3379,7 +3887,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 4,
-        "x": 1160,
+        "x": 1200,
         "y": 700,
         "wires": [
             [
@@ -3416,8 +3924,8 @@
         "topic": "read_ADC2_AI1",
         "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":0,\"quantity\":1}",
         "payloadType": "json",
-        "x": 340,
-        "y": 700,
+        "x": 500,
+        "y": 620,
         "wires": [
             [
                 "a1d380aff2236a21"
@@ -3445,8 +3953,8 @@
         "topic": "read_ADC2_AI2",
         "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":1,\"quantity\":1}",
         "payloadType": "json",
-        "x": 340,
-        "y": 740,
+        "x": 500,
+        "y": 660,
         "wires": [
             [
                 "a1d380aff2236a21"
@@ -3474,10 +3982,12 @@
         "topic": "read_ADC2_AI3",
         "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":2,\"quantity\":1}",
         "payloadType": "json",
-        "x": 340,
-        "y": 780,
+        "x": 500,
+        "y": 700,
         "wires": [
-            []
+            [
+                "a1d380aff2236a21"
+            ]
         ]
     },
     {
@@ -3501,10 +4011,12 @@
         "topic": "read_ADC2_AI4",
         "payload": "{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":0,\"quantity\":1}",
         "payloadType": "json",
-        "x": 340,
-        "y": 820,
+        "x": 500,
+        "y": 740,
         "wires": [
-            []
+            [
+                "a1d380aff2236a21"
+            ]
         ]
     },
     {
@@ -3512,7 +4024,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "calc_vol_FA-01",
-        "func": "const valorCrudo = msg.payload.data[0]; // Aquí tomamos el primer elemento del array\nif (isNaN(valorCrudo)) {\n    node.error(\"Valor crudo no es un número\", msg);\n    return null;\n}\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (115500 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "func": "const valorCrudo = msg.payload;\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (115500 - 0);\nmsg.payload = Math.round(valorLitros);\nreturn msg;",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -3556,7 +4068,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "telemetria",
-        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de volumen no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n  volumen: msg.payload\n};\nreturn msg;\n",
+        "func": "msg.payload = {\n  volumen: msg.payload\n};\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -3613,7 +4125,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "calc_vol_FA-09",
-        "func": "const valorCrudo = msg.payload.data ? msg.payload.data[0] : msg.payload; // Usamos el primer elemento del array o el payload directamente\nif (isNaN(valorCrudo)) {\n    node.error(\"Valor crudo no es un número\", msg);\n    return null;\n}\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (19000 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "func": "const valorCrudo = msg.payload;\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (19000 - 0);\nmsg.payload = Math.round(valorLitros);\nreturn msg;",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -3656,7 +4168,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "telemetria",
-        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de volumen no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n  volumen: msg.payload\n};\nreturn msg;\n",
+        "func": "msg.payload = {\n  volumen: msg.payload\n};\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -3713,7 +4225,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "calc_vol_FA-07",
-        "func": "const valorCrudo = msg.payload; // Usamos directamente el payload\nif (isNaN(valorCrudo)) {\n    node.error(\"Valor crudo no es un número\", msg);\n    return null;\n}\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (200000 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "func": "const valorCrudo = msg.payload;\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (200000 - 0);\nmsg.payload = Math.round(valorLitros);\nreturn msg;",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -3721,7 +4233,7 @@
         "finalize": "",
         "libs": [],
         "x": 1420,
-        "y": 760,
+        "y": 780,
         "wires": [
             [
                 "1925a962bbeb0bdd",
@@ -3756,7 +4268,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "telemetria",
-        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de volumen no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n  volumen: msg.payload\n};\nreturn msg;\n",
+        "func": "msg.payload = {\n  volumen: msg.payload\n};\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -3825,16 +4337,14 @@
         "keepMsgProperties": false,
         "delayOnStart": false,
         "startDelayTime": "",
-        "x": 930,
+        "x": 910,
         "y": 680,
         "wires": [
             [
                 "0c9c4c6ccd5f1680",
-                "41ad15c9390a54d4"
+                "2cd8e608136da0c1"
             ],
-            [
-                "69b686e91740cea5"
-            ]
+            []
         ]
     },
     {
@@ -3974,7 +4484,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "F_influx_vol",
-        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de nivel litros no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-1',\n                equipo_id: 'FA-01',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-1', \n                equipo_id: 'FA-01', \n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -4006,7 +4516,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "F_influx_vol",
-        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de nivel litros no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-9',\n                equipo_id: 'FA-09',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-9', \n                equipo_id: 'FA-09', \n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -4026,7 +4536,7 @@
         "type": "function",
         "z": "190ed3e96d0709a5",
         "name": "F_influx_vol",
-        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de nivel litros no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-7',\n                equipo_id: 'FA-07',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-7', \n                equipo_id: 'FA-07', \n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -4038,6 +4548,58 @@
         "wires": [
             [
                 "c2f402fd7de228b2"
+            ]
+        ]
+    },
+    {
+        "id": "a77fa9701c726221",
+        "type": "debug",
+        "z": "190ed3e96d0709a5",
+        "name": "debug 42",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1600,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "58303efc8fb8844e",
+        "type": "debug",
+        "z": "190ed3e96d0709a5",
+        "name": "debug 43",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1300,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "2cd8e608136da0c1",
+        "type": "function",
+        "z": "190ed3e96d0709a5",
+        "name": "msg",
+        "func": "msg.payload = msg.payload.data[0];\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1050,
+        "y": 700,
+        "wires": [
+            [
+                "69b686e91740cea5"
             ]
         ]
     },
@@ -4064,64 +4626,6 @@
         "payloadType": "json",
         "x": 450,
         "y": 500,
-        "wires": [
-            [
-                "3eeca4f2870275ab"
-            ]
-        ]
-    },
-    {
-        "id": "1e8be9ee0af07cce",
-        "type": "inject",
-        "z": "5abe0cc40f5ad9c5",
-        "name": "update",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "1",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "update",
-        "payload": "",
-        "payloadType": "date",
-        "x": 500,
-        "y": 340,
-        "wires": [
-            [
-                "3eeca4f2870275ab"
-            ]
-        ]
-    },
-    {
-        "id": "2f776b033e7cd327",
-        "type": "inject",
-        "z": "5abe0cc40f5ad9c5",
-        "name": "next",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "next",
-        "payload": "",
-        "payloadType": "date",
-        "x": 490,
-        "y": 300,
         "wires": [
             [
                 "3eeca4f2870275ab"
@@ -4171,7 +4675,7 @@
         "y": 480,
         "wires": [
             [
-                "2c8e65186a7fd7ec"
+                "6389fd03ebd293e8"
             ],
             [],
             [
@@ -4214,35 +4718,6 @@
                 "849e5d398277bae3",
                 "eb931d150b681d2e",
                 "aeb67c1140dda1f4"
-            ]
-        ]
-    },
-    {
-        "id": "a82d87f1056b77c2",
-        "type": "inject",
-        "z": "5abe0cc40f5ad9c5",
-        "name": "reset",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "1",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "update",
-        "payload": "",
-        "payloadType": "date",
-        "x": 490,
-        "y": 260,
-        "wires": [
-            [
-                "3eeca4f2870275ab"
             ]
         ]
     },
@@ -4465,7 +4940,7 @@
         "type": "function",
         "z": "5abe0cc40f5ad9c5",
         "name": "Procesar Temperatura",
-        "func": "let values = msg.payload.data;\nlet temperature = values[0] * 0.1; // Asumimos que la conversión es correcta según tu sistema\nlet adjustedTemperature = 1.3587 * temperature - 14.0434;\nmsg.payload = parseFloat(adjustedTemperature.toFixed(1)); // Envía solo el número ajustado\nreturn msg;",
+        "func": "let values = msg.payload;\nlet temperature = values * 0.1; // Asumimos que la conversión es correcta según tu sistema\nlet adjustedTemperature = 1.3587 * temperature - 14.0434;\nmsg.payload = parseFloat(adjustedTemperature.toFixed(1)); // Envía solo el número ajustado\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -4565,7 +5040,7 @@
         "type": "function",
         "z": "5abe0cc40f5ad9c5",
         "name": "Procesar Temperatura Especial",
-        "func": "let values = msg.payload.data;\nlet temperature = values[0] * 0.1 * 1.022; // Multiplicación por 0.1 y luego por 1.022\nmsg.payload = parseFloat(temperature.toFixed(1)); // Envía solo el número ajustado\nreturn msg;",
+        "func": "let values = msg.payload;\nlet temperature = values * 0.1 * 1.022; // Multiplicación por 0.1 y luego por 1.022\nmsg.payload = parseFloat(temperature.toFixed(1)); // Envía solo el número ajustado\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -4612,7 +5087,7 @@
         "type": "function",
         "z": "5abe0cc40f5ad9c5",
         "name": "Procesar Temperatura",
-        "func": "let values = msg.payload.data;\nlet temperature = values[0] * 0.1 * 0.985; // Asumimos que la conversión es correcta según tu sistema\nlet adjustedTemperature = 1.3587 * temperature - 14.0434;\nmsg.payload = parseFloat(adjustedTemperature.toFixed(1)); // Envía solo el número ajustado\nreturn msg;",
+        "func": "let values = msg.payload;\nlet temperature = values * 0.1 * 0.985; // Asumimos que la conversión es correcta según tu sistema\nlet adjustedTemperature = 1.3587 * temperature - 14.0434;\nmsg.payload = parseFloat(adjustedTemperature.toFixed(1)); // Envía solo el número ajustado\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -4671,7 +5146,7 @@
         "keepMsgProperties": false,
         "delayOnStart": false,
         "startDelayTime": "",
-        "x": 930,
+        "x": 970,
         "y": 460,
         "wires": [
             [
@@ -4937,6 +5412,26 @@
         "wires": []
     },
     {
+        "id": "6389fd03ebd293e8",
+        "type": "function",
+        "z": "5abe0cc40f5ad9c5",
+        "name": "msg",
+        "func": "msg.payload = msg.payload.data[0];\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 850,
+        "y": 440,
+        "wires": [
+            [
+                "2c8e65186a7fd7ec"
+            ]
+        ]
+    },
+    {
         "id": "e00fc1d0d3c743a7",
         "type": "inject",
         "z": "af530bfa0859125d",
@@ -4959,64 +5454,6 @@
         "payloadType": "json",
         "x": 220,
         "y": 420,
-        "wires": [
-            [
-                "353a26fce582e8c1"
-            ]
-        ]
-    },
-    {
-        "id": "b7810f4cf10e09bd",
-        "type": "inject",
-        "z": "af530bfa0859125d",
-        "name": "update",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "1",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "update",
-        "payload": "",
-        "payloadType": "date",
-        "x": 260,
-        "y": 380,
-        "wires": [
-            [
-                "353a26fce582e8c1"
-            ]
-        ]
-    },
-    {
-        "id": "3c2713ff0b14637b",
-        "type": "inject",
-        "z": "af530bfa0859125d",
-        "name": "next",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "next",
-        "payload": "",
-        "payloadType": "date",
-        "x": 270,
-        "y": 340,
         "wires": [
             [
                 "353a26fce582e8c1"
@@ -5076,49 +5513,6 @@
         "info": "# Modbus Queue\r\n\r\nThis node queueing read and write messages for modbus. Use this node if you are reading and writing the same device with many different requests. E.g. reading different coil/register intervals continously and also writing to the device at the same time.\r\n\r\nIt does a few things:\r\n- queues all messages arrive on the input port\r\n- based on the msg.topic, older messages of the same topci is ignored\r\n- sends out the oldest message and waits for the \r\n- monitors the time since last message and send out report on the output\r\n- handles online/offline status\r\n- resend the last message is response is not received in time\r\n\r\n## Input Data\r\n\r\n### payload\r\n\r\nThe payload should contain the data that gets sent to the flex-getter or flex-write node.\r\nTypical modbus read payload:\r\n`{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":1000,\"quantity\":20}`\r\nTypical modbus write payload:\r\n`{\"value\":false,\"fc\":5,\"unitid\":1,\"address\":0,\"quantity\":1}`\r\n\r\n### topic\r\n\r\nEach message must contain a topic (any text), and this topic is used to identify the different read/write requests and delete any earlier request with the same topic if it still in the queueing\r\n\r\nThere are a few reserved topic for special function (for these payload is ignored):\r\n- reset: resets the queue and deleted any data collected so far\r\n- next: this is the message fed back from the flex getter/write node to indicate to this node that a new message can be sent out\r\n- update: this should be coming from a 1 second time to display the current queue count, time since the last update and online/offline status\r\n\r\n## Output ports\r\n\r\n### Port 1: flex getter\r\n\r\nThis output should be connected to a modbos-flex-getter and all the read requests will be sent out through this port\r\n\r\n### Port 2: flex write\r\n\r\nThis output should be connected to a modbos-flex-write and all the write requests will be sent out through this port\r\n\r\n### Port 3: status messages\r\n\r\nThis port outputs a status message for every update message (msg.topic=\"update\").\r\n\r\n- topic: \"Information\" for regular updates, \"Warning\": offline device is now back online, \"Error\": device is offline\r\n- payload.text: message like when the device gone offline, or back online\r\n- payload.updatetext: time passed since the last update (human readable format)\r\n- payload.secondsincelastupdate: number of seconds since the last update from the device\r\n- payload.statuschange: true if status is changed (gone offline, back online)\r\n- payload.state: 0: initial state, no data yet, 1: device online, 99: device offline\r\n\r\n## Node Settings\r\n\r\nChange the settings in the first 4 lines of the code to influence the behaviour. Explanation is in the code as comment."
     },
     {
-        "id": "f05fa78a9f1fb2b9",
-        "type": "inject",
-        "z": "af530bfa0859125d",
-        "name": "reset",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "1",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "update",
-        "payload": "",
-        "payloadType": "date",
-        "x": 270,
-        "y": 300,
-        "wires": [
-            [
-                "353a26fce582e8c1"
-            ]
-        ]
-    },
-    {
-        "id": "1324cca7591d2ccc",
-        "type": "link in",
-        "z": "af530bfa0859125d",
-        "name": "link in 3",
-        "links": [],
-        "x": 305,
-        "y": 260,
-        "wires": [
-            [
-                "353a26fce582e8c1"
-            ]
-        ]
-    },
-    {
         "id": "5181badbc62bd71b",
         "type": "function",
         "z": "af530bfa0859125d",
@@ -5157,8 +5551,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 280,
-        "y": 880,
+        "x": 240,
+        "y": 700,
         "wires": [
             [
                 "353a26fce582e8c1"
@@ -5415,7 +5809,7 @@
         "type": "function",
         "z": "af530bfa0859125d",
         "name": "calc_vol_FA-04",
-        "func": "const valorCrudo = msg.payload.data ? msg.payload.data[0] : msg.payload; // Aseguramos que estamos tomando el primer elemento del array o el payload directamente\nif (isNaN(valorCrudo)) {\n    node.error(\"Valor crudo no es un número\", msg);\n    return null;\n}\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (65000 - 3200);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "func": "const valorCrudo = msg.payload;\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (65000 - 3200);\nmsg.payload = Math.round(valorLitros);\nreturn msg;",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -5497,7 +5891,7 @@
         "type": "function",
         "z": "af530bfa0859125d",
         "name": "calc_vol_FA-06A",
-        "func": "const valorCrudo = msg.payload.data ? msg.payload.data[0] : msg.payload; // Aseguramos que estamos tomando el primer elemento del array o el payload directamente\nif (isNaN(valorCrudo)) {\n    node.error(\"Valor crudo no es un número\", msg);\n    return null;\n}\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (51600 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "func": "const valorCrudo = msg.payload;\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (51600 - 0);\nmsg.payload = Math.round(valorLitros);\nreturn msg;",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -5578,7 +5972,7 @@
         "type": "function",
         "z": "af530bfa0859125d",
         "name": "calc_vol_FA-06B",
-        "func": "const valorCrudo = msg.payload.data ? msg.payload.data[0] : msg.payload; // Aseguramos que estamos tomando el primer elemento del array o el payload directamente\nif (isNaN(valorCrudo)) {\n    node.error(\"Valor crudo no es un número\", msg);\n    return null;\n}\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (94100 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "func": "const valorCrudo = msg.payload;\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (94100 - 0);\nmsg.payload = Math.round(valorLitros);\nreturn msg;",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -5675,8 +6069,8 @@
         "y": 540,
         "wires": [
             [
-                "6382a708c5d5d64a",
-                "9a7897e7aa8a9fef"
+                "9a7897e7aa8a9fef",
+                "d0867b8f6b0c0bd2"
             ],
             []
         ]
@@ -5818,7 +6212,7 @@
         "type": "function",
         "z": "af530bfa0859125d",
         "name": "F_influx_vol",
-        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de nivel litros no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-4',\n                equipo_id: 'FA-04',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-4',\n                equipo_id: 'FA-04',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -5851,7 +6245,7 @@
         "type": "function",
         "z": "af530bfa0859125d",
         "name": "F_influx_vol",
-        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de nivel litros no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-6A',\n                equipo_id: 'FA-06A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-6A',\n                equipo_id: 'FA-06A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -5871,7 +6265,7 @@
         "type": "function",
         "z": "af530bfa0859125d",
         "name": "F_influx_vol",
-        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de nivel litros no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-6B',\n                equipo_id: 'FA-06B',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-6B',\n                equipo_id: 'FA-06B',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -5960,60 +6354,38 @@
         "wires": []
     },
     {
-        "id": "b6ad7e85b72dac92",
-        "type": "inject",
-        "z": "9fa46c697055fd5a",
-        "name": "update",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "1",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "update",
-        "payload": "",
-        "payloadType": "date",
-        "x": 750,
-        "y": 600,
-        "wires": [
-            [
-                "9e6c0ff1151a09d0"
-            ]
-        ]
+        "id": "543df8e49def648d",
+        "type": "debug",
+        "z": "af530bfa0859125d",
+        "name": "debug 45",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1280,
+        "y": 100,
+        "wires": []
     },
     {
-        "id": "a55f26ece7c5d393",
-        "type": "inject",
-        "z": "9fa46c697055fd5a",
-        "name": "next",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "next",
-        "payload": "",
-        "payloadType": "date",
-        "x": 760,
-        "y": 560,
+        "id": "d0867b8f6b0c0bd2",
+        "type": "function",
+        "z": "af530bfa0859125d",
+        "name": "msg",
+        "func": "msg.payload = msg.payload.data[0];\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 440,
         "wires": [
             [
-                "9e6c0ff1151a09d0"
+                "6382a708c5d5d64a"
             ]
         ]
     },
@@ -6037,7 +6409,7 @@
         "to": "",
         "reg": false,
         "x": 980,
-        "y": 660,
+        "y": 540,
         "wires": [
             [
                 "9e6c0ff1151a09d0"
@@ -6070,49 +6442,6 @@
         "info": "# Modbus Queue\r\n\r\nThis node queueing read and write messages for modbus. Use this node if you are reading and writing the same device with many different requests. E.g. reading different coil/register intervals continously and also writing to the device at the same time.\r\n\r\nIt does a few things:\r\n- queues all messages arrive on the input port\r\n- based on the msg.topic, older messages of the same topci is ignored\r\n- sends out the oldest message and waits for the \r\n- monitors the time since last message and send out report on the output\r\n- handles online/offline status\r\n- resend the last message is response is not received in time\r\n\r\n## Input Data\r\n\r\n### payload\r\n\r\nThe payload should contain the data that gets sent to the flex-getter or flex-write node.\r\nTypical modbus read payload:\r\n`{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":1000,\"quantity\":20}`\r\nTypical modbus write payload:\r\n`{\"value\":false,\"fc\":5,\"unitid\":1,\"address\":0,\"quantity\":1}`\r\n\r\n### topic\r\n\r\nEach message must contain a topic (any text), and this topic is used to identify the different read/write requests and delete any earlier request with the same topic if it still in the queueing\r\n\r\nThere are a few reserved topic for special function (for these payload is ignored):\r\n- reset: resets the queue and deleted any data collected so far\r\n- next: this is the message fed back from the flex getter/write node to indicate to this node that a new message can be sent out\r\n- update: this should be coming from a 1 second time to display the current queue count, time since the last update and online/offline status\r\n\r\n## Output ports\r\n\r\n### Port 1: flex getter\r\n\r\nThis output should be connected to a modbos-flex-getter and all the read requests will be sent out through this port\r\n\r\n### Port 2: flex write\r\n\r\nThis output should be connected to a modbos-flex-write and all the write requests will be sent out through this port\r\n\r\n### Port 3: status messages\r\n\r\nThis port outputs a status message for every update message (msg.topic=\"update\").\r\n\r\n- topic: \"Information\" for regular updates, \"Warning\": offline device is now back online, \"Error\": device is offline\r\n- payload.text: message like when the device gone offline, or back online\r\n- payload.updatetext: time passed since the last update (human readable format)\r\n- payload.secondsincelastupdate: number of seconds since the last update from the device\r\n- payload.statuschange: true if status is changed (gone offline, back online)\r\n- payload.state: 0: initial state, no data yet, 1: device online, 99: device offline\r\n\r\n## Node Settings\r\n\r\nChange the settings in the first 4 lines of the code to influence the behaviour. Explanation is in the code as comment."
     },
     {
-        "id": "7b75b7eec74151d1",
-        "type": "inject",
-        "z": "9fa46c697055fd5a",
-        "name": "reset",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "1",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "update",
-        "payload": "",
-        "payloadType": "date",
-        "x": 760,
-        "y": 520,
-        "wires": [
-            [
-                "9e6c0ff1151a09d0"
-            ]
-        ]
-    },
-    {
-        "id": "3782d60ed19c01fc",
-        "type": "link in",
-        "z": "9fa46c697055fd5a",
-        "name": "link in 4",
-        "links": [],
-        "x": 795,
-        "y": 480,
-        "wires": [
-            [
-                "9e6c0ff1151a09d0"
-            ]
-        ]
-    },
-    {
         "id": "53d976498e89501e",
         "type": "function",
         "z": "9fa46c697055fd5a",
@@ -6125,7 +6454,7 @@
         "finalize": "",
         "libs": [],
         "x": 1170,
-        "y": 820,
+        "y": 800,
         "wires": [
             []
         ]
@@ -6152,7 +6481,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 720,
-        "y": 900,
+        "y": 860,
         "wires": [
             [
                 "9e6c0ff1151a09d0"
@@ -6164,14 +6493,14 @@
         "type": "function",
         "z": "9fa46c697055fd5a",
         "name": "calc_vol",
-        "func": "const valorCrudo = msg.payload.data[0]; // Usar msg.payload.data[0]\nif (isNaN(valorCrudo)) {\n    node.error(\"Valor crudo no es un número\", msg);\n    return null;\n}\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (40000 - 0);\nmsg.payload = Math.round(valorLitros);  // Mantener solo el valor numérico\nreturn msg;\n",
+        "func": "const valorCrudo = msg.payload;\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (40000 - 0);\nmsg.payload = Math.round(valorLitros);\nreturn msg;",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1710,
+        "x": 1620,
         "y": 540,
         "wires": [
             [
@@ -6195,8 +6524,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1920,
-        "y": 500,
+        "x": 1690,
+        "y": 440,
         "wires": [
             [
                 "2ef0ebdea5ea4864"
@@ -6248,14 +6577,14 @@
         "type": "function",
         "z": "9fa46c697055fd5a",
         "name": "calc_presion",
-        "func": "const valorADCMin = 4000;\nconst valorADCMax = 20000;\nconst valorMin = 0;\nconst valorMax = 10.1972;\n\nconst valorADC = msg.payload.data[0]; // Usar msg.payload.data[0]\nif (isNaN(valorADC)) {\n    node.error(\"Valor ADC no es un número\", msg);\n    return null;\n}\nconst valorPresion = ((valorADC - valorADCMin) / (valorADCMax - valorMin)) * (valorMax - valorMin) + valorMin;\n\nmsg.payload = Number(valorPresion.toFixed(4));\n\nreturn msg;\n",
+        "func": "const valorADCMin = 4000;\nconst valorADCMax = 20000;\nconst valorMin = 0;\nconst valorMax = 10.1972;\n\nconst valorADC = msg.payload;\nconst valorPresion = ((valorADC - valorADCMin) / (valorADCMax - valorMin)) * (valorMax - valorMin) + valorMin;\n\nmsg.payload = Number(valorPresion.toFixed(4));\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1720,
+        "x": 1690,
         "y": 700,
         "wires": [
             [
@@ -6297,7 +6626,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 4,
-        "x": 1360,
+        "x": 1440,
         "y": 740,
         "wires": [
             [
@@ -6387,7 +6716,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 2110,
+        "x": 1930,
         "y": 520,
         "wires": [
             [
@@ -6407,7 +6736,7 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1870,
+        "x": 1680,
         "y": 380,
         "wires": []
     },
@@ -6433,7 +6762,7 @@
         "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":0,\"quantity\":1}",
         "payloadType": "json",
         "x": 700,
-        "y": 680,
+        "y": 700,
         "wires": [
             [
                 "9e6c0ff1151a09d0"
@@ -6491,7 +6820,7 @@
         "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":2,\"quantity\":1}",
         "payloadType": "json",
         "x": 700,
-        "y": 800,
+        "y": 780,
         "wires": [
             [
                 "9e6c0ff1151a09d0"
@@ -6520,7 +6849,7 @@
         "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":3,\"quantity\":1}",
         "payloadType": "json",
         "x": 700,
-        "y": 860,
+        "y": 820,
         "wires": [
             [
                 "9e6c0ff1151a09d0"
@@ -6539,8 +6868,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 2030,
-        "y": 860,
+        "x": 1970,
+        "y": 780,
         "wires": [
             [
                 "371770d320aa2377"
@@ -6559,8 +6888,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 2040,
-        "y": 900,
+        "x": 1960,
+        "y": 820,
         "wires": [
             [
                 "e729a7dadb878a4c"
@@ -6579,8 +6908,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1990,
-        "y": 780,
+        "x": 1970,
+        "y": 940,
         "wires": [
             [
                 "8413cbabe0b57832"
@@ -6599,8 +6928,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 2000,
-        "y": 820,
+        "x": 1960,
+        "y": 980,
         "wires": [
             [
                 "dec46ef532293f9a"
@@ -6612,15 +6941,15 @@
         "type": "function",
         "z": "9fa46c697055fd5a",
         "name": "calc_temp",
-        "func": "const valorADCMin = 4000;\nconst valorADCMax = 20000;\nconst valorMin = 0;\nconst valorMax = 1300;\n\nconst valorADC = msg.payload;\nconst valorTemperatura = ((valorADC - valorADCMin) / (valorADCMax - valorADCMin)) * (valorMax - valorMin) + valorMin;\n\nmsg.payload = Math.round(valorTemperatura);\n\nreturn msg;\n",
+        "func": "const valorADCMin = 4000;\nconst valorADCMax = 20000;\nconst valorMin = 0;\nconst valorMax = 1300;\n\nconst valorADC = msg.payload;\nconst valorTemperatura = ((valorADC - valorADCMin) / (valorADCMax - valorADCMin)) * (valorMax - valorMin) + valorMin;\n\nmsg.payload = Math.round(valorTemperatura);\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1770,
-        "y": 780,
+        "x": 1690,
+        "y": 900,
         "wires": [
             [
                 "53bc7861172a15e8",
@@ -6634,15 +6963,15 @@
         "type": "function",
         "z": "9fa46c697055fd5a",
         "name": "calc_temp",
-        "func": "const valorADCMin = 4000;\nconst valorADCMax = 20000;\nconst valorMin = 0;\nconst valorMax = 1300;\n\nconst valorADC = msg.payload;\nconst valorTemperatura = ((valorADC - valorADCMin) / (valorADCMax - valorADCMin)) * (valorMax - valorMin) + valorMin;\n\nmsg.payload = Math.round(valorTemperatura);\n\nreturn msg;\n",
+        "func": "const valorADCMin = 4000;\nconst valorADCMax = 20000;\nconst valorMin = 0;\nconst valorMax = 1300;\n\nconst valorADC = msg.payload;\nconst valorTemperatura = ((valorADC - valorADCMin) / (valorADCMax - valorADCMin)) * (valorMax - valorMin) + valorMin;\n\nmsg.payload = Math.round(valorTemperatura);\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1790,
-        "y": 860,
+        "x": 1690,
+        "y": 780,
         "wires": [
             [
                 "8c67b189d0ac49f0",
@@ -6673,7 +7002,7 @@
         "wires": [
             [
                 "e876b6180acc4082",
-                "ec132924d2383db1"
+                "480e741950b1fa21"
             ],
             []
         ]
@@ -6696,7 +7025,7 @@
         "color": "#717171",
         "className": "",
         "x": 2240,
-        "y": 860,
+        "y": 780,
         "wires": []
     },
     {
@@ -6717,7 +7046,7 @@
         "color": "#717171",
         "className": "",
         "x": 2250,
-        "y": 780,
+        "y": 940,
         "wires": []
     },
     {
@@ -6844,7 +7173,7 @@
         "styleRounded": true,
         "styleGlow": false,
         "className": "",
-        "x": 2200,
+        "x": 2080,
         "y": 700,
         "wires": []
     },
@@ -6860,7 +7189,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1950,
+        "x": 1930,
         "y": 600,
         "wires": [
             [
@@ -6892,8 +7221,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 2040,
-        "y": 940,
+        "x": 1980,
+        "y": 860,
         "wires": [
             [
                 "502ec4d7d999a369"
@@ -6913,7 +7242,7 @@
         "finalize": "",
         "libs": [],
         "x": 1980,
-        "y": 740,
+        "y": 900,
         "wires": [
             [
                 "502ec4d7d999a369"
@@ -7050,7 +7379,7 @@
         "expiry": "",
         "broker": "3b8eefdff633489b",
         "x": 2240,
-        "y": 820,
+        "y": 980,
         "wires": []
     },
     {
@@ -7069,8 +7398,28 @@
         "expiry": "",
         "broker": "233cd5171dde3839",
         "x": 2240,
-        "y": 900,
+        "y": 820,
         "wires": []
+    },
+    {
+        "id": "480e741950b1fa21",
+        "type": "function",
+        "z": "9fa46c697055fd5a",
+        "name": "msg",
+        "func": "msg.payload = msg.payload.data[0];\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1290,
+        "y": 740,
+        "wires": [
+            [
+                "ec132924d2383db1"
+            ]
+        ]
     },
     {
         "id": "ab16974031236ac2",
@@ -7145,8 +7494,8 @@
         "tostatus": false,
         "complete": "true",
         "targetType": "full",
-        "x": 530,
-        "y": 480,
+        "x": 570,
+        "y": 420,
         "wires": []
     },
     {
@@ -7154,7 +7503,7 @@
         "type": "function",
         "z": "0630a8264fc13136",
         "name": "Process Form Data",
-        "func": "let formData = msg.payload;\nlet hora = formData.Hora;\nlet fecha = formData.Fecha;\nlet dsr_columna = parseFloat(formData['DSR Columna']);\nlet dsr_fa09 = parseFloat(formData['DSR FA-09']);\n\nlet timestamp = new Date(fecha + 'T' + hora);\n\n// Obtener el desplazamiento de la zona horaria en minutos\nlet timezoneOffset = timestamp.getTimezoneOffset();\n\n// Ajustar el timestamp sumando el desplazamiento de la zona horaria\ntimestamp.setMinutes(timestamp.getMinutes() - timezoneOffset);\n\n// Obtener el timestamp en milisegundos\ntimestamp = timestamp.getTime();\n\nmsg.payload = {\n    bucket: 'laboratorio',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ResultadosLaboratorio',\n            tags: {\n                equipo_id: 'Reometro',\n                ubicacion: 'Refinería'\n            },\n            fields: {\n                DSR_Columna: dsr_columna,\n                DSR_FA09: dsr_fa09\n            },\n            timestamp: timestamp\n        }\n    ]\n};\n\nreturn msg;",
+        "func": "let formData = msg.payload;\nlet hora = formData.Hora;\nlet fecha = formData.Fecha;\nlet dsr_columna = parseFloat(formData['DSR Columna']);\nlet dsr_fa09 = parseFloat(formData['DSR FA-09']);\n\n// Crear un objeto Date con la fecha y hora local ingresadas por el usuario\nlet localTimestamp = new Date(fecha + 'T' + hora);\n\n// Convertir el timestamp local a UTC\nlet utcTimestamp = new Date(localTimestamp.getTime() + localTimestamp.getTimezoneOffset() * 60000);\n\n// Obtener el timestamp UTC en milisegundos\nlet timestampMs = utcTimestamp.getTime();\n\nmsg.payload = {\n    bucket: 'laboratorio',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ResultadosLaboratorio',\n            tags: {\n                equipo_id: 'Reometro',\n                ubicacion: 'Refinería'\n            },\n            fields: {\n                DSR_Columna: dsr_columna,\n                DSR_FA09: dsr_fa09\n            },\n            timestamp: timestampMs\n        }\n    ]\n};\n\nreturn msg;",
         "outputs": 1,
         "timeout": "",
         "noerr": 0,
@@ -7176,74 +7525,10 @@
         "z": "0630a8264fc13136",
         "server": "a1b3d7fc83d5c6f6",
         "name": "DB",
-        "x": 670,
+        "x": 690,
         "y": 480,
         "wires": [
             []
         ]
-    },
-    {
-        "id": "a77fa9701c726221",
-        "type": "debug",
-        "z": "190ed3e96d0709a5",
-        "name": "debug 42",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1600,
-        "y": 440,
-        "wires": []
-    },
-    {
-        "id": "58303efc8fb8844e",
-        "type": "debug",
-        "z": "190ed3e96d0709a5",
-        "name": "debug 43",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1300,
-        "y": 500,
-        "wires": []
-    },
-    {
-        "id": "41ad15c9390a54d4",
-        "type": "debug",
-        "z": "190ed3e96d0709a5",
-        "name": "debug 44",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1100,
-        "y": 620,
-        "wires": []
-    },
-    {
-        "id": "543df8e49def648d",
-        "type": "debug",
-        "z": "af530bfa0859125d",
-        "name": "debug 45",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1330,
-        "y": 200,
-        "wires": []
     }
 ]
