@@ -4556,24 +4556,6 @@
         "wires": []
     },
     {
-        "id": "2cd8e608136da0c1",
-        "type": "function",
-        "z": "190ed3e96d0709a5",
-        "name": "msg",
-        "func": "msg.payload = msg.payload.data[0];\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1050,
-        "y": 600,
-        "wires": [
-            []
-        ]
-    },
-    {
         "id": "e88437c06ce5e178",
         "type": "inject",
         "z": "190ed3e96d0709a5",
@@ -4848,7 +4830,9 @@
         "x": 450,
         "y": 460,
         "wires": [
-            []
+            [
+                "3eeca4f2870275ab"
+            ]
         ]
     },
     {
@@ -4875,7 +4859,9 @@
         "x": 450,
         "y": 420,
         "wires": [
-            []
+            [
+                "3eeca4f2870275ab"
+            ]
         ]
     },
     {
@@ -5161,7 +5147,7 @@
         "showErrors": false,
         "showWarnings": true,
         "logIOActivities": false,
-        "server": "661d09df777a5259",
+        "server": "ba775fe896e243b7",
         "useIOFile": false,
         "ioFile": "",
         "useIOForPayload": false,
@@ -5174,7 +5160,6 @@
         "wires": [
             [
                 "f5f5072b97fc34c5",
-                "184e511031cc9868",
                 "specialTemperatureFunction",
                 "81a729ec4384f6d9",
                 "0808674536b8b325"
@@ -5432,80 +5417,6 @@
         "broker": "b2eea5177ada0477",
         "x": 1980,
         "y": 660,
-        "wires": []
-    },
-    {
-        "id": "073ec6181e220226",
-        "type": "inject",
-        "z": "5abe0cc40f5ad9c5",
-        "name": "ADC_2_AI1",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "2",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "1",
-        "topic": "read_TC_1",
-        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":0,\"quantity\":1}",
-        "payloadType": "json",
-        "x": 440,
-        "y": 320,
-        "wires": [
-            [
-                "3eeca4f2870275ab"
-            ]
-        ]
-    },
-    {
-        "id": "e084d787433e18a9",
-        "type": "inject",
-        "z": "5abe0cc40f5ad9c5",
-        "name": "ADC_2_AI2",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "2",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "1",
-        "topic": "read_TC_2",
-        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":1,\"quantity\":1}",
-        "payloadType": "json",
-        "x": 440,
-        "y": 360,
-        "wires": [
-            [
-                "3eeca4f2870275ab"
-            ]
-        ]
-    },
-    {
-        "id": "184e511031cc9868",
-        "type": "debug",
-        "z": "5abe0cc40f5ad9c5",
-        "name": "debug 48",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1150,
-        "y": 440,
         "wires": []
     },
     {
@@ -7457,24 +7368,6 @@
         "x": 2240,
         "y": 820,
         "wires": []
-    },
-    {
-        "id": "480e741950b1fa21",
-        "type": "function",
-        "z": "9fa46c697055fd5a",
-        "name": "msg",
-        "func": "msg.payload = msg.payload.data[0];\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1290,
-        "y": 620,
-        "wires": [
-            []
-        ]
     },
     {
         "id": "ab16974031236ac2",
