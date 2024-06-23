@@ -25,7 +25,7 @@
         "id": "190ed3e96d0709a5",
         "type": "tab",
         "label": "ADC2",
-        "disabled": false,
+        "disabled": true,
         "info": "",
         "env": []
     },
@@ -33,7 +33,7 @@
         "id": "5abe0cc40f5ad9c5",
         "type": "tab",
         "label": "DVP-04TC",
-        "disabled": true,
+        "disabled": false,
         "info": "",
         "env": []
     },
@@ -771,7 +771,7 @@
     {
         "id": "60e5d9130b1268c8",
         "type": "modbus-client",
-        "name": "VOLISON_4CH",
+        "name": "ADC1",
         "clienttype": "tcp",
         "bufferCommands": true,
         "stateLogEnabled": false,
@@ -788,11 +788,11 @@
         "serialParity": "none",
         "serialConnectionDelay": "100",
         "serialAsciiResponseStartDelimiter": "0x3A",
-        "unit_id": "1",
-        "commandDelay": "1",
-        "clientTimeout": "1000",
+        "unit_id": 1,
+        "commandDelay": 1,
+        "clientTimeout": 1000,
         "reconnectOnTimeout": true,
-        "reconnectTimeout": "2000",
+        "reconnectTimeout": 2000,
         "parallelUnitIdsAllowed": true,
         "showErrors": false,
         "showWarnings": true,
@@ -843,11 +843,11 @@
         "serialPort": "",
         "serialConnectionDelay": "",
         "serialAsciiResponseStartDelimiter": "",
-        "unit_id": "100",
-        "commandDelay": "1",
-        "clientTimeout": "1000",
+        "unit_id": 100,
+        "commandDelay": 1,
+        "clientTimeout": 1000,
         "reconnectOnTimeout": true,
-        "reconnectTimeout": "2000",
+        "reconnectTimeout": 2000,
         "parallelUnitIdsAllowed": true,
         "showErrors": false,
         "showWarnings": true,
@@ -1397,6 +1397,36 @@
         "host": "influxdb2",
         "port": "8086",
         "tls": false
+    },
+    {
+        "id": "661d09df777a5259",
+        "type": "modbus-client",
+        "name": "pruebas",
+        "clienttype": "tcp",
+        "bufferCommands": true,
+        "stateLogEnabled": false,
+        "queueLogEnabled": false,
+        "failureLogEnabled": true,
+        "tcpHost": "192.168.1.75",
+        "tcpPort": "502",
+        "tcpType": "DEFAULT",
+        "serialPort": "/dev/ttyUSB0",
+        "serialType": "RTU",
+        "serialBaudrate": "9600",
+        "serialDatabits": "8",
+        "serialStopbits": "1",
+        "serialParity": "none",
+        "serialConnectionDelay": "100",
+        "serialAsciiResponseStartDelimiter": "0x3A",
+        "unit_id": "1",
+        "commandDelay": "1",
+        "clientTimeout": "1000",
+        "reconnectOnTimeout": true,
+        "reconnectTimeout": "2000",
+        "parallelUnitIdsAllowed": true,
+        "showErrors": false,
+        "showWarnings": true,
+        "showLogs": true
     },
     {
         "id": "inject-node",
@@ -3821,7 +3851,7 @@
         "finalize": "",
         "libs": [],
         "x": 910,
-        "y": 720,
+        "y": 760,
         "wires": [
             []
         ]
@@ -3901,64 +3931,6 @@
                 "73e1e81e7546e4fb"
             ],
             []
-        ]
-    },
-    {
-        "id": "e88437c06ce5e178",
-        "type": "inject",
-        "z": "190ed3e96d0709a5",
-        "name": "ADC_2_AI1",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "2",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "1",
-        "topic": "read_ADC2_AI1",
-        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":0,\"quantity\":1}",
-        "payloadType": "json",
-        "x": 500,
-        "y": 620,
-        "wires": [
-            [
-                "a1d380aff2236a21"
-            ]
-        ]
-    },
-    {
-        "id": "7ff3dc8119cca4d3",
-        "type": "inject",
-        "z": "190ed3e96d0709a5",
-        "name": "ADC_2_AI2",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "2",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "1",
-        "topic": "read_ADC2_AI2",
-        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":1,\"quantity\":1}",
-        "payloadType": "json",
-        "x": 500,
-        "y": 660,
-        "wires": [
-            [
-                "a1d380aff2236a21"
-            ]
         ]
     },
     {
@@ -4329,7 +4301,7 @@
         "showErrors": false,
         "showWarnings": false,
         "logIOActivities": false,
-        "server": "f1b3a3acb886c48c",
+        "server": "661d09df777a5259",
         "useIOFile": false,
         "ioFile": "",
         "useIOForPayload": false,
@@ -4342,7 +4314,7 @@
         "wires": [
             [
                 "0c9c4c6ccd5f1680",
-                "2cd8e608136da0c1"
+                "69b686e91740cea5"
             ],
             []
         ]
@@ -4596,10 +4568,66 @@
         "finalize": "",
         "libs": [],
         "x": 1050,
-        "y": 700,
+        "y": 600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e88437c06ce5e178",
+        "type": "inject",
+        "z": "190ed3e96d0709a5",
+        "name": "ADC_2_AI1",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "read_ADC2_AI1",
+        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":0,\"quantity\":1}",
+        "payloadType": "json",
+        "x": 500,
+        "y": 620,
         "wires": [
             [
-                "69b686e91740cea5"
+                "a1d380aff2236a21"
+            ]
+        ]
+    },
+    {
+        "id": "7ff3dc8119cca4d3",
+        "type": "inject",
+        "z": "190ed3e96d0709a5",
+        "name": "ADC_2_AI2",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "read_ADC2_AI2",
+        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":1,\"quantity\":1}",
+        "payloadType": "json",
+        "x": 500,
+        "y": 660,
+        "wires": [
+            [
+                "a1d380aff2236a21"
             ]
         ]
     },
@@ -4665,7 +4693,7 @@
         "z": "5abe0cc40f5ad9c5",
         "name": "Modbus Queue",
         "func": "let resendifnoresposne = true; // resend the last message is no response is received\nlet resendinterval = 10; // resend last e message every x seconds\nlet online_threshold = 10; // Seconds between updates under which the device is considered online\nlet offline_threshold = 300; // Seconds between updates above which the device is considered offline\n\nlet notifmsg = null;\n\n// Check and make sure the incoming message has a topic\nif ((msg.topic===\"\")||(msg.topic===null)||(msg.topic===undefined)) {\n    node.status({fill:\"red\",shape:\"dot\",text:\"Topic missing\"});\n    return;\n}\n\nlet lastupdate = context.get(\"lastupdate\");\nlet state = context.get(\"state\") | 0;\nlet queue = context.get(\"queue\");\nlet queuecount = 0;\nif (queue === undefined) {\n    queue = [];\n} else {\n    if (Array.isArray(queue)) {\n        queuecount = queue.length;\n    } else {\n        queue = [];\n    }\n}\nlet current = new Date().getTime();\nlet send = false;\n\nswitch (msg.topic.toLowerCase()) {\n    case \"update\":\n        // Update the timer and statistics\n\n        if (lastupdate !== undefined) {\n            notifmsg = { \"topic\": \"Information\", \"payload\": {} };\n            current = current - lastupdate;\n            current = Math.floor(current / 1000);\n            notifmsg.payload.secondsincelastupdate = current;\n            var minute = Math.floor(current / 60);\n            var hour = Math.floor(minute / 60);\n            var day = Math.floor(hour / 24);\n            if (current > 24 * 60 * 60) {\n                notifmsg.payload.updatetext = \"Last update \" + day + \" days, \" + hour % 24 + \" hours, \" + minute % 60 + \" minutes, \" + current % 60 + \" seconds ago\";\n            } else if (current > 60 * 60) {\n                notifmsg.payload.updatetext = \"Last update \" + hour % 24 + \" hours, \" + minute % 60 + \" minutes, \" + current % 60 + \" seconds ago\";\n            } else if (current > 60) {\n                notifmsg.payload.updatetext = \"Last update \" + minute % 60 + \" minutes, \" + current % 60 + \" seconds ago\";\n            } else {\n                notifmsg.payload.updatetext = \"Last update \" + current % 60 + \" seconds ago\";\n            }\n\n            // Resend last message if there is no response from the server\n            if (resendifnoresposne) {\n                if ((current>0) && (current % resendinterval===0)) {\n                    let lastmsg = context.get(\"lastmsg\");\n                    if ((lastmsg!==undefined) && (context.get(\"sent\"))) {\n                        notifmsg.payload.resend = true;\n                        if ((lastmsg.payload.fc === 1) || (lastmsg.payload.fc === 2) || (lastmsg.payload.fc === 3) || (lastmsg.payload.fc === 4)) {\n                            // this is a modbus read request\n                            node.status({ fill: \"green\", shape: \"dot\", text: \"Read re-sent!\" });\n                            return [lastmsg, null, notifmsg];\n                        } else {\n                            // this is a modbus write request\n                            node.status({ fill: \"green\", shape: \"dot\", text: \"Write re-sent!\" });\n                            return [null, lastmsg, notifmsg];\n                        }\n                    }\n                }\n            }\n\n            // Check for online state\n            if (state !== 1) {\n                if (current < online_threshold) {\n                    notifmsg.topic = \"Warning\";\n                    notifmsg.payload.text = \"Device is now online\";\n                    notifmsg.payload.statuschange = true;\n                    state = 1;\n                    context.set(\"state\", state);\n                }\n            } else {\n                if (current > offline_threshold) {\n                    notifmsg.topic = \"Error\";\n                    notifmsg.payload.text = \"Device is not transmitting\";\n                    notifmsg.payload.statuschange = true;\n                    state = 99;\n                    context.set(\"state\", state);\n                }\n            }\n            notifmsg.payload.state = state;\n            if (state===1) {\n                node.status({ fill: \"blue\", shape: \"ring\", text: queuecount+ \" | \"+notifmsg.payload.updatetext });\n            } else {\n                node.status({ fill: \"red\", shape: \"ring\", text: queuecount + \" | \" + notifmsg.payload.updatetext });\n            }\n            return [null, null, notifmsg];\n\n        } else {\n            node.status({ fill: \"grey\", shape: \"ring\", text: \"No data\" });\n        }\n        break;\n    case \"next\":\n        // Update the lastupdate counter\n        context.set(\"lastupdate\", current);\n        context.set(\"sent\", false);\n        send = true;\n        break;\n    case \"reset\":\n        context.set(\"queue\",[]);\n        context.set(\"sent\", false);\n        context.set(\"lastmsg\", undefined);\n        break;\n    default:\n        // The incoming message is a modbus request\n\n        // delete the last msg to prevent from being resent\n        // context.set(\"lastmsg\", undefined);\n\n        // Check if there is already a message in the queue with the same topic. \n        // If there is it needs to be deleted, because we only keep the last message.\n        for (let i=queue.length-1; i>=0; i--) {\n            if (queue[i].topic === msg.topic) {\n                queue.splice(i,1);\n            }\n        }\n\n        // Add the message to the end of the queue\n        queue.push(msg);\n        context.set(\"queue\",queue);\n\n        if (!context.get(\"sent\")) {\n            send = true;\n        }\n        node.status({ fill: \"green\", shape: \"dot\", text: queue.length });\n\n}\n\n// We need to send out a new message\nif (send) {\n\n    if (queue.length>0) {\n        // Get the older message from the array\n        let newmsg = queue[0];\n        // remove this message\n        queue.splice(0,1);\n        context.set(\"queue\",queue);\n        context.set(\"sent\", true);\n        context.set(\"lastmsg\", newmsg);\n\n        if ((newmsg.payload.fc === 1) || (newmsg.payload.fc === 2) || (newmsg.payload.fc === 3) || (newmsg.payload.fc === 4)) {\n            // this is a modbus read request\n            node.status({ fill: \"green\", shape: \"dot\", text: \"Read sent!\" });\n            return[newmsg,null,null];\n        } else {\n            // this is a modbus write request\n            node.status({ fill: \"green\", shape: \"dot\", text: \"Write sent!\" });\n            return [null, newmsg, null];\n        }\n        \n    }\n}\n",
-        "outputs": 3,
+        "outputs": 2,
         "timeout": "",
         "noerr": 0,
         "initialize": "",
@@ -4675,9 +4703,8 @@
         "y": 480,
         "wires": [
             [
-                "6389fd03ebd293e8"
+                "2c8e65186a7fd7ec"
             ],
-            [],
             [
                 "1769f99a48c701a1"
             ]
@@ -4821,9 +4848,7 @@
         "x": 450,
         "y": 460,
         "wires": [
-            [
-                "3eeca4f2870275ab"
-            ]
+            []
         ]
     },
     {
@@ -4850,9 +4875,7 @@
         "x": 450,
         "y": 420,
         "wires": [
-            [
-                "3eeca4f2870275ab"
-            ]
+            []
         ]
     },
     {
@@ -5138,7 +5161,7 @@
         "showErrors": false,
         "showWarnings": true,
         "logIOActivities": false,
-        "server": "ba775fe896e243b7",
+        "server": "661d09df777a5259",
         "useIOFile": false,
         "ioFile": "",
         "useIOForPayload": false,
@@ -5146,17 +5169,17 @@
         "keepMsgProperties": false,
         "delayOnStart": false,
         "startDelayTime": "",
-        "x": 970,
+        "x": 930,
         "y": 460,
         "wires": [
             [
-                "f5f5072b97fc34c5"
-            ],
-            [
-                "81a729ec4384f6d9",
+                "f5f5072b97fc34c5",
+                "184e511031cc9868",
                 "specialTemperatureFunction",
+                "81a729ec4384f6d9",
                 "0808674536b8b325"
-            ]
+            ],
+            []
         ]
     },
     {
@@ -5412,24 +5435,78 @@
         "wires": []
     },
     {
-        "id": "6389fd03ebd293e8",
-        "type": "function",
+        "id": "073ec6181e220226",
+        "type": "inject",
         "z": "5abe0cc40f5ad9c5",
-        "name": "msg",
-        "func": "msg.payload = msg.payload.data[0];\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 850,
-        "y": 440,
+        "name": "ADC_2_AI1",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "read_TC_1",
+        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":0,\"quantity\":1}",
+        "payloadType": "json",
+        "x": 440,
+        "y": 320,
         "wires": [
             [
-                "2c8e65186a7fd7ec"
+                "3eeca4f2870275ab"
             ]
         ]
+    },
+    {
+        "id": "e084d787433e18a9",
+        "type": "inject",
+        "z": "5abe0cc40f5ad9c5",
+        "name": "ADC_2_AI2",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "read_TC_2",
+        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":1,\"quantity\":1}",
+        "payloadType": "json",
+        "x": 440,
+        "y": 360,
+        "wires": [
+            [
+                "3eeca4f2870275ab"
+            ]
+        ]
+    },
+    {
+        "id": "184e511031cc9868",
+        "type": "debug",
+        "z": "5abe0cc40f5ad9c5",
+        "name": "debug 48",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1150,
+        "y": 440,
+        "wires": []
     },
     {
         "id": "e00fc1d0d3c743a7",
@@ -6070,7 +6147,7 @@
         "wires": [
             [
                 "9a7897e7aa8a9fef",
-                "d0867b8f6b0c0bd2"
+                "6382a708c5d5d64a"
             ],
             []
         ]
@@ -6368,26 +6445,6 @@
         "x": 1280,
         "y": 100,
         "wires": []
-    },
-    {
-        "id": "d0867b8f6b0c0bd2",
-        "type": "function",
-        "z": "af530bfa0859125d",
-        "name": "msg",
-        "func": "msg.payload = msg.payload.data[0];\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 790,
-        "y": 440,
-        "wires": [
-            [
-                "6382a708c5d5d64a"
-            ]
-        ]
     },
     {
         "id": "e876b6180acc4082",
@@ -7002,7 +7059,7 @@
         "wires": [
             [
                 "e876b6180acc4082",
-                "480e741950b1fa21"
+                "ec132924d2383db1"
             ],
             []
         ]
@@ -7414,11 +7471,9 @@
         "finalize": "",
         "libs": [],
         "x": 1290,
-        "y": 740,
+        "y": 620,
         "wires": [
-            [
-                "ec132924d2383db1"
-            ]
+            []
         ]
     },
     {
