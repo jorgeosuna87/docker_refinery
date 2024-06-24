@@ -33,7 +33,7 @@
         "id": "5abe0cc40f5ad9c5",
         "type": "tab",
         "label": "DVP-04TC",
-        "disabled": false,
+        "disabled": true,
         "info": "",
         "env": []
     },
@@ -58,6 +58,14 @@
         "type": "tab",
         "label": "Lab",
         "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "0c0a6b76fd1afafc",
+        "type": "tab",
+        "label": "pruebas watchdog",
+        "disabled": true,
         "info": "",
         "env": []
     },
@@ -6358,6 +6366,112 @@
         "wires": []
     },
     {
+        "id": "watchdog-inject",
+        "type": "inject",
+        "z": "af530bfa0859125d",
+        "name": "Watchdog Check",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "30",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "watchdog",
+        "payload": "",
+        "payloadType": "date",
+        "x": 230,
+        "y": 820,
+        "wires": [
+            [
+                "watchdog-function"
+            ]
+        ]
+    },
+    {
+        "id": "watchdog-function",
+        "type": "function",
+        "z": "af530bfa0859125d",
+        "name": "Check Connection",
+        "func": "const lastUpdate = context.get('lastUpdate') || 0;\nconst now = Date.now();\nconst threshold = 60000; // 60 seconds\n\nif (now - lastUpdate > threshold) {\n    // Connection lost\n    return [null, {payload: 'reset'}];\n} else {\n    // Connection OK\n    return [{payload: 'OK'}, null];\n}\n",
+        "outputs": 2,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 820,
+        "wires": [
+            [
+                "debug-watchdog"
+            ],
+            [
+                "reset-modbus"
+            ]
+        ]
+    },
+    {
+        "id": "reset-modbus",
+        "type": "function",
+        "z": "af530bfa0859125d",
+        "name": "Reset Modbus",
+        "func": "// This function will attempt to reset the Modbus client\n// You may need to adjust this based on your specific Modbus client configuration\nconst modbusConfig = global.get('modbus-config');\nif (modbusConfig) {\n    modbusConfig.reconnect();\n    node.status({fill:\"yellow\",shape:\"ring\",text:\"Reconnecting...\"});\n    return {payload: \"Attempting to reconnect Modbus client\"};\n} else {\n    node.status({fill:\"red\",shape:\"ring\",text:\"No Modbus config found\"});\n    return {payload: \"Error: No Modbus configuration found\"};\n}\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 860,
+        "wires": [
+            [
+                "debug-reset"
+            ]
+        ]
+    },
+    {
+        "id": "debug-watchdog",
+        "type": "debug",
+        "z": "af530bfa0859125d",
+        "name": "Watchdog Status",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 690,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "debug-reset",
+        "type": "debug",
+        "z": "af530bfa0859125d",
+        "name": "Reset Status",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 860,
+        "wires": []
+    },
+    {
         "id": "e876b6180acc4082",
         "type": "change",
         "z": "9fa46c697055fd5a",
@@ -6376,8 +6490,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 980,
-        "y": 540,
+        "x": 1020,
+        "y": 600,
         "wires": [
             [
                 "9e6c0ff1151a09d0"
@@ -6402,7 +6516,9 @@
             [
                 "e6e60d5a9427cf31"
             ],
-            [],
+            [
+                "404732868f2b41dd"
+            ],
             [
                 "53d976498e89501e"
             ]
@@ -6475,7 +6591,8 @@
                 "18eab2c3c21c232b",
                 "3fdacd0a92232648",
                 "26e5c2b41a0956af",
-                "84517156e2445598"
+                "84517156e2445598",
+                "e4540e2da2c1bd98"
             ],
             []
         ]
@@ -6957,7 +7074,7 @@
         "showErrors": false,
         "showWarnings": true,
         "logIOActivities": false,
-        "server": "60e5d9130b1268c8",
+        "server": "661d09df777a5259",
         "useIOFile": false,
         "ioFile": "",
         "useIOForPayload": false,
@@ -7161,7 +7278,8 @@
         "y": 600,
         "wires": [
             [
-                "502ec4d7d999a369"
+                "502ec4d7d999a369",
+                "d60a300a249e85f4"
             ]
         ]
     },
@@ -7370,6 +7488,56 @@
         "wires": []
     },
     {
+        "id": "e4540e2da2c1bd98",
+        "type": "debug",
+        "z": "9fa46c697055fd5a",
+        "name": "Vol. FA-02A",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1740,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "d60a300a249e85f4",
+        "type": "debug",
+        "z": "9fa46c697055fd5a",
+        "name": "debug 47",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2130,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "404732868f2b41dd",
+        "type": "debug",
+        "z": "9fa46c697055fd5a",
+        "name": "Modbus queue",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1160,
+        "y": 840,
+        "wires": []
+    },
+    {
         "id": "ab16974031236ac2",
         "type": "ui-form",
         "z": "0630a8264fc13136",
@@ -7477,6 +7645,1206 @@
         "y": 480,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "53ce2ef801c16343",
+        "type": "change",
+        "z": "0c0a6b76fd1afafc",
+        "name": "Advance queue",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "next",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 420,
+        "y": 320,
+        "wires": [
+            [
+                "dc469299873d0bdb"
+            ]
+        ]
+    },
+    {
+        "id": "dc469299873d0bdb",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "name": "Modbus Queue",
+        "func": "let resendIfNoResponse = true; // resend the last message if no response is received\nlet resendInterval = 10; // resend last message every x seconds\nlet onlineThreshold = 10; // Seconds between updates under which the device is considered online\nlet offlineThreshold = 300; // Seconds between updates above which the device is considered offline\nlet restartThreshold = 60; // Seconds without a successful read before signaling for restart\n\nlet notifMsg = null;\n\n// Check and make sure the incoming message has a topic\nif ((msg.topic === \"\") || (msg.topic === null) || (msg.topic === undefined)) {\n    node.status({ fill: \"red\", shape: \"dot\", text: \"Topic missing\" });\n    return;\n}\n\nlet lastUpdate = context.get(\"lastUpdate\");\nlet state = context.get(\"state\") | 0;\nlet queue = context.get(\"queue\");\nlet queueCount = 0;\nif (queue === undefined) {\n    queue = [];\n} else {\n    if (Array.isArray(queue)) {\n        queueCount = queue.length;\n    } else {\n        queue = [];\n    }\n}\nlet current = new Date().getTime();\nlet send = false;\n\n// Check if we need to signal for a restart\nif (lastUpdate && (current - lastUpdate) / 1000 > restartThreshold) {\n    node.warn(\"No Modbus readings for \" + restartThreshold + \" seconds. Signaling for restart.\");\n    // Send a message to signal for restart\n    return [null, null, { topic: \"restart_signal\", payload: \"No Modbus readings, restart required\" }];\n}\n\nswitch (msg.topic.toLowerCase()) {\n    case \"update\":\n        // Update the timer and statistics\n        if (lastUpdate !== undefined) {\n            notifMsg = { \"topic\": \"Information\", \"payload\": {} };\n            current = current - lastUpdate;\n            current = Math.floor(current / 1000);\n            notifMsg.payload.secondsSinceLastUpdate = current;\n            var minute = Math.floor(current / 60);\n            var hour = Math.floor(minute / 60);\n            var day = Math.floor(hour / 24);\n            if (current > 24 * 60 * 60) {\n                notifMsg.payload.updateText = `Last update ${day} days, ${hour % 24} hours, ${minute % 60} minutes, ${current % 60} seconds ago`;\n            } else if (current > 60 * 60) {\n                notifMsg.payload.updateText = `Last update ${hour % 24} hours, ${minute % 60} minutes, ${current % 60} seconds ago`;\n            } else if (current > 60) {\n                notifMsg.payload.updateText = `Last update ${minute % 60} minutes, ${current % 60} seconds ago`;\n            } else {\n                notifMsg.payload.updateText = `Last update ${current % 60} seconds ago`;\n            }\n\n            // Resend last message if there is no response from the server\n            if (resendIfNoResponse) {\n                if ((current > 0) && (current % resendInterval === 0)) {\n                    let lastMsg = context.get(\"lastMsg\");\n                    if ((lastMsg !== undefined) && (context.get(\"sent\"))) {\n                        notifMsg.payload.resend = true;\n                        if ((lastMsg.payload.fc === 1) || (lastMsg.payload.fc === 2) || (lastMsg.payload.fc === 3) || (lastMsg.payload.fc === 4)) {\n                            // this is a modbus read request\n                            node.status({ fill: \"green\", shape: \"dot\", text: \"Read re-sent!\" });\n                            return [lastMsg, null, notifMsg];\n                        } else {\n                            // this is a modbus write request\n                            node.status({ fill: \"green\", shape: \"dot\", text: \"Write re-sent!\" });\n                            return [null, lastMsg, notifMsg];\n                        }\n                    }\n                }\n            }\n\n            // Check for online state\n            if (state !== 1) {\n                if (current < onlineThreshold) {\n                    notifMsg.topic = \"Warning\";\n                    notifMsg.payload.text = \"Device is now online\";\n                    notifMsg.payload.statusChange = true;\n                    state = 1;\n                    context.set(\"state\", state);\n                }\n            } else {\n                if (current > offlineThreshold) {\n                    notifMsg.topic = \"Error\";\n                    notifMsg.payload.text = \"Device is not transmitting\";\n                    notifMsg.payload.statusChange = true;\n                    state = 99;\n                    context.set(\"state\", state);\n                }\n            }\n            notifMsg.payload.state = state;\n            if (state === 1) {\n                node.status({ fill: \"blue\", shape: \"ring\", text: `${queueCount} | ${notifMsg.payload.updateText}` });\n            } else {\n                node.status({ fill: \"red\", shape: \"ring\", text: `${queueCount} | ${notifMsg.payload.updateText}` });\n            }\n            return [null, null, notifMsg];\n\n        } else {\n            node.status({ fill: \"grey\", shape: \"ring\", text: \"No data\" });\n        }\n        break;\n    case \"next\":\n        // Update the lastUpdate counter\n        context.set(\"lastUpdate\", current);\n        context.set(\"sent\", false);\n        send = true;\n        break;\n    case \"reset\":\n        context.set(\"queue\", []);\n        context.set(\"sent\", false);\n        context.set(\"lastMsg\", undefined);\n        break;\n    default:\n        // The incoming message is a modbus request\n\n        // Check if there is already a message in the queue with the same topic. \n        // If there is it needs to be deleted, because we only keep the last message.\n        for (let i = queue.length - 1; i >= 0; i--) {\n            if (queue[i].topic === msg.topic) {\n                queue.splice(i, 1);\n            }\n        }\n\n        // Add the message to the end of the queue\n        queue.push(msg);\n        context.set(\"queue\", queue);\n\n        if (!context.get(\"sent\")) {\n            send = true;\n        }\n        node.status({ fill: \"green\", shape: \"dot\", text: queue.length });\n}\n\n// We need to send out a new message\nif (send) {\n    if (queue.length > 0) {\n        // Get the older message from the array\n        let newMsg = queue[0];\n        // remove this message\n        queue.splice(0, 1);\n        context.set(\"queue\", queue);\n        context.set(\"sent\", true);\n        context.set(\"lastMsg\", newMsg);\n\n        if ((newMsg.payload.fc === 1) || (newMsg.payload.fc === 2) || (newMsg.payload.fc === 3) || (newMsg.payload.fc === 4)) {\n            // this is a modbus read request\n            node.status({ fill: \"green\", shape: \"dot\", text: \"Read sent!\" });\n            context.set(\"lastUpdate\", current); // Update the last successful read time\n            return [newMsg, null, null];\n        } else {\n            // this is a modbus write request\n            node.status({ fill: \"green\", shape: \"dot\", text: \"Write sent!\" });\n            return [null, newMsg, null];\n        }\n    }\n}",
+        "outputs": 3,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 500,
+        "wires": [
+            [
+                "0a040bd5b7becab1"
+            ],
+            [
+                "6a3f789738fb6995"
+            ],
+            [
+                "3d170db603cee334"
+            ]
+        ],
+        "info": "# Modbus Queue\r\n\r\nThis node queueing read and write messages for modbus. Use this node if you are reading and writing the same device with many different requests. E.g. reading different coil/register intervals continously and also writing to the device at the same time.\r\n\r\nIt does a few things:\r\n- queues all messages arrive on the input port\r\n- based on the msg.topic, older messages of the same topci is ignored\r\n- sends out the oldest message and waits for the \r\n- monitors the time since last message and send out report on the output\r\n- handles online/offline status\r\n- resend the last message is response is not received in time\r\n\r\n## Input Data\r\n\r\n### payload\r\n\r\nThe payload should contain the data that gets sent to the flex-getter or flex-write node.\r\nTypical modbus read payload:\r\n`{\"value\":0,\"fc\":3,\"unitid\":1,\"address\":1000,\"quantity\":20}`\r\nTypical modbus write payload:\r\n`{\"value\":false,\"fc\":5,\"unitid\":1,\"address\":0,\"quantity\":1}`\r\n\r\n### topic\r\n\r\nEach message must contain a topic (any text), and this topic is used to identify the different read/write requests and delete any earlier request with the same topic if it still in the queueing\r\n\r\nThere are a few reserved topic for special function (for these payload is ignored):\r\n- reset: resets the queue and deleted any data collected so far\r\n- next: this is the message fed back from the flex getter/write node to indicate to this node that a new message can be sent out\r\n- update: this should be coming from a 1 second time to display the current queue count, time since the last update and online/offline status\r\n\r\n## Output ports\r\n\r\n### Port 1: flex getter\r\n\r\nThis output should be connected to a modbos-flex-getter and all the read requests will be sent out through this port\r\n\r\n### Port 2: flex write\r\n\r\nThis output should be connected to a modbos-flex-write and all the write requests will be sent out through this port\r\n\r\n### Port 3: status messages\r\n\r\nThis port outputs a status message for every update message (msg.topic=\"update\").\r\n\r\n- topic: \"Information\" for regular updates, \"Warning\": offline device is now back online, \"Error\": device is offline\r\n- payload.text: message like when the device gone offline, or back online\r\n- payload.updatetext: time passed since the last update (human readable format)\r\n- payload.secondsincelastupdate: number of seconds since the last update from the device\r\n- payload.statuschange: true if status is changed (gone offline, back online)\r\n- payload.state: 0: initial state, no data yet, 1: device online, 99: device offline\r\n\r\n## Node Settings\r\n\r\nChange the settings in the first 4 lines of the code to influence the behaviour. Explanation is in the code as comment."
+    },
+    {
+        "id": "3d170db603cee334",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "name": "update log",
+        "func": "if (msg.topic === \"Information\") {\n    // Registrar mensajes de información\n    node.log(\"Información: \" + msg.payload.updatetext);\n} else if (msg.topic === \"Warning\") {\n    // Registrar mensajes de advertencia\n    node.warn(\"Advertencia: \" + msg.payload.text);\n} else if (msg.topic === \"Error\") {\n    // Registrar mensajes de error\n    node.error(\"Error: \" + msg.payload.text);\n}\n\n// Puedes agregar lógica adicional para procesar otros campos del mensaje de estado\n// Por ejemplo, puedes verificar el valor de msg.payload.state para realizar acciones específicas\n// según el estado del dispositivo (en línea, fuera de línea, etc.)\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 570,
+        "y": 520,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ebd30f51494d4916",
+        "type": "inject",
+        "z": "0c0a6b76fd1afafc",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 580,
+        "wires": [
+            [
+                "dc469299873d0bdb"
+            ]
+        ]
+    },
+    {
+        "id": "8b022ced2df6e028",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "name": "calc_vol",
+        "func": "const valorCrudo = msg.payload;\nconst valorLitros = ((valorCrudo - 4000) / (20000 - 4000)) * (40000 - 0);\nmsg.payload = Math.round(valorLitros);\nreturn msg;",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1020,
+        "y": 260,
+        "wires": [
+            [
+                "61b09568a2ca52fb",
+                "fbf239a2a3c88dc9",
+                "df146d9a3056ddbf",
+                "bdcb32ba2e26ab1a",
+                "51ef9142fc6b10bf"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "fbc5eb3b2107878c",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "name": "Data Accumulation Node",
+        "func": "let cola = flow.get(\"colaLecturas\") || [];\nconst tiempoMaximo = 300000; // 5 minutos en milisegundos\n\n// Añadir nuevo registro con timestamp actual si no viene incluido en el mensaje\nconst tiempoRegistro = msg.payload.timestamp || Date.now();  // Usar timestamp del mensaje o el tiempo actual si no está disponible\ncola.push({\n    tiempo: tiempoRegistro,\n    volumen: msg.payload // Usar directamente msg.payload\n});\n\n// Eliminar registros más antiguos que el tiempo máximo permitido\nlet tiempoActual = Date.now();\ncola = cola.filter(registro => (tiempoActual - registro.tiempo) <= tiempoMaximo);\n\n// Guardar la cola actualizada en el contexto del flujo\nflow.set(\"colaLecturas\", cola);\n\n// Pasar la cola completa al siguiente nodo para su procesamiento\nreturn { payload: cola };\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1090,
+        "y": 160,
+        "wires": [
+            [
+                "27f373a8adb0b3fe"
+            ]
+        ]
+    },
+    {
+        "id": "27f373a8adb0b3fe",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "name": "Flow Calculation Node",
+        "func": "const cola = msg.payload;\nlet flujo = 0;\n\nif (cola.length > 1) {\n    const primerRegistro = cola[0];\n    const ultimoRegistro = cola[cola.length - 1];\n    const tiempoDiferencia = (ultimoRegistro.tiempo - primerRegistro.tiempo) / 1000; // en segundos\n\n    // Convertir los valores de volumen según la escala proporcionada\n    const volumenInicial = ((primerRegistro.volumen - 4000) / (20000 - 4000)) * (40000 - 0);\n    const volumenFinal = ((ultimoRegistro.volumen - 4000) / (20000 - 4000)) * (40000 - 0);\n\n    if (tiempoDiferencia > 0) {\n        flujo = Math.round(-((volumenFinal - volumenInicial) / tiempoDiferencia) * 3600); // calcular flujo\n    }\n} else {\n    // Manejar el caso cuando no hay suficientes registros para calcular un flujo\n    flujo = \"Insuficientes datos para cálculo de flujo\";\n}\n\n// Devolver el valor del flujo\nreturn { payload: flujo };\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1320,
+        "y": 160,
+        "wires": [
+            [
+                "882fdcced5164373",
+                "f293c2468d8b54f3",
+                "7da24919c13da0c3",
+                "9c865eb1dc07fb08"
+            ]
+        ]
+    },
+    {
+        "id": "882fdcced5164373",
+        "type": "debug",
+        "z": "0c0a6b76fd1afafc",
+        "name": "Flujo COPE",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1590,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "f522a70c5f13a078",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "name": "calc_presion",
+        "func": "const valorADCMin = 4000;\nconst valorADCMax = 20000;\nconst valorMin = 0;\nconst valorMax = 10.1972;\n\nconst valorADC = msg.payload;\nconst valorPresion = ((valorADC - valorADCMin) / (valorADCMax - valorMin)) * (valorMax - valorMin) + valorMin;\n\nmsg.payload = Number(valorPresion.toFixed(4));\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1090,
+        "y": 420,
+        "wires": [
+            [
+                "0b4e2df03b8eb1f9",
+                "c942709df3627463",
+                "f8e06e63c9ac5bf6"
+            ]
+        ]
+    },
+    {
+        "id": "bff6ae60a92dad41",
+        "type": "switch",
+        "z": "0c0a6b76fd1afafc",
+        "name": "ADC1 Registers",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "read_ADC1_AI0",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "read_ADC1_AI1",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "read_ADC1_AI2",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "read_ADC1_AI3",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 4,
+        "x": 840,
+        "y": 460,
+        "wires": [
+            [
+                "fbc5eb3b2107878c",
+                "8b022ced2df6e028"
+            ],
+            [
+                "f522a70c5f13a078"
+            ],
+            [
+                "9c1bcb01ad4dd99e"
+            ],
+            [
+                "1c2768527a48c598"
+            ]
+        ]
+    },
+    {
+        "id": "f293c2468d8b54f3",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "name": "telemetria",
+        "func": "msg.payload = {\n  flujo: msg.payload\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1600,
+        "y": 200,
+        "wires": [
+            [
+                "3ba2b5c19d2ef0c4"
+            ]
+        ]
+    },
+    {
+        "id": "61b09568a2ca52fb",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "name": "telemetria",
+        "func": "msg.payload = {\n  volumen: msg.payload\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1340,
+        "y": 280,
+        "wires": [
+            [
+                "70e63769fa1d4da7"
+            ]
+        ]
+    },
+    {
+        "id": "0b4e2df03b8eb1f9",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "name": "telemetria",
+        "func": "msg.payload = {\n  presion: msg.payload\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1300,
+        "y": 420,
+        "wires": [
+            [
+                "6144024e6ea02199"
+            ]
+        ]
+    },
+    {
+        "id": "fbf239a2a3c88dc9",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "name": "formato_ui",
+        "func": "msg.payload = {\n    value: msg.payload,\n    label: msg.payload + \" Litros\"\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1330,
+        "y": 240,
+        "wires": [
+            [
+                "0dbc89382a13a3e6"
+            ]
+        ]
+    },
+    {
+        "id": "df146d9a3056ddbf",
+        "type": "debug",
+        "z": "0c0a6b76fd1afafc",
+        "name": "debug 48",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1080,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "98e8be4bc58f30f0",
+        "type": "inject",
+        "z": "0c0a6b76fd1afafc",
+        "name": "ADC_1_AI0",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "read_ADC1_AI0",
+        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":0,\"quantity\":1}",
+        "payloadType": "json",
+        "x": 100,
+        "y": 420,
+        "wires": [
+            [
+                "dc469299873d0bdb"
+            ]
+        ]
+    },
+    {
+        "id": "91b60c135bdfe6df",
+        "type": "inject",
+        "z": "0c0a6b76fd1afafc",
+        "name": "ADC_1_AI1",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "read_ADC1_AI1",
+        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":1,\"quantity\":1}",
+        "payloadType": "json",
+        "x": 100,
+        "y": 460,
+        "wires": [
+            [
+                "dc469299873d0bdb"
+            ]
+        ]
+    },
+    {
+        "id": "05bc0557fdb89e4e",
+        "type": "inject",
+        "z": "0c0a6b76fd1afafc",
+        "name": "ADC_1_AI2",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "read_ADC1_AI2",
+        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":2,\"quantity\":1}",
+        "payloadType": "json",
+        "x": 100,
+        "y": 500,
+        "wires": [
+            [
+                "dc469299873d0bdb"
+            ]
+        ]
+    },
+    {
+        "id": "2a95c490d3a0ed2c",
+        "type": "inject",
+        "z": "0c0a6b76fd1afafc",
+        "name": "ADC_1_AI3",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "read_ADC1_AI3",
+        "payload": "{\"value\":0,\"fc\":4,\"unitid\":1,\"address\":3,\"quantity\":1}",
+        "payloadType": "json",
+        "x": 100,
+        "y": 540,
+        "wires": [
+            [
+                "dc469299873d0bdb"
+            ]
+        ]
+    },
+    {
+        "id": "25daec0ef1be6127",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "name": "Format temp",
+        "func": "let temperature = msg.payload;\nmsg.payload = temperature + \"°C\"; // Añade la unidad °C al número\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1370,
+        "y": 500,
+        "wires": [
+            [
+                "741c89e57123c35e"
+            ]
+        ]
+    },
+    {
+        "id": "062b522d308a8662",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "name": "telemetria",
+        "func": "msg.payload = {\n  temperatura: msg.payload\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1360,
+        "y": 540,
+        "wires": [
+            [
+                "f4b75fb1477dbd78"
+            ]
+        ]
+    },
+    {
+        "id": "1d461b9cebab305f",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "name": "Format temp",
+        "func": "let temperature = msg.payload;\nmsg.payload = temperature + \"°C\"; // Añade la unidad °C al número\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1370,
+        "y": 660,
+        "wires": [
+            [
+                "4dca81e0f2b197d7"
+            ]
+        ]
+    },
+    {
+        "id": "b6147627147fe6f1",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "name": "telemetria",
+        "func": "msg.payload = {\n  temperatura: msg.payload\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1360,
+        "y": 700,
+        "wires": [
+            [
+                "a043d25938a45131"
+            ]
+        ]
+    },
+    {
+        "id": "1c2768527a48c598",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "name": "calc_temp",
+        "func": "const valorADCMin = 4000;\nconst valorADCMax = 20000;\nconst valorMin = 0;\nconst valorMax = 1300;\n\nconst valorADC = msg.payload;\nconst valorTemperatura = ((valorADC - valorADCMin) / (valorADCMax - valorADCMin)) * (valorMax - valorMin) + valorMin;\n\nmsg.payload = Math.round(valorTemperatura);\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1090,
+        "y": 620,
+        "wires": [
+            [
+                "1d461b9cebab305f",
+                "b6147627147fe6f1",
+                "454de75abdb2c0b9"
+            ]
+        ]
+    },
+    {
+        "id": "9c1bcb01ad4dd99e",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "name": "calc_temp",
+        "func": "const valorADCMin = 4000;\nconst valorADCMax = 20000;\nconst valorMin = 0;\nconst valorMax = 1300;\n\nconst valorADC = msg.payload;\nconst valorTemperatura = ((valorADC - valorADCMin) / (valorADCMax - valorADCMin)) * (valorMax - valorMin) + valorMin;\n\nmsg.payload = Math.round(valorTemperatura);\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1090,
+        "y": 500,
+        "wires": [
+            [
+                "25daec0ef1be6127",
+                "062b522d308a8662",
+                "c7e54bbf0e53085f"
+            ]
+        ]
+    },
+    {
+        "id": "0a040bd5b7becab1",
+        "type": "modbus-flex-getter",
+        "z": "0c0a6b76fd1afafc",
+        "name": "ADC1",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "logIOActivities": false,
+        "server": "661d09df777a5259",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 550,
+        "y": 480,
+        "wires": [
+            [
+                "53ce2ef801c16343",
+                "bff6ae60a92dad41"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "741c89e57123c35e",
+        "type": "ui-text",
+        "z": "0c0a6b76fd1afafc",
+        "group": "75e50c331c190f67",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "name": "Entrada BA-01",
+        "label": "Entrada BA-01",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "style": true,
+        "font": "Helvetica, sans-serif",
+        "fontSize": 16,
+        "color": "#717171",
+        "className": "",
+        "x": 1640,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "4dca81e0f2b197d7",
+        "type": "ui-text",
+        "z": "0c0a6b76fd1afafc",
+        "group": "75e50c331c190f67",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "name": "Salida BA-01",
+        "label": "Salida BA-01",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "style": true,
+        "font": "Helvetica, sans-serif",
+        "fontSize": 16,
+        "color": "#717171",
+        "className": "",
+        "x": 1650,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "0dbc89382a13a3e6",
+        "type": "ui-chart",
+        "z": "0c0a6b76fd1afafc",
+        "group": "3f690bb5a526a246",
+        "name": "Volumen FA-02",
+        "label": "Volumen FA-02",
+        "order": 1,
+        "chartType": "bar",
+        "category": "label",
+        "categoryType": "property",
+        "xAxisProperty": "",
+        "xAxisPropertyType": "msg",
+        "xAxisType": "category",
+        "yAxisProperty": "value",
+        "ymin": "0",
+        "ymax": "40000",
+        "action": "replace",
+        "pointShape": "circle",
+        "pointRadius": 4,
+        "showLegend": false,
+        "removeOlder": 1,
+        "removeOlderUnit": "3600",
+        "removeOlderPoints": "",
+        "colors": [
+            "#227dbf",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "width": "1",
+        "height": "5",
+        "className": "",
+        "x": 1680,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7da24919c13da0c3",
+        "type": "ui-gauge",
+        "z": "0c0a6b76fd1afafc",
+        "name": "Flujo COPE",
+        "group": "3f690bb5a526a246",
+        "order": 2,
+        "width": "5",
+        "height": "4",
+        "gtype": "gauge-half",
+        "gstyle": "rounded",
+        "title": "Flujo COPE",
+        "units": "L/h",
+        "icon": "",
+        "prefix": "",
+        "suffix": "",
+        "segments": [
+            {
+                "from": "0",
+                "color": "#ea5353"
+            },
+            {
+                "from": "4000",
+                "color": "#5cd65c"
+            },
+            {
+                "from": "7500",
+                "color": "#ea5353"
+            }
+        ],
+        "min": 0,
+        "max": "10000",
+        "sizeThickness": "26",
+        "sizeGap": "3",
+        "sizeKeyThickness": "20",
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 1590,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "c942709df3627463",
+        "type": "ui-gauge",
+        "z": "0c0a6b76fd1afafc",
+        "name": "Presion alimentacion",
+        "group": "3f690bb5a526a246",
+        "order": 3,
+        "width": "5",
+        "height": "4",
+        "gtype": "gauge-half",
+        "gstyle": "rounded",
+        "title": "Presión Alimentación",
+        "units": "Kg/cm2",
+        "icon": "",
+        "prefix": "",
+        "suffix": "",
+        "segments": [
+            {
+                "from": "0",
+                "color": "#ea5353"
+            },
+            {
+                "from": "4",
+                "color": "#5cd65c"
+            },
+            {
+                "from": "6",
+                "color": "#ea5353"
+            }
+        ],
+        "min": 0,
+        "max": "10",
+        "sizeThickness": "26",
+        "sizeGap": "3",
+        "sizeKeyThickness": "20",
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 1480,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "bdcb32ba2e26ab1a",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "name": "F_influx_vol",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de nivel litros no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MN-2.1',\n                equipo_id: 'FA-02A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                nivel_litros: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1330,
+        "y": 320,
+        "wires": [
+            [
+                "1309512968429f75",
+                "88786410b1450e85"
+            ]
+        ]
+    },
+    {
+        "id": "1309512968429f75",
+        "type": "Stackhero-InfluxDB-v2-write",
+        "z": "0c0a6b76fd1afafc",
+        "server": "a1b3d7fc83d5c6f6",
+        "name": "DB",
+        "x": 1850,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c7e54bbf0e53085f",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "name": "F_influx_temp",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de temperatura no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'ST-2.1',\n                equipo_id: 'ent-BA-01',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                temperatura_c: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1380,
+        "y": 580,
+        "wires": [
+            [
+                "1309512968429f75"
+            ]
+        ]
+    },
+    {
+        "id": "454de75abdb2c0b9",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "name": "F_influx_temp",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de temperatura no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'ST-2.2',\n                equipo_id: 'sal-BA-01',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                temperatura_c: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1380,
+        "y": 620,
+        "wires": [
+            [
+                "1309512968429f75"
+            ]
+        ]
+    },
+    {
+        "id": "f8e06e63c9ac5bf6",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "name": "F_influx_presion",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de presión no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MP-1.1',\n                equipo_id: 'FA-02A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                presion_kg: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1320,
+        "y": 380,
+        "wires": [
+            [
+                "1309512968429f75",
+                "6e39e43b1629ecb9"
+            ]
+        ]
+    },
+    {
+        "id": "6e39e43b1629ecb9",
+        "type": "debug",
+        "z": "0c0a6b76fd1afafc",
+        "name": "debug 49",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1520,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "9c865eb1dc07fb08",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "name": "F_influx_flujo",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de flujo no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MF-1.1',\n                equipo_id: 'FA-02A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                flujo_lh: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1590,
+        "y": 80,
+        "wires": [
+            [
+                "1309512968429f75"
+            ]
+        ]
+    },
+    {
+        "id": "3ba2b5c19d2ef0c4",
+        "type": "mqtt out",
+        "z": "0c0a6b76fd1afafc",
+        "d": true,
+        "name": "mqtt_tb_MF-1.1",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "689c5e6207baccbb",
+        "x": 1760,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "70e63769fa1d4da7",
+        "type": "mqtt out",
+        "z": "0c0a6b76fd1afafc",
+        "d": true,
+        "name": "mqtt_tb_MN-2.1",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "75c0821a42a5cdfb",
+        "x": 1500,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "6144024e6ea02199",
+        "type": "mqtt out",
+        "z": "0c0a6b76fd1afafc",
+        "d": true,
+        "name": "mqtt_tb_MP-1.1",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "feca9c5ced6ec599",
+        "x": 1800,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "a043d25938a45131",
+        "type": "mqtt out",
+        "z": "0c0a6b76fd1afafc",
+        "d": true,
+        "name": "mqtt_tb_ST-2.2",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "3b8eefdff633489b",
+        "x": 1640,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "f4b75fb1477dbd78",
+        "type": "mqtt out",
+        "z": "0c0a6b76fd1afafc",
+        "d": true,
+        "name": "mqtt_tb_ST-2.1",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "233cd5171dde3839",
+        "x": 1640,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "51ef9142fc6b10bf",
+        "type": "debug",
+        "z": "0c0a6b76fd1afafc",
+        "name": "Vol. FA-02A",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1140,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "88786410b1450e85",
+        "type": "debug",
+        "z": "0c0a6b76fd1afafc",
+        "name": "debug 50",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1530,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "6a3f789738fb6995",
+        "type": "debug",
+        "z": "0c0a6b76fd1afafc",
+        "name": "Modbus queue",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "watchdog-node",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "d": true,
+        "name": "Watchdog",
+        "func": "const lastSuccessfulRead = flow.get('lastSuccessfulRead') || 0;\nconst now = Date.now();\nconst threshold = 60000; // 60 segundos, ajusta según sea necesario\n\nif (now - lastSuccessfulRead > threshold) {\n    // No ha habido lecturas exitosas en el último minuto\n    node.status({fill:\"red\",shape:\"ring\",text:\"No lecturas recientes\"});\n    // Enviar mensaje para reiniciar el flujo\n    return {payload: \"full_reset\", topic: \"watchdog_full_reset\"};\n} else {\n    node.status({fill:\"green\",shape:\"dot\",text:\"Lecturas OK\"});\n    return null; // No hacer nada si las lecturas son recientes\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 980,
+        "wires": [
+            [
+                "full-reset-handler"
+            ]
+        ]
+    },
+    {
+        "id": "full-reset-handler",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "d": true,
+        "name": "Manejador de Reinicio Completo",
+        "func": "if (msg.topic === \"watchdog_full_reset\") {\n    // Evitar bucles infinitos de reinicio\n    const lastResetTime = flow.get('lastResetTime') || 0;\n    const now = Date.now();\n    if (now - lastResetTime < 300000) { // 5 minutos\n        node.warn(\"Intento de reinicio muy frecuente, abortando.\");\n        return null;\n    }\n    \n    // Marcar el tiempo de este reinicio\n    flow.set('lastResetTime', now);\n    \n    // Reinicializar todos los estados relevantes del flujo\n    flow.set('lastSuccessfulRead', 0);\n    \n    // Detener todos los nodos inyectores\n    const stopMsg = {payload: \"stop\"};\n    \n    // Reiniciar todos los nodos inyectores después de un breve retraso\n    const startMsg = {payload: \"start\"};\n    \n    return [\n        {topic: \"control\", payload: stopMsg},\n        {topic: \"control\", payload: startMsg, delay: 5000} // 5 segundos de retraso\n    ];\n} else {\n    return null;\n}",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 980,
+        "wires": [
+            [
+                "modbus-inject-1",
+                "modbus-inject-2",
+                "modbus-inject-3"
+            ],
+            [
+                "modbus-inject-1",
+                "modbus-inject-2",
+                "modbus-inject-3"
+            ]
+        ]
+    },
+    {
+        "id": "modbus-inject-1",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "d": true,
+        "name": "Inyector Modbus 1",
+        "func": "if (msg.topic === \"control\") {\n    if (msg.payload === \"stop\") {\n        // Detener la inyección\n        node.send([null, {payload: \"stopped\"}]);\n    } else if (msg.payload === \"start\") {\n        // Reiniciar la inyección\n        node.send([{payload: \"restart\"}, null]);\n    }\n} else {\n    // Comportamiento normal del inyector\n    return [\n        {\n            topic: \"read_ADC3_AI0\",\n            payload: {value:0,fc:3,unitid:1,address:40,quantity:1}\n        },\n        null\n    ];\n}",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 920,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "modbus-inject-2",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "d": true,
+        "name": "Inyector Modbus 2",
+        "func": "if (msg.topic === \"control\") {\n    if (msg.payload === \"stop\") {\n        // Detener la inyección\n        node.send([null, {payload: \"stopped\"}]);\n    } else if (msg.payload === \"start\") {\n        // Reiniciar la inyección\n        node.send([{payload: \"restart\"}, null]);\n    }\n} else {\n    // Comportamiento normal del inyector\n    return [\n        {\n            topic: \"read_ADC3_AI1\",\n            payload: {value:0,fc:3,unitid:1,address:41,quantity:1}\n        },\n        null\n    ];\n}",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 980,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "modbus-inject-3",
+        "type": "function",
+        "z": "0c0a6b76fd1afafc",
+        "d": true,
+        "name": "Inyector Modbus 3",
+        "func": "if (msg.topic === \"control\") {\n    if (msg.payload === \"stop\") {\n        // Detener la inyección\n        node.send([null, {payload: \"stopped\"}]);\n    } else if (msg.payload === \"start\") {\n        // Reiniciar la inyección\n        node.send([{payload: \"restart\"}, null]);\n    }\n} else {\n    // Comportamiento normal del inyector\n    return [\n        {\n            topic: \"read_ADC3_AI2\",\n            payload: {value:0,fc:3,unitid:1,address:42,quantity:1}\n        },\n        null\n    ];\n}",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 1040,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "watchdog-trigger",
+        "type": "inject",
+        "z": "0c0a6b76fd1afafc",
+        "d": true,
+        "name": "Trigger Watchdog",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "30",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 190,
+        "y": 980,
+        "wires": [
+            [
+                "watchdog-node"
+            ]
         ]
     }
 ]
