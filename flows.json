@@ -6662,7 +6662,7 @@
         "type": "function",
         "z": "9fa46c697055fd5a",
         "name": "calc_presion",
-        "func": "const valorADCMin = 4000;\nconst valorADCMax = 20000;\nconst valorMin = 0;\nconst valorMax = 10.1972;\n\nconst valorADC = msg.payload;\nconst valorPresion = ((valorADC - valorADCMin) / (valorADCMax - valorMin)) * (valorMax - valorMin) + valorMin;\n\nmsg.payload = Number(valorPresion.toFixed(4));\n\nreturn msg;",
+        "func": "const valorADCMin = 4000;\nconst valorADCMax = 20000;\nconst valorMin = 0;\nconst valorMax = 10.1972;\n\n// Obtener el valor ADC directamente del payload\nconst valorADC = msg.payload;\n\n// Calcular la presión usando la fórmula de interpolación lineal\nconst valorPresion = ((valorADC - valorADCMin) / (valorADCMax - valorADCMin)) * (valorMax - valorMin) + valorMin;\n\n// Redondear a 4 decimales y convertir a número\nmsg.payload = Number(valorPresion.toFixed(4));\n\n// Opcional: Añadir una advertencia si el valor está fuera del rango esperado\nif (valorADC < valorADCMin || valorADC > valorADCMax) {\n    node.warn(`Valor ADC fuera del rango esperado: ${valorADC}`);\n}\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -7351,26 +7351,9 @@
         "y": 660,
         "wires": [
             [
-                "502ec4d7d999a369",
-                "0a0c33bb829f3465"
+                "502ec4d7d999a369"
             ]
         ]
-    },
-    {
-        "id": "0a0c33bb829f3465",
-        "type": "debug",
-        "z": "9fa46c697055fd5a",
-        "name": "debug 38",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 2120,
-        "y": 660,
-        "wires": []
     },
     {
         "id": "6c6ac34e890f43b1",
