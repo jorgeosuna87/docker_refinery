@@ -4803,7 +4803,7 @@
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
-        "topic": "update",
+        "topic": "reset",
         "payload": "",
         "payloadType": "date",
         "x": 490,
