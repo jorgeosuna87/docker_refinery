@@ -4635,7 +4635,7 @@
         ],
         "repeat": "1",
         "crontab": "",
-        "once": false,
+        "once": true,
         "onceDelay": 0.1,
         "topic": "update",
         "payload": "",
@@ -5117,17 +5117,59 @@
         "id": "9f254561809fe947",
         "type": "debug",
         "z": "190ed3e96d0709a5",
-        "name": "debug 51",
+        "name": "Status Queue",
         "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 920,
+        "x": 940,
         "y": 800,
         "wires": []
+    },
+    {
+        "id": "delay-after-reset",
+        "type": "delay",
+        "z": "190ed3e96d0709a5",
+        "name": "Esperar antes de reconectar",
+        "pauseType": "delay",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "outputs": 1,
+        "x": 1020,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "setup-modbus-client",
+        "type": "function",
+        "z": "190ed3e96d0709a5",
+        "name": "Setup Modbus Client",
+        "func": "function setupModbusClient() {\n    let modbusClient = flow.get('modbusClient');\n    \n    if (!modbusClient) {\n        // Asume que estás usando node-red-contrib-modbus\n        const ModbusRTU = global.get('ModbusRTU');\n        modbusClient = new ModbusRTU();\n        \n        modbusClient.connectTCP(\"192.168.1.75\", { port: 502 });\n    }\n    \n    modbusClient.on('error', function(err) {\n        node.error('Error de Modbus: ' + err.message);\n        setTimeout(() => {\n            node.warn(\"Reintentando conexión Modbus...\");\n            modbusClient.connectTCP(\"192.168.1.75\", { port: 502 });\n        }, 10000);\n    });\n    \n    modbusClient.on('connect', function() {\n        node.log('Conexión Modbus establecida');\n        flow.set('lastSuccessfulCommunication', Date.now());\n        node.send({topic: \"read_ADC2_AI1\", payload: {value:0,fc:4,unitid:1,address:0,quantity:1}});\n    });\n    \n    return modbusClient;\n}\n\nflow.set('modbusClient', setupModbusClient());\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 1020,
+        "wires": [
+            [
+                "a1d380aff2236a21"
+            ]
+        ]
     },
     {
         "id": "abbcccf771764af6",
