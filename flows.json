@@ -70,6 +70,13 @@
         "env": []
     },
     {
+        "id": "404befb29a241410",
+        "type": "tab",
+        "label": "Updated Hardware Monitoring",
+        "disabled": false,
+        "info": "An updated version of the hardware monitoring flow using standard Node-RED nodes"
+    },
+    {
         "id": "feca9c5ced6ec599",
         "type": "mqtt-broker",
         "name": "mqtt_tb_MP-1.1",
@@ -1437,6 +1444,14 @@
         "showLogs": true
     },
     {
+        "id": "influxdb-server-config",
+        "type": "Stackhero-InfluxDB-v2-Server",
+        "name": "InfluxDB Server",
+        "host": "influxdb2",
+        "port": "8086",
+        "tls": false
+    },
+    {
         "id": "inject-node",
         "type": "inject",
         "z": "1",
@@ -1476,7 +1491,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1020,
+        "x": 860,
         "y": 160,
         "wires": [
             [
@@ -1495,7 +1510,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1020,
+        "x": 850,
         "y": 220,
         "wires": [
             [
@@ -1579,7 +1594,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 1220,
+        "x": 1280,
         "y": 280,
         "wires": [
             [
@@ -1604,7 +1619,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 1220,
+        "x": 1290,
         "y": 340,
         "wires": [
             [
@@ -1624,7 +1639,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "Restart Node-RED",
-        "x": 1510,
+        "x": 1590,
         "y": 300,
         "wires": [
             [],
@@ -1645,8 +1660,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1330,
-        "y": 180,
+        "x": 1310,
+        "y": 220,
         "wires": []
     },
     {
@@ -1870,7 +1885,7 @@
         "type": "OS",
         "z": "1",
         "name": "Get OS Info",
-        "x": 720,
+        "x": 670,
         "y": 160,
         "wires": [
             [
@@ -1883,7 +1898,7 @@
         "type": "Uptime",
         "z": "1",
         "name": "Get Uptime",
-        "x": 720,
+        "x": 670,
         "y": 400,
         "wires": [
             [
@@ -1896,7 +1911,7 @@
         "type": "CPUs",
         "z": "1",
         "name": "Get CPU Info",
-        "x": 720,
+        "x": 670,
         "y": 220,
         "wires": [
             [
@@ -1909,7 +1924,7 @@
         "type": "Loadavg",
         "z": "1",
         "name": "Get Load Average",
-        "x": 720,
+        "x": 650,
         "y": 340,
         "wires": [
             [
@@ -1922,7 +1937,7 @@
         "type": "Memory",
         "z": "1",
         "name": "Get Memory Info",
-        "x": 720,
+        "x": 650,
         "y": 280,
         "wires": [
             [
@@ -1963,6 +1978,23 @@
         "x": 1100,
         "y": 480,
         "wires": []
+    },
+    {
+        "id": "config-node",
+        "type": "function",
+        "z": "1",
+        "name": "Configuration",
+        "func": "// Set global configuration variables\nconst config = {\n    memoryThreshold: 80,  // % of memory usage\n    loadThreshold: 2.0,   // 1-minute load average\n    checkInterval: 300,   // seconds\n    watchdogInterval: 60, // seconds\n    maxRestartAttempts: 3\n};\n\n// Store configuration in global context\nfor (let [key, value] of Object.entries(config)) {\n    global.set(key, value);\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 440,
+        "wires": [
+            []
+        ]
     },
     {
         "id": "046299b16d090e45",
@@ -9399,6 +9431,497 @@
         "wires": [
             [
                 "watchdog-node"
+            ]
+        ]
+    },
+    {
+        "id": "07f389e3c5a168b6",
+        "type": "function",
+        "z": "404befb29a241410",
+        "name": "Configuration",
+        "func": "// Set global configuration variables\nconst config = {\n    memoryThreshold: 80,  // % of memory usage\n    loadThreshold: 2.0,   // 1-minute load average\n    checkInterval: 300,   // seconds\n    watchdogInterval: 60, // seconds\n    maxRestartAttempts: 3\n};\n\n// Store configuration in global context\nfor (let [key, value] of Object.entries(config)) {\n    global.set(key, value);\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 150,
+        "y": 180,
+        "wires": [
+            [
+                "a4ba8c6d04d4cea6"
+            ]
+        ]
+    },
+    {
+        "id": "a4ba8c6d04d4cea6",
+        "type": "inject",
+        "z": "404befb29a241410",
+        "name": "Check System Usage",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "300",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 390,
+        "y": 180,
+        "wires": [
+            [
+                "a0f20543d6a4fab1",
+                "bf0a52a80ee8e662",
+                "5bdc79ca805a90e3",
+                "c0ac99905c44e026",
+                "2688ddc673ee0323"
+            ]
+        ]
+    },
+    {
+        "id": "a0f20543d6a4fab1",
+        "type": "exec",
+        "z": "404befb29a241410",
+        "command": "uname -a",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "Get OS Info",
+        "x": 670,
+        "y": 60,
+        "wires": [
+            [
+                "influx-format-os"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "bf0a52a80ee8e662",
+        "type": "exec",
+        "z": "404befb29a241410",
+        "command": "lscpu",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "Get CPU Info",
+        "x": 670,
+        "y": 120,
+        "wires": [
+            [
+                "influx-format-cpu"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "5bdc79ca805a90e3",
+        "type": "exec",
+        "z": "404befb29a241410",
+        "command": "free -b",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "Get Memory Info",
+        "x": 670,
+        "y": 180,
+        "wires": [
+            [
+                "0871e78bfb79903b"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "c0ac99905c44e026",
+        "type": "exec",
+        "z": "404befb29a241410",
+        "command": "cat /proc/loadavg",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "Get Load Average",
+        "x": 670,
+        "y": 240,
+        "wires": [
+            [
+                "95c94da12ecfdcec"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "2688ddc673ee0323",
+        "type": "exec",
+        "z": "404befb29a241410",
+        "command": "cat /proc/uptime",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Get Uptime",
+        "x": 670,
+        "y": 300,
+        "wires": [
+            [
+                "77c8d4146b61db19"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "accb3c3cfc0a500f",
+        "type": "debug",
+        "z": "404befb29a241410",
+        "name": "Debug System Info",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1140,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "385d018c113f2433",
+        "type": "inject",
+        "z": "404befb29a241410",
+        "name": "Watchdog Check",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "60",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 420,
+        "wires": [
+            [
+                "cb68f90d1e7cd6c4"
+            ]
+        ]
+    },
+    {
+        "id": "cb68f90d1e7cd6c4",
+        "type": "http request",
+        "z": "404befb29a241410",
+        "name": "Check Node-RED",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://localhost:1880",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 390,
+        "y": 420,
+        "wires": [
+            [
+                "1daa521ec5344959"
+            ]
+        ]
+    },
+    {
+        "id": "1daa521ec5344959",
+        "type": "function",
+        "z": "404befb29a241410",
+        "name": "Check Response",
+        "func": "if (msg.statusCode !== 200) {\n    global.set('failedChecks', (global.get('failedChecks') || 0) + 1);\n    msg.failedChecks = global.get('failedChecks');\n    return [msg, null];\n} else {\n    global.set('failedChecks', 0);\n    return [null, msg];\n}",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 420,
+        "wires": [
+            [
+                "81ad516729ec8926"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "81ad516729ec8926",
+        "type": "function",
+        "z": "404befb29a241410",
+        "name": "Determine Restart Action",
+        "func": "const failedChecks = msg.failedChecks || 0;\nconst maxRestartAttempts = global.get('maxRestartAttempts');\n\nif (failedChecks >= maxRestartAttempts) {\n    // Reiniciar el sistema completo\n    msg.action = 'reboot';\n    msg.command = 'sudo /sbin/reboot';\n} else {\n    // Reiniciar solo Node-RED\n    msg.action = 'restart-nodered';\n    msg.command = 'sudo systemctl restart nodered';\n}\n\nmsg.alert = {\n    type: 'watchdog',\n    message: `Node-RED unresponsive. Action: ${msg.action}`\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 420,
+        "wires": [
+            [
+                "7aabca956a37389a",
+                "b2d3ea73db7878dc"
+            ]
+        ]
+    },
+    {
+        "id": "7aabca956a37389a",
+        "type": "exec",
+        "z": "404befb29a241410",
+        "command": "",
+        "addpay": "command",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "Execute Restart Command",
+        "x": 1140,
+        "y": 420,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "b2d3ea73db7878dc",
+        "type": "switch",
+        "z": "404befb29a241410",
+        "name": "Check for Alerts",
+        "property": "alert",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nnull"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 630,
+        "y": 520,
+        "wires": [
+            [
+                "2133568936125ebb",
+                "1d9e14bd01ec08be"
+            ]
+        ]
+    },
+    {
+        "id": "2133568936125ebb",
+        "type": "template",
+        "z": "404befb29a241410",
+        "name": "Format Alert Email",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<h2>System Alert</h2>\n<p>Type: {{alert.type}}</p>\n<p>Message: {{alert.message}}</p>\n<p>Time: {{$now}}</p>",
+        "output": "str",
+        "x": 880,
+        "y": 520,
+        "wires": [
+            [
+                "7f6235937073a8d1"
+            ]
+        ]
+    },
+    {
+        "id": "7f6235937073a8d1",
+        "type": "e-mail",
+        "z": "404befb29a241410",
+        "server": "smtp.gmail.com",
+        "port": "587",
+        "authtype": "BASIC",
+        "saslformat": false,
+        "token": "oauth2Response.access_token",
+        "secure": false,
+        "tls": true,
+        "name": "tableroas14@gmail.com",
+        "dname": "Alerta Tablero",
+        "x": 1080,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "influx-format-os",
+        "type": "function",
+        "z": "404befb29a241410",
+        "name": "Format OS for InfluxDB",
+        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'SystemMetrics',\n            tags: {\n                metric_type: 'os',\n                hostname: msg.payload.hostname\n            },\n            fields: {\n                kernel: msg.payload.kernel,\n                release: msg.payload.release,\n                version: msg.payload.version\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 60,
+        "wires": [
+            [
+                "accb3c3cfc0a500f",
+                "influxdb-write"
+            ]
+        ]
+    },
+    {
+        "id": "influx-format-cpu",
+        "type": "function",
+        "z": "404befb29a241410",
+        "name": "Format CPU for InfluxDB",
+        "func": "msg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'SystemMetrics',\n            tags: {\n                metric_type: 'cpu',\n                model: msg.payload.model\n            },\n            fields: {\n                cores: parseInt(msg.payload.cores),\n                mhz: parseFloat(msg.payload.mhz)\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 120,
+        "wires": [
+            [
+                "accb3c3cfc0a500f",
+                "influxdb-write"
+            ]
+        ]
+    },
+    {
+        "id": "influxdb-write",
+        "type": "Stackhero-InfluxDB-v2-write",
+        "z": "404befb29a241410",
+        "server": "a1b3d7fc83d5c6f6",
+        "name": "Write to InfluxDB",
+        "x": 1350,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1d9e14bd01ec08be",
+        "type": "ui-notification",
+        "z": "404befb29a241410",
+        "ui": "bc1023506614f084",
+        "position": "top right",
+        "colorDefault": true,
+        "color": "#000000",
+        "displayTime": "3",
+        "showCountdown": true,
+        "outputs": 1,
+        "allowDismiss": true,
+        "dismissText": "Close",
+        "raw": false,
+        "className": "",
+        "name": "Alerta Tablero",
+        "x": 880,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "77c8d4146b61db19",
+        "type": "function",
+        "z": "404befb29a241410",
+        "name": "Format Uptime for InfluxDB",
+        "func": "const uptime = msg.payload.uptime || 0;\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'SystemMetrics',\n            tags: {\n                metric_type: 'uptime'\n            },\n            fields: {\n                uptime: parseFloat(uptime)\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 300,
+        "wires": [
+            [
+                "accb3c3cfc0a500f",
+                "influxdb-write"
+            ]
+        ]
+    },
+    {
+        "id": "95c94da12ecfdcec",
+        "type": "function",
+        "z": "404befb29a241410",
+        "name": "Format Load Avg for InfluxDB",
+        "func": "const load1 = parseFloat(msg.payload['1min']) || 0;\nconst load5 = parseFloat(msg.payload['5min']) || 0;\nconst load15 = parseFloat(msg.payload['15min']) || 0;\n\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'SystemMetrics',\n            tags: {\n                metric_type: 'loadavg'\n            },\n            fields: {\n                load_1min: load1,\n                load_5min: load5,\n                load_15min: load15\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 920,
+        "y": 240,
+        "wires": [
+            [
+                "accb3c3cfc0a500f",
+                "influxdb-write"
+            ]
+        ]
+    },
+    {
+        "id": "0871e78bfb79903b",
+        "type": "function",
+        "z": "404befb29a241410",
+        "name": "Format Memory for InfluxDB",
+        "func": "const total = parseInt(msg.payload.total) || 0;\nconst used = parseInt(msg.payload.used) || 0;\nconst free = parseInt(msg.payload.free) || 0;\nconst usage = parseFloat(msg.payload.usage) || 0;\n\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'SystemMetrics',\n            tags: {\n                metric_type: 'memory'\n            },\n            fields: {\n                total: total,\n                used: used,\n                free: free,\n                usage: usage\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 920,
+        "y": 180,
+        "wires": [
+            [
+                "accb3c3cfc0a500f",
+                "influxdb-write"
+            ]
+        ]
+    },
+    {
+        "id": "7a0484c2a270c698",
+        "type": "function",
+        "z": "404befb29a241410",
+        "name": "Safe InfluxDB Formatter",
+        "func": "function safeString(value) {\n    return value != null ? String(value) : '';\n}\n\nfunction safeNumber(value) {\n    const num = Number(value);\n    return isNaN(num) ? 0 : num;\n}\n\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [{\n        measurement: safeString(msg.measurement || 'SystemMetrics'),\n        tags: Object.entries(msg.tags || {}).reduce((acc, [key, value]) => {\n            acc[safeString(key)] = safeString(value);\n            return acc;\n        }, {}),\n        fields: Object.entries(msg.fields || {}).reduce((acc, [key, value]) => {\n            acc[safeString(key)] = safeNumber(value);\n            return acc;\n        }, {}),\n        timestamp: Date.now()\n    }]\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1230,
+        "y": 360,
+        "wires": [
+            [
+                "influxdb-write"
             ]
         ]
     }
