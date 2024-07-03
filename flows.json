@@ -3,13 +3,6 @@
         "id": "1",
         "type": "tab",
         "label": "Hardware Monitoring",
-        "disabled": false,
-        "info": ""
-    },
-    {
-        "id": "29c3b9dde44b67ab",
-        "type": "tab",
-        "label": "Hardware Monitoring",
         "disabled": true,
         "info": ""
     },
@@ -25,7 +18,7 @@
         "id": "190ed3e96d0709a5",
         "type": "tab",
         "label": "ADC2",
-        "disabled": false,
+        "disabled": true,
         "info": "",
         "env": []
     },
@@ -33,7 +26,7 @@
         "id": "5abe0cc40f5ad9c5",
         "type": "tab",
         "label": "DVP-04TC",
-        "disabled": false,
+        "disabled": true,
         "info": "",
         "env": []
     },
@@ -41,7 +34,7 @@
         "id": "af530bfa0859125d",
         "type": "tab",
         "label": "ADC_8CH",
-        "disabled": false,
+        "disabled": true,
         "info": "",
         "env": []
     },
@@ -49,7 +42,7 @@
         "id": "9fa46c697055fd5a",
         "type": "tab",
         "label": "T. Principal RTU",
-        "disabled": false,
+        "disabled": true,
         "info": "",
         "env": []
     },
@@ -73,8 +66,15 @@
         "id": "404befb29a241410",
         "type": "tab",
         "label": "Updated Hardware Monitoring",
-        "disabled": false,
+        "disabled": true,
         "info": "An updated version of the hardware monitoring flow using standard Node-RED nodes"
+    },
+    {
+        "id": "system_monitoring_flow",
+        "type": "tab",
+        "label": "System Monitoring",
+        "disabled": false,
+        "info": "A Docker-compatible system monitoring flow"
     },
     {
         "id": "feca9c5ced6ec599",
@@ -1452,6 +1452,66 @@
         "tls": false
     },
     {
+        "id": "influxdb_config",
+        "type": "Stackhero-InfluxDB-v2-Server",
+        "name": "InfluxDB Server",
+        "host": "influxdb2",
+        "port": "8086",
+        "tls": false
+    },
+    {
+        "id": "145559dfd6523bef",
+        "type": "Stackhero-InfluxDB-v2-Server",
+        "name": "InfluxDB Server",
+        "host": "localhost",
+        "port": "8086",
+        "tls": false
+    },
+    {
+        "id": "bd786e5f9167b374",
+        "type": "ui_group",
+        "name": "Metrics",
+        "tab": "3186c0f63f57d285",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "3186c0f63f57d285",
+        "type": "ui_tab",
+        "name": "Dashboard",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "f41b2a6025c92ab3",
+        "type": "Stackhero-InfluxDB-v2-Server",
+        "name": "InfluxDB Server",
+        "host": "localhost",
+        "port": "8086",
+        "tls": false
+    },
+    {
+        "id": "53d1223c6eb97ee6",
+        "type": "ui_group",
+        "name": "Metrics",
+        "tab": "1958d6172d6fd908",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "1958d6172d6fd908",
+        "type": "ui_tab",
+        "name": "Dashboard",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
         "id": "inject-node",
         "type": "inject",
         "z": "1",
@@ -1994,590 +2054,6 @@
         "y": 440,
         "wires": [
             []
-        ]
-    },
-    {
-        "id": "046299b16d090e45",
-        "type": "inject",
-        "z": "29c3b9dde44b67ab",
-        "name": "Check System Usage",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "300",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "1",
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 520,
-        "y": 160,
-        "wires": [
-            [
-                "522f479df1709f0b",
-                "2bfc559472943048",
-                "e39610c4fb8f4e56",
-                "88bb8daa86228647"
-            ]
-        ]
-    },
-    {
-        "id": "719fd36bc2cba7bd",
-        "type": "function",
-        "z": "29c3b9dde44b67ab",
-        "name": "Format OS Info",
-        "func": "msg.payload = msg.payload || {};\nmsg.payload = `OS Info:\\nHostname: ${msg.payload.hostname || 'N/A'}\\nOS: ${msg.payload.type || 'N/A'}\\nPlatform: ${msg.payload.platform || 'N/A'}\\nArch: ${msg.payload.arch || 'N/A'}\\nRelease: ${msg.payload.release || 'N/A'}`;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1020,
-        "y": 160,
-        "wires": [
-            [
-                "d0a067af02886234"
-            ]
-        ]
-    },
-    {
-        "id": "4f2f6bf455f7ec54",
-        "type": "function",
-        "z": "29c3b9dde44b67ab",
-        "name": "Format CPU Info",
-        "func": "msg.payload = msg.payload.cpus || [];\nmsg.payload = `CPU Info:\\n${msg.payload.map((cpu, i) => `CPU ${i}: ${cpu.model || 'N/A'}, ${cpu.speed || 'N/A'}MHz`).join('\\n')}`;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1020,
-        "y": 220,
-        "wires": [
-            [
-                "d0a067af02886234"
-            ]
-        ]
-    },
-    {
-        "id": "e21c5ea004ef9048",
-        "type": "function",
-        "z": "29c3b9dde44b67ab",
-        "name": "Format Memory Info",
-        "func": "msg.payload = msg.payload || {};\nconst usedMem = msg.payload.totalmem - msg.payload.freemem;\nmsg.payload = `Memory Info:\\nTotal: ${msg.payload.totalmem || 'N/A'}\\nFree: ${msg.payload.freemem || 'N/A'}\\nUsed: ${usedMem}\\nUsage: ${msg.payload.memusage || 'N/A'}%`;\n\nif (msg.payload.memusage > 80) {\n    node.warn('High memory usage detected.');\n}\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1020,
-        "y": 280,
-        "wires": [
-            [
-                "d0a067af02886234",
-                "93ed726cfb9c4d1f"
-            ]
-        ]
-    },
-    {
-        "id": "37c6eb12832fd6c8",
-        "type": "function",
-        "z": "29c3b9dde44b67ab",
-        "name": "Format Load Avg",
-        "func": "msg.payload = msg.payload.loadavg || [];\nmsg.payload = `Load Average:\\n1 min: ${msg.payload[0] || 'N/A'}\\n5 min: ${msg.payload[1] || 'N/A'}\\n15 min: ${msg.payload[2] || 'N/A'}`;\n\nif (msg.payload[0] > 2.0) {\n    node.warn('High CPU load detected.');\n}\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1020,
-        "y": 340,
-        "wires": [
-            [
-                "d0a067af02886234",
-                "c2462e3f4f84eeaf"
-            ]
-        ]
-    },
-    {
-        "id": "f2dd3f189fd5678e",
-        "type": "function",
-        "z": "29c3b9dde44b67ab",
-        "name": "Format Uptime",
-        "func": "msg.payload = `Uptime: ${msg.payload.uptime || 'N/A'} seconds`;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1020,
-        "y": 400,
-        "wires": [
-            [
-                "d0a067af02886234"
-            ]
-        ]
-    },
-    {
-        "id": "93ed726cfb9c4d1f",
-        "type": "switch",
-        "z": "29c3b9dde44b67ab",
-        "name": "Check High Memory Usage",
-        "property": "payload",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "gt",
-                "v": "80",
-                "vt": "num"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 1220,
-        "y": 280,
-        "wires": [
-            [
-                "96b33a14ae69ed47",
-                "11c3c7b6671e588f"
-            ]
-        ]
-    },
-    {
-        "id": "c2462e3f4f84eeaf",
-        "type": "switch",
-        "z": "29c3b9dde44b67ab",
-        "name": "Check High Load Average",
-        "property": "payload",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "gt",
-                "v": "2.0",
-                "vt": "num"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 1220,
-        "y": 340,
-        "wires": [
-            [
-                "96b33a14ae69ed47",
-                "09bd11cd1c742137"
-            ]
-        ]
-    },
-    {
-        "id": "96b33a14ae69ed47",
-        "type": "exec",
-        "z": "29c3b9dde44b67ab",
-        "command": "sudo systemctl restart nodered",
-        "addpay": false,
-        "append": "",
-        "useSpawn": "false",
-        "timer": "",
-        "winHide": false,
-        "oldrc": false,
-        "name": "Restart Node-RED",
-        "x": 1510,
-        "y": 300,
-        "wires": [
-            [
-                "2d7f821de2aa657c"
-            ],
-            [],
-            []
-        ]
-    },
-    {
-        "id": "2d7f821de2aa657c",
-        "type": "function",
-        "z": "29c3b9dde44b67ab",
-        "name": "Record Restart Timestamp",
-        "func": "var now = new Date().getTime();\nvar lastRestart = global.get('lastRestart') || now;\nglobal.set('lastRestart', now);\nmsg.lastRestart = lastRestart;\nmsg.timeSinceLastRestart = now - lastRestart;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1820,
-        "y": 300,
-        "wires": [
-            [
-                "f1ebb1f29769ee50"
-            ]
-        ]
-    },
-    {
-        "id": "f1ebb1f29769ee50",
-        "type": "debug",
-        "z": "29c3b9dde44b67ab",
-        "name": "Debug Restart Time",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "timeSinceLastRestart",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 2050,
-        "y": 300,
-        "wires": []
-    },
-    {
-        "id": "d0a067af02886234",
-        "type": "debug",
-        "z": "29c3b9dde44b67ab",
-        "name": "Debug System Info",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1330,
-        "y": 180,
-        "wires": []
-    },
-    {
-        "id": "11c3c7b6671e588f",
-        "type": "debug",
-        "z": "29c3b9dde44b67ab",
-        "name": "Memory Alarm",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "High Memory Usage",
-        "targetType": "str",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1500,
-        "y": 280,
-        "wires": []
-    },
-    {
-        "id": "09bd11cd1c742137",
-        "type": "debug",
-        "z": "29c3b9dde44b67ab",
-        "name": "Load Avg Alarm",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "High Load Average",
-        "targetType": "str",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1500,
-        "y": 340,
-        "wires": []
-    },
-    {
-        "id": "cd2c21a2fd03a895",
-        "type": "inject",
-        "z": "29c3b9dde44b67ab",
-        "name": "Watchdog Check",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "60",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "1",
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 710,
-        "y": 540,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "6d2166bb4d1da750",
-        "type": "function",
-        "z": "29c3b9dde44b67ab",
-        "name": "Check Ping Response",
-        "func": "if (msg.payload === false) {\n    return [msg, null];\n} else {\n    return [null, msg];\n}",
-        "outputs": 2,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1130,
-        "y": 540,
-        "wires": [
-            [
-                "96b33a14ae69ed47"
-            ],
-            [
-                "54c009de5a846851"
-            ]
-        ]
-    },
-    {
-        "id": "54c009de5a846851",
-        "type": "debug",
-        "z": "29c3b9dde44b67ab",
-        "name": "Watchdog Debug",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1430,
-        "y": 540,
-        "wires": []
-    },
-    {
-        "id": "ca827b238214741e",
-        "type": "inject",
-        "z": "29c3b9dde44b67ab",
-        "name": "Check Dashboard Page",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "60",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "1",
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 690,
-        "y": 640,
-        "wires": [
-            [
-                "9d9ed9ceca86b809"
-            ]
-        ]
-    },
-    {
-        "id": "9d9ed9ceca86b809",
-        "type": "http request",
-        "z": "29c3b9dde44b67ab",
-        "name": "Request Dashboard Page",
-        "method": "GET",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "http://localhost:1880/dashboard/pageN",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 950,
-        "y": 640,
-        "wires": [
-            [
-                "68bca845d363c989"
-            ]
-        ]
-    },
-    {
-        "id": "68bca845d363c989",
-        "type": "function",
-        "z": "29c3b9dde44b67ab",
-        "name": "Check Dashboard Page Response",
-        "func": "if (msg.statusCode === 200) {\n    node.status({fill:\"green\",shape:\"dot\",text:\"Page OK\"});\n    return null;\n} else {\n    node.status({fill:\"red\",shape:\"ring\",text:\"Page FAIL\"});\n    return [msg, null];\n}",
-        "outputs": 2,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1260,
-        "y": 640,
-        "wires": [
-            [
-                "96b33a14ae69ed47"
-            ],
-            [
-                "b576a64a5e4159f1"
-            ]
-        ]
-    },
-    {
-        "id": "ee2b93efa1d01ac3",
-        "type": "function",
-        "z": "29c3b9dde44b67ab",
-        "name": "Check Node-RED Response",
-        "func": "if (msg.payload === false) {\n    // Node-RED no responde\n    global.set(\"failedRestarts\", (global.get(\"failedRestarts\") || 0) + 1);\n    msg.failedRestarts = global.get(\"failedRestarts\");\n    return msg;\n} else {\n    // Node-RED responde correctamente\n    global.set(\"failedRestarts\", 0);\n    return msg;\n}",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 820,
-        "y": 800,
-        "wires": [
-            [
-                "417eaf02cf334ead"
-            ]
-        ]
-    },
-    {
-        "id": "417eaf02cf334ead",
-        "type": "function",
-        "z": "29c3b9dde44b67ab",
-        "name": "Determine Restart Action",
-        "func": "var failedRestarts = msg.failedRestarts || 0;\nif (failedRestarts >= 3) {\n    // Reiniciar el sistema completo\n    return { payload: \"sudo reboot\" };\n} else {\n    // Reiniciar solo Node-RED\n    return { payload: \"sudo systemctl restart nodered\" };\n}",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1090,
-        "y": 800,
-        "wires": [
-            [
-                "83768a2249b58972"
-            ]
-        ]
-    },
-    {
-        "id": "83768a2249b58972",
-        "type": "exec",
-        "z": "29c3b9dde44b67ab",
-        "command": "",
-        "addpay": "payload",
-        "append": "",
-        "useSpawn": "false",
-        "timer": "",
-        "winHide": false,
-        "oldrc": false,
-        "name": "Execute Restart Command",
-        "x": 1360,
-        "y": 800,
-        "wires": [
-            [],
-            [],
-            []
-        ]
-    },
-    {
-        "id": "b576a64a5e4159f1",
-        "type": "debug",
-        "z": "29c3b9dde44b67ab",
-        "name": "debug dashboard",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1480,
-        "y": 680,
-        "wires": []
-    },
-    {
-        "id": "93dfc5eb37c81c65",
-        "type": "OS",
-        "z": "29c3b9dde44b67ab",
-        "name": "Get OS Info",
-        "x": 720,
-        "y": 160,
-        "wires": [
-            [
-                "719fd36bc2cba7bd"
-            ]
-        ]
-    },
-    {
-        "id": "88bb8daa86228647",
-        "type": "Uptime",
-        "z": "29c3b9dde44b67ab",
-        "name": "Get Uptime",
-        "x": 720,
-        "y": 400,
-        "wires": [
-            [
-                "f2dd3f189fd5678e"
-            ]
-        ]
-    },
-    {
-        "id": "522f479df1709f0b",
-        "type": "CPUs",
-        "z": "29c3b9dde44b67ab",
-        "name": "Get CPU Info",
-        "x": 720,
-        "y": 220,
-        "wires": [
-            [
-                "4f2f6bf455f7ec54"
-            ]
-        ]
-    },
-    {
-        "id": "e39610c4fb8f4e56",
-        "type": "Loadavg",
-        "z": "29c3b9dde44b67ab",
-        "name": "Get Load Average",
-        "x": 720,
-        "y": 340,
-        "wires": [
-            [
-                "37c6eb12832fd6c8"
-            ]
-        ]
-    },
-    {
-        "id": "2bfc559472943048",
-        "type": "Memory",
-        "z": "29c3b9dde44b67ab",
-        "name": "Get Memory Info",
-        "x": 720,
-        "y": 280,
-        "wires": [
-            [
-                "e21c5ea004ef9048"
-            ]
-        ]
-    },
-    {
-        "id": "a328188b914416a4",
-        "type": "ping",
-        "z": "29c3b9dde44b67ab",
-        "mode": null,
-        "name": "Ping Node-RED",
-        "host": "127.0.0.1",
-        "timer": "20",
-        "inputs": 0,
-        "x": 920,
-        "y": 540,
-        "wires": [
-            [
-                "6d2166bb4d1da750"
-            ]
         ]
     },
     {
@@ -9491,6 +8967,7 @@
         "append": "",
         "useSpawn": "false",
         "timer": "",
+        "winHide": false,
         "oldrc": false,
         "name": "Get OS Info",
         "x": 670,
@@ -9512,6 +8989,7 @@
         "append": "",
         "useSpawn": "false",
         "timer": "",
+        "winHide": false,
         "oldrc": false,
         "name": "Get CPU Info",
         "x": 670,
@@ -9703,7 +9181,7 @@
         "timer": "",
         "oldrc": false,
         "name": "Execute Restart Command",
-        "x": 1140,
+        "x": 1180,
         "y": 420,
         "wires": [
             [],
@@ -9856,7 +9334,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 940,
+        "x": 920,
         "y": 300,
         "wires": [
             [
@@ -9896,7 +9374,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 920,
+        "x": 900,
         "y": 180,
         "wires": [
             [
@@ -9917,12 +9395,355 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1230,
-        "y": 360,
+        "x": 930,
+        "y": 340,
         "wires": [
             [
                 "influxdb-write"
             ]
         ]
+    },
+    {
+        "id": "config_node",
+        "type": "function",
+        "z": "system_monitoring_flow",
+        "d": true,
+        "name": "Configuration",
+        "func": "// Set global configuration variables\nconst config = {\n    memoryThreshold: 80,  // % of memory usage\n    loadThreshold: 2.0,   // 1-minute load average\n    checkInterval: 300,   // seconds\n    watchdogInterval: 60, // seconds\n    maxRestartAttempts: 3\n};\n\n// Store configuration in global context\nfor (let [key, value] of Object.entries(config)) {\n    global.set(key, value);\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 210,
+        "y": 60,
+        "wires": [
+            [
+                "system_check_inject"
+            ]
+        ]
+    },
+    {
+        "id": "system_check_inject",
+        "type": "inject",
+        "z": "system_monitoring_flow",
+        "d": true,
+        "name": "Check System",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "300",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 400,
+        "y": 60,
+        "wires": [
+            [
+                "get_system_info"
+            ]
+        ]
+    },
+    {
+        "id": "get_system_info",
+        "type": "function",
+        "z": "system_monitoring_flow",
+        "d": true,
+        "name": "Get System Info",
+        "func": "function getSystemInfo(msg) {\n    // Use global.process instead of require('os')\n    const process = global.process;\n\n    // CPU Info (limited information available)\n    const cpuInfo = {\n        model: 'N/A',\n        cores: 1,\n        speed: 0\n    };\n\n    // Memory Info\n    const memUsage = process.memoryUsage();\n    const memInfo = {\n        total: memUsage.heapTotal,\n        free: memUsage.heapTotal - memUsage.heapUsed,\n        used: memUsage.heapUsed,\n        usage: (memUsage.heapUsed / memUsage.heapTotal) * 100\n    };\n\n    // Load Average (not available in all environments)\n    const loadAvg = [0, 0, 0];\n\n    // Uptime\n    const uptime = process.uptime();\n\n    // OS Info\n    const osInfo = {\n        type: process.platform,\n        platform: 'Node.js',\n        release: process.version,\n        hostname: process.env.HOSTNAME || 'unknown'\n    };\n\n    msg.payload = {\n        cpu: cpuInfo,\n        memory: memInfo,\n        loadAvg,\n        uptime,\n        os: osInfo\n    };\n    return msg;\n}\n\nreturn getSystemInfo(msg);",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 60,
+        "wires": [
+            [
+                "format_for_influxdb",
+                "debug_system_info"
+            ]
+        ]
+    },
+    {
+        "id": "format_for_influxdb",
+        "type": "function",
+        "z": "system_monitoring_flow",
+        "d": true,
+        "name": "Format for InfluxDB",
+        "func": "function formatForInfluxDB(msg) {\n    const data = msg.payload;\n    const timestamp = Date.now() * 1000000; // nanoseconds\n\n    msg.payload = [\n        {\n            measurement: \"system_metrics\",\n            tags: {\n                hostname: data.os.hostname,\n                metric_type: \"cpu\"\n            },\n            fields: {\n                model: data.cpu.model,\n                cores: data.cpu.cores,\n                speed: data.cpu.speed\n            },\n            timestamp: timestamp\n        },\n        {\n            measurement: \"system_metrics\",\n            tags: {\n                hostname: data.os.hostname,\n                metric_type: \"memory\"\n            },\n            fields: {\n                total: data.memory.total,\n                used: data.memory.used,\n                free: data.memory.free,\n                usage: data.memory.usage\n            },\n            timestamp: timestamp\n        },\n        {\n            measurement: \"system_metrics\",\n            tags: {\n                hostname: data.os.hostname,\n                metric_type: \"load_average\"\n            },\n            fields: {\n                load1: data.loadAvg[0],\n                load5: data.loadAvg[1],\n                load15: data.loadAvg[2]\n            },\n            timestamp: timestamp\n        },\n        {\n            measurement: \"system_metrics\",\n            tags: {\n                hostname: data.os.hostname,\n                metric_type: \"uptime\"\n            },\n            fields: {\n                uptime: data.uptime\n            },\n            timestamp: timestamp\n        },\n        {\n            measurement: \"system_metrics\",\n            tags: {\n                hostname: data.os.hostname,\n                metric_type: \"os_info\"\n            },\n            fields: {\n                type: data.os.type,\n                platform: data.os.platform,\n                release: data.os.release\n            },\n            timestamp: timestamp\n        }\n    ];\n\n    return msg;\n}\n\nreturn formatForInfluxDB(msg);",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 850,
+        "y": 60,
+        "wires": [
+            [
+                "write_to_influxdb",
+                "debug_influxdb_data"
+            ]
+        ]
+    },
+    {
+        "id": "write_to_influxdb",
+        "type": "Stackhero-InfluxDB-v2-write",
+        "z": "system_monitoring_flow",
+        "d": true,
+        "server": "a1b3d7fc83d5c6f6",
+        "name": "Write to InfluxDB",
+        "x": 1080,
+        "y": 60,
+        "wires": [
+            [
+                "debug_influxdb_response"
+            ]
+        ]
+    },
+    {
+        "id": "debug_system_info",
+        "type": "debug",
+        "z": "system_monitoring_flow",
+        "d": true,
+        "name": "Debug System Info",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 850,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "debug_influxdb_data",
+        "type": "debug",
+        "z": "system_monitoring_flow",
+        "d": true,
+        "name": "Debug InfluxDB Data",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1080,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "debug_influxdb_response",
+        "type": "debug",
+        "z": "system_monitoring_flow",
+        "d": true,
+        "name": "Debug InfluxDB Response",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1330,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "98544b090f565cc4",
+        "type": "inject",
+        "z": "system_monitoring_flow",
+        "d": true,
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "30",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "from(bucket:\"sensores\") |> range(start: -5m) |> filter(fn: (r) => r._measurement == \"cpu\")",
+        "payload": "",
+        "payloadType": "date",
+        "x": 310,
+        "y": 380,
+        "wires": [
+            [
+                "0776551f5e698a91"
+            ]
+        ]
+    },
+    {
+        "id": "0776551f5e698a91",
+        "type": "Stackhero-InfluxDB-v2-query",
+        "z": "system_monitoring_flow",
+        "d": true,
+        "server": "a1b3d7fc83d5c6f6",
+        "name": "Query InfluxDB",
+        "x": 540,
+        "y": 380,
+        "wires": [
+            [
+                "c1d8e3774f962659",
+                "92dec75941fe7398"
+            ]
+        ]
+    },
+    {
+        "id": "c1d8e3774f962659",
+        "type": "function",
+        "z": "system_monitoring_flow",
+        "d": true,
+        "name": "Format Data",
+        "func": "function formatData(msg) {\n    if (!Array.isArray(msg.payload) || msg.payload.length === 0) {\n        node.warn(\"No data received from InfluxDB\");\n        msg.payload = [{ name: \"No Data\", value: 0 }];\n        return msg;\n    }\n\n    node.warn(\"Raw data: \" + JSON.stringify(msg.payload));\n\n    const groupedData = {};\n    msg.payload[0].forEach(point => {\n        const key = `${point._measurement}.${point._field}`;\n        const time = new Date(point._time).getTime();\n        if (!groupedData[key]) {\n            groupedData[key] = new Map();\n        }\n        if (!groupedData[key].has(time)) {\n            groupedData[key].set(time, point._value);\n        }\n    });\n\n    const series = Object.keys(groupedData).map(key => {\n        const dataArray = Array.from(groupedData[key]).map(([time, value]) => [time, value]);\n        return {\n            series: [key],\n            data: dataArray,\n            labels: [key]\n        };\n    });\n\n    node.warn(\"Formatted data: \" + JSON.stringify(series));\n    msg.payload = series;\n    return msg;\n}\n\nreturn formatData(msg);\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 380,
+        "wires": [
+            [
+                "44fcac26e05931d5"
+            ]
+        ]
+    },
+    {
+        "id": "44fcac26e05931d5",
+        "type": "ui_chart",
+        "z": "system_monitoring_flow",
+        "d": true,
+        "name": "System Metrics",
+        "group": "53d1223c6eb97ee6",
+        "order": 1,
+        "width": "6",
+        "height": "4",
+        "label": "System Metrics",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 980,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "92dec75941fe7398",
+        "type": "debug",
+        "z": "system_monitoring_flow",
+        "d": true,
+        "name": "InfluxDB Response",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 770,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "c3e7dbad.8b2788",
+        "type": "inject",
+        "z": "system_monitoring_flow",
+        "name": "Check UPS",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "60",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "10",
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "x": 390,
+        "y": 640,
+        "wires": [
+            [
+                "a6dfb9de.0ea768"
+            ]
+        ]
+    },
+    {
+        "id": "a6dfb9de.0ea768",
+        "type": "nut-ups",
+        "z": "system_monitoring_flow",
+        "name": "",
+        "ups": "CyberPower850@localhost",
+        "x": 570,
+        "y": 640,
+        "wires": [
+            [
+                "c8e74e12.76dbb"
+            ]
+        ]
+    },
+    {
+        "id": "c8e74e12.76dbb",
+        "type": "debug",
+        "z": "system_monitoring_flow",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 790,
+        "y": 640,
+        "wires": []
     }
 ]
