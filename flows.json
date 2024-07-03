@@ -5682,7 +5682,7 @@
                 "b37b8c9f95b42e83",
                 "58df9191d2b0ec79",
                 "3c7bd2b6b58e63b2",
-                "543df8e49def648d"
+                "fd1bfa6d7b17dbfa"
             ],
             []
         ]
@@ -6209,22 +6209,6 @@
         "wires": []
     },
     {
-        "id": "543df8e49def648d",
-        "type": "debug",
-        "z": "af530bfa0859125d",
-        "name": "debug 45",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1280,
-        "y": 100,
-        "wires": []
-    },
-    {
         "id": "watchdog-inject",
         "type": "inject",
         "z": "af530bfa0859125d",
@@ -6449,6 +6433,164 @@
         "statusType": "auto",
         "x": 810,
         "y": 600,
+        "wires": []
+    },
+    {
+        "id": "fd1bfa6d7b17dbfa",
+        "type": "function",
+        "z": "af530bfa0859125d",
+        "name": "Data Accumulation Node",
+        "func": "let cola = flow.get(\"colaLecturas\") || [];\nconst tiempoMaximo = 300000; // 5 minutos en milisegundos\n\n// Añadir nuevo registro con timestamp actual si no viene incluido en el mensaje\nconst tiempoRegistro = msg.payload.timestamp || Date.now();  // Usar timestamp del mensaje o el tiempo actual si no está disponible\ncola.push({\n    tiempo: tiempoRegistro,\n    volumen: msg.payload // Usar directamente msg.payload\n});\n\n// Eliminar registros más antiguos que el tiempo máximo permitido\nlet tiempoActual = Date.now();\ncola = cola.filter(registro => (tiempoActual - registro.tiempo) <= tiempoMaximo);\n\n// Guardar la cola actualizada en el contexto del flujo\nflow.set(\"colaLecturas\", cola);\n\n// Pasar la cola completa al siguiente nodo para su procesamiento\nreturn { payload: cola };\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1410,
+        "y": 160,
+        "wires": [
+            [
+                "efdd98cc3d86d572"
+            ]
+        ]
+    },
+    {
+        "id": "efdd98cc3d86d572",
+        "type": "function",
+        "z": "af530bfa0859125d",
+        "name": "Flow Calculation Node",
+        "func": "const cola = msg.payload;\nlet flujo = 0;\n\nif (cola.length > 1) {\n    const primerRegistro = cola[0];\n    const ultimoRegistro = cola[cola.length - 1];\n    const tiempoDiferencia = (ultimoRegistro.tiempo - primerRegistro.tiempo) / 1000; // en segundos\n\n    // Convertir los valores de volumen según la escala proporcionada\n    const volumenInicial = ((primerRegistro.volumen - 4000) / (20000 - 4000)) * (65000 - 3200);\n    const volumenFinal = ((ultimoRegistro.volumen - 4000) / (20000 - 4000)) * (65000 - 3200);\n\n    if (tiempoDiferencia > 0) {\n        flujo = Math.round(-((volumenFinal - volumenInicial) / tiempoDiferencia) * 3600); // calcular flujo\n    }\n} else {\n    // Manejar el caso cuando no hay suficientes registros para calcular un flujo\n    flujo = \"Insuficientes datos para cálculo de flujo\";\n}\n\n// Devolver el valor del flujo\nreturn { payload: flujo };\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1640,
+        "y": 160,
+        "wires": [
+            [
+                "83ace1473dc1c83f",
+                "bac04847f9ea2db5",
+                "957a80fe2d9036f2",
+                "e29985a46ae81d62"
+            ]
+        ]
+    },
+    {
+        "id": "83ace1473dc1c83f",
+        "type": "debug",
+        "z": "af530bfa0859125d",
+        "name": "Flujo HCD",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1910,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "bac04847f9ea2db5",
+        "type": "function",
+        "z": "af530bfa0859125d",
+        "name": "telemetria",
+        "func": "msg.payload = {\n  flujo: msg.payload\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1920,
+        "y": 200,
+        "wires": [
+            [
+                "c3f1160e75d83b76"
+            ]
+        ]
+    },
+    {
+        "id": "957a80fe2d9036f2",
+        "type": "ui-gauge",
+        "z": "af530bfa0859125d",
+        "name": "Flujo HCD",
+        "group": "3f690bb5a526a246",
+        "order": 2,
+        "width": "5",
+        "height": "4",
+        "gtype": "gauge-half",
+        "gstyle": "rounded",
+        "title": "Flujo HCD",
+        "units": "L/h",
+        "icon": "",
+        "prefix": "",
+        "suffix": "",
+        "segments": [
+            {
+                "from": "0",
+                "color": "#ea5353"
+            },
+            {
+                "from": "4000",
+                "color": "#5cd65c"
+            },
+            {
+                "from": "7500",
+                "color": "#ea5353"
+            }
+        ],
+        "min": 0,
+        "max": "10000",
+        "sizeThickness": "26",
+        "sizeGap": "3",
+        "sizeKeyThickness": "20",
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 1910,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "e29985a46ae81d62",
+        "type": "function",
+        "z": "af530bfa0859125d",
+        "name": "F_influx_flujo",
+        "func": "if (isNaN(msg.payload)) {\n    node.error(\"Valor de flujo no es un número\", msg);\n    return null;\n}\nmsg.payload = {\n    bucket: 'sensores',\n    precision: 'ms',\n    data: [\n        {\n            measurement: 'ParametrosProceso',\n            tags: {\n                sensor_id: 'MF-1.1',\n                equipo_id: 'FA-02A',\n                ubicacion: 'destilados'\n            },\n            fields: {\n                flujo_lh: msg.payload\n            },\n            timestamp: Date.now()\n        }\n    ]\n};\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1910,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c3f1160e75d83b76",
+        "type": "mqtt out",
+        "z": "af530bfa0859125d",
+        "name": "mqtt_tb_MF-1.1",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "689c5e6207baccbb",
+        "x": 2080,
+        "y": 200,
         "wires": []
     },
     {
@@ -7654,7 +7796,7 @@
         "topicType": "msg",
         "splitLayout": "",
         "className": "",
-        "x": 190,
+        "x": 170,
         "y": 480,
         "wires": [
             [
@@ -7704,8 +7846,8 @@
         "z": "0630a8264fc13136",
         "server": "a1b3d7fc83d5c6f6",
         "name": "DB",
-        "x": 690,
-        "y": 480,
+        "x": 570,
+        "y": 500,
         "wires": [
             []
         ]
@@ -9688,62 +9830,6 @@
         "targetType": "full",
         "x": 770,
         "y": 520,
-        "wires": []
-    },
-    {
-        "id": "c3e7dbad.8b2788",
-        "type": "inject",
-        "z": "system_monitoring_flow",
-        "name": "Check UPS",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "60",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "10",
-        "topic": "",
-        "payload": "",
-        "payloadType": "str",
-        "x": 390,
-        "y": 640,
-        "wires": [
-            [
-                "a6dfb9de.0ea768"
-            ]
-        ]
-    },
-    {
-        "id": "a6dfb9de.0ea768",
-        "type": "nut-ups",
-        "z": "system_monitoring_flow",
-        "name": "",
-        "ups": "CyberPower850@localhost",
-        "x": 570,
-        "y": 640,
-        "wires": [
-            [
-                "c8e74e12.76dbb"
-            ]
-        ]
-    },
-    {
-        "id": "c8e74e12.76dbb",
-        "type": "debug",
-        "z": "system_monitoring_flow",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 790,
-        "y": 640,
         "wires": []
     }
 ]
