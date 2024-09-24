@@ -18,7 +18,7 @@
         "id": "190ed3e96d0709a5",
         "type": "tab",
         "label": "ADC2",
-        "disabled": true,
+        "disabled": false,
         "info": "",
         "env": []
     },
@@ -4357,6 +4357,35 @@
         "x": 1090,
         "y": 780,
         "wires": []
+    },
+    {
+        "id": "b346308a78243d01",
+        "type": "inject",
+        "z": "190ed3e96d0709a5",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "5000",
+        "payloadType": "num",
+        "x": 1270,
+        "y": 920,
+        "wires": [
+            [
+                "358a6d7f67ffce8f"
+            ]
+        ]
     },
     {
         "id": "abbcccf771764af6",
